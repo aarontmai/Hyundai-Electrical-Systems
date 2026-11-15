@@ -354,6 +354,16 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-15 · run 57</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('network-management')">CAN Network Management: Sleep/Wake Coordination, NM PDUs and Partial Networking</a> (Part XIII, Ch.106): OSEK vs AUTOSAR CanNm vs partial networking, CanNm state diagram, NM PDU field table, wake sources, a worked stay-awake dark-current example, fault patterns and a quiz.</li>
+  <li><b>Recall news (US):</b> NHTSA 26V692 (Hyundai recall 309) covers 24 vehicles, 2026 Tucson Hybrid and Elantra, where front strut assembly fasteners may not be properly tightened, risking loss of steering control. Dealers inspect and tighten the fasteners and align as needed; owner letters expected December 19, 2026. Source: <a href="https://www.vehicleservicepros.com/industry-news/service-repair/article/55418716/national-highway-traffic-safety-administration-nhtsa-nhtsa-recalls-nov-913-bmw-honda-ford-hyundai" target="_blank">VehicleServicePros, NHTSA recalls Nov. 9-13</a>.</li>
+  <li><b>Recall news (Saudi Arabia):</b> The Saudi Ministry of Commerce announced a recall of 44,305 Hyundai i30 and Elantra vehicles (2009-2011) because the driver airbag inflator can rupture and release metal fragments; owners are told to stop driving them until repaired. Source: <a href="https://gulfnews.com/business/44305-hyundai-cars-told-to-stay-parked-over-airbag-defect-in-saudi-1.500745918" target="_blank">Gulf News</a>.</li>
+  <li><b>Follow-up:</b> further coverage of the airbag control unit software recall 26V728 (Kona Electric and Veloster) noted in run 56: <a href="https://www.repairerdrivennews.com/2026/11/10/hyundai-recalls-vehicles-for-software-malfunction-that-disables-airbag/" target="_blank">Repairer Driven News</a>.</li>
+  <li><b>Glossary:</b> added CanNm, NM PDU, Ready Sleep, Prepare Bus-Sleep, partial networking, wake-up frame (WUF), Active Wakeup Bit.</li>
+</ul>
+</div>
+
 <div class="callout hy"><span class="lbl">2026-11-12 · run 56</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('nvm-power-loss')">ECU Non-Volatile Memory: EEPROM Emulation, Flash Wear and Power-Loss Safety</a> (Part XVI, Ch.105): memory types, EEPROM emulation sector-swap diagram, power-loss failure table, shutdown write window, a worked battery-disconnect example, design checklist and a quiz.</li>
@@ -2671,6 +2681,13 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["CanNm","AUTOSAR CAN Network Management: a decentralised protocol where each awake node sends periodic NM messages and the bus sleeps only when all stop."],
+["NM PDU","Network management message carrying the source node ID, a control bit vector and optional user data such as a wake reason."],
+["Ready Sleep","CanNm state in which a node no longer needs the bus and stops its NM messages but stays awake until all other nodes release."],
+["Prepare Bus-Sleep","CanNm state after the NM timeout in which communication stops and the node waits a final timer before entering Bus-Sleep."],
+["Partial networking","Architecture in which only ECUs in a requested functional cluster wake, using selective-wake CAN transceivers."],
+["Wake-up frame (WUF)","Specific CAN frame whose identifier and data mask a selective-wake transceiver recognises to wake its ECU."],
+["Active Wakeup Bit","NM control bit set by the node that woke the network through a local wake event."],
 ["NvM","NVRAM Manager: the AUTOSAR service that queues, checks and stores non-volatile data blocks for an ECU."],
 ["EEPROM emulation","Technique that makes sector-erased data flash behave like byte-writable EEPROM by appending new record versions and swapping sectors when full."],
 ["Fee","Flash EEPROM Emulation: the AUTOSAR module under NvM that implements EEPROM emulation on data flash."],
@@ -8262,6 +8279,113 @@ chapter({part:"Part XVI · Hardware & Reliability Engineering", id:"nvm-power-lo
   <div class="exp">Each record carries a checksum. A torn write fails the check, so the reader falls back to the last valid copy. If no valid copy exists, the function goes to a safe default and sets a DTC.</div>
 </div>
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-12. Memory types, block layouts, write strategies and relearn procedures vary by supplier, platform, model year and market; always follow the service information for the exact vehicle.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XIII · Extended Networking", id:"network-management", num:"106", title:"CAN Network Management — Sleep/Wake Coordination, NM PDUs &amp; Partial Networking", mins:9, tag:"Networking / Power", html:`
+<p>A modern vehicle has dozens of ECUs sharing a handful of CAN, CAN-FD and LIN buses. None of them may fall asleep while a neighbour still needs to talk, and none of them may stay awake once everyone is done, because every milliamp drawn with the car parked comes out of the 12&nbsp;V battery. <b>Network Management (NM)</b> is the small, distributed protocol that lets all nodes on a bus agree when to stay awake and when to go to sleep together. It is the reason a body engineer debugging a dead-battery complaint so often ends up reading NM frames rather than application signals.</p>
+
+<h3>1. Why a separate protocol is needed</h3>
+<p>Application messages are sent because data changed or a cycle timer expired; they say nothing about whether the sender still needs the bus. If each node simply stopped transmitting when it had nothing to say, a node that went quiet early would miss a later request, and a node that stayed awake would see silence and wrongly conclude that the bus was dead. NM solves this with one rule: <i>any node that needs the network keeps sending its NM message; the bus may sleep only after every NM message has stopped for a defined time.</i> This is called a <b>decentralised, vote-to-stay-awake</b> scheme. There is no master; the last node to release the bus effectively decides when sleep begins.</p>
+
+<h3>2. Generations of NM</h3>
+<table>
+<tr><th>Scheme</th><th>Principle</th><th>Where you meet it</th></tr>
+<tr><td>OSEK direct NM</td><td>Logical ring: a token-like "ring message" passes from node to node; a node signals sleep readiness in its ring message</td><td>Older platforms and some carry-over modules</td></tr>
+<tr><td>OEM-specific indirect NM</td><td>Node presence inferred from ordinary application frames timing out</td><td>Legacy designs, some LIN-mastered sub-networks</td></tr>
+<tr><td>AUTOSAR CanNm</td><td>Each awake node periodically sends its own NM PDU; bus sleeps when all NM PDUs stop</td><td>Most current CAN and CAN-FD body and chassis networks</td></tr>
+<tr><td>AUTOSAR UdpNm</td><td>Same state machine carried in UDP over Automotive Ethernet</td><td>Ethernet backbones and zonal or HPC architectures</td></tr>
+<tr><td>Partial networking (ISO 11898-2:2016 selective wake)</td><td>Transceivers wake only on specific wake-up frames, so unrelated ECUs can sleep while the bus is active</td><td>Newer architectures chasing lower quiescent and running current</td></tr>
+</table>
+<p>Which scheme a given Hyundai, Kia or Genesis module uses depends on platform, supplier and model year. The descriptions below follow the public AUTOSAR CanNm specification, which is the common reference.</p>
+
+<h3>3. The AUTOSAR CanNm state machine</h3>
+<div class="diagwrap"><svg viewBox="0 0 660 230" width="100%" role="img" aria-label="CanNm state machine">
+<rect x="20" y="90" width="120" height="50" rx="8" fill="none" stroke="currentColor"/>
+<text x="80" y="112" text-anchor="middle" font-size="12" fill="currentColor">Bus-Sleep</text>
+<text x="80" y="128" text-anchor="middle" font-size="10" fill="currentColor">transceiver in standby</text>
+<rect x="200" y="20" width="440" height="140" rx="10" fill="none" stroke="currentColor" stroke-dasharray="5 3"/>
+<text x="420" y="36" text-anchor="middle" font-size="12" fill="currentColor">Network Mode</text>
+<rect x="215" y="55" width="125" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="277" y="79" text-anchor="middle" font-size="11" fill="currentColor">Repeat Message</text>
+<rect x="365" y="55" width="125" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="427" y="79" text-anchor="middle" font-size="11" fill="currentColor">Normal Operation</text>
+<rect x="505" y="105" width="125" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="567" y="129" text-anchor="middle" font-size="11" fill="currentColor">Ready Sleep</text>
+<rect x="250" y="180" width="160" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="330" y="204" text-anchor="middle" font-size="11" fill="currentColor">Prepare Bus-Sleep</text>
+<line x1="140" y1="105" x2="215" y2="75" stroke="currentColor"/><text x="168" y="82" font-size="10" fill="currentColor">wake</text>
+<line x1="340" y1="75" x2="365" y2="75" stroke="currentColor"/>
+<line x1="490" y1="80" x2="560" y2="105" stroke="currentColor"/><text x="535" y="86" font-size="10" fill="currentColor">release</text>
+<line x1="505" y1="135" x2="410" y2="195" stroke="currentColor"/><text x="465" y="178" font-size="10" fill="currentColor">NM timeout</text>
+<line x1="250" y1="200" x2="80" y2="140" stroke="currentColor"/><text x="150" y="185" font-size="10" fill="currentColor">wait bus-sleep timer</text>
+</svg></div>
+<table>
+<tr><th>State</th><th>NM PDU sent?</th><th>Application frames?</th><th>Leaves when</th></tr>
+<tr><td>Bus-Sleep</td><td>No</td><td>No</td><td>Local wake (switch, door handle, timer, telematics request) or bus wake-up detected by the transceiver</td></tr>
+<tr><td>Repeat Message</td><td>Yes, fast so others learn this node is present</td><td>Yes</td><td>Repeat-message timer expires</td></tr>
+<tr><td>Normal Operation</td><td>Yes, periodic</td><td>Yes</td><td>Application releases the network (no local reason to stay awake)</td></tr>
+<tr><td>Ready Sleep</td><td>No</td><td>Yes, while others still talk</td><td>No NM PDU from any node for the NM-timeout period; or own need returns</td></tr>
+<tr><td>Prepare Bus-Sleep</td><td>No</td><td>No (communication stopped)</td><td>Wait-bus-sleep timer expires (enter Bus-Sleep) or any frame seen (back to Network Mode)</td></tr>
+</table>
+<p>Timer values (NM message cycle, NM timeout, repeat-message time, wait-bus-sleep time) are configured per network. Typical orders of magnitude are hundreds of milliseconds for the NM cycle and a second or two for the timeouts, but the real values are OEM configuration data and should be read from the network specification or a capture, not assumed.</p>
+
+<h3>4. Inside the NM PDU</h3>
+<p>An NM PDU is a normal CAN frame, usually in a reserved identifier range with one identifier per node (base ID plus node ID). Its payload carries:</p>
+<table>
+<tr><th>Field</th><th>Meaning</th><th>Debug value</th></tr>
+<tr><td>Source Node Identifier</td><td>Which ECU sent it</td><td>Tells you exactly who is holding the bus awake</td></tr>
+<tr><td>Control Bit Vector: Repeat Message Request</td><td>Asks all nodes to re-enter Repeat Message (for example after a new node joins)</td><td>Stuck set can indicate a node constantly restarting</td></tr>
+<tr><td>Control Bit Vector: Active Wakeup Bit</td><td>This node woke the network itself (local wake)</td><td>Identifies the original wake source</td></tr>
+<tr><td>Control Bit Vector: Partial Network Information</td><td>The remaining bytes carry partial-network cluster requests</td><td>Shows which functional cluster is being kept alive</td></tr>
+<tr><td>User data bytes</td><td>OEM-defined, often a wake-up reason or stay-awake reason code</td><td>Very useful when documented in the network specification</td></tr>
+</table>
+
+<div class="callout tip"><span class="lbl">TIP</span>When you open a parked-car capture, filter only the NM identifier range first. The list of distinct source node IDs still transmitting after the doors are locked is a direct list of suspects for a sleep problem.</div>
+
+<h3>5. Partial networking and selective wake</h3>
+<p>Classic NM is all-or-nothing: if the telematics unit wakes the body CAN to report a door status, every ECU on that bus wakes too. Partial networking groups functions into <b>partial network clusters</b>. Transceivers compliant with the selective-wake part of ISO 11898-2:2016 (the content formerly published as ISO 11898-6) stay in low-power mode during bus traffic and wake their ECU only when they receive a configured <b>wake-up frame (WUF)</b> with a matching identifier and data mask. ECUs not in the requested cluster stay asleep, cutting current during remote services, charging sessions or pre-conditioning.</p>
+<table>
+<tr><th>Benefit</th><th>Cost or risk</th></tr>
+<tr><td>Lower current during OTA downloads, charging and remote commands</td><td>More complex configuration; every transceiver mask must match the cluster design</td></tr>
+<tr><td>Fewer wake cycles, so less NVM and relay wear</td><td>A wrong mask silently leaves a needed ECU asleep, so a function just does not happen</td></tr>
+<tr><td>Lets EVs keep only charging-related nodes awake for hours</td><td>Frame errors during selective-wake mode can force a full wake; transceiver error counters matter</td></tr>
+</table>
+
+<h3>6. Typical wake sources in a body network</h3>
+<table>
+<tr><th>Source</th><th>Example</th><th>Who usually starts NM</th></tr>
+<tr><td>Driver input</td><td>Door handle touch, door open, brake pedal, start button</td><td>Body module (IBU/BCM) or smart-key unit</td></tr>
+<tr><td>RF / remote</td><td>Key fob, digital key BLE or NFC, remote start via app</td><td>Smart-key or digital-key module, telematics unit</td></tr>
+<tr><td>Timers</td><td>Scheduled charging, battery monitoring, cabin pre-conditioning</td><td>Telematics, VCU or power-management ECU</td></tr>
+<tr><td>Hardware events</td><td>Charge-cable insertion, hood switch, alarm sensor</td><td>Charging controller, alarm or body module</td></tr>
+<tr><td>Diagnostics</td><td>Scan tool connected to the DLC</td><td>Central gateway</td></tr>
+</table>
+<p>The central gateway usually bridges NM between domains: it keeps a domain awake while any connected domain requests communication that must be routed there. Gateway routing tables for NM are therefore just as important as those for signals (see the <a onclick="show('gateway-internals')">gateway internals</a> and <a onclick="show('dark-current')">dark-current</a> chapters).</p>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE</span>A customer reports a flat 12&nbsp;V battery after two days parked. A dark-current test shows about 300&nbsp;mA for more than 30 minutes after locking instead of falling to a few tens of milliamps. A CAN logger on the body bus shows application traffic continuing. Filtering the NM range reveals that every node stops its NM PDU within a second or two of locking, except one aftermarket-adjacent node: the source node ID belongs to the head unit, which keeps sending NM PDUs every cycle with the user-data byte showing a constant stay-awake reason. Because that node never releases, every other ECU sits in Ready Sleep, still awake and still communicating. Disconnecting a phone-mirroring dongle from the head-unit USB port lets the head unit release; within the NM timeout all nodes enter Prepare Bus-Sleep and then Bus-Sleep, and the current falls to normal. Conclusion: the fault is a stay-awake request, not a wiring leak, and the fix is on the device or head-unit software (check for a campaign) rather than in the harness.</div>
+
+<div class="callout warn"><span class="lbl">CAUTION</span>Connecting a scan tool, opening a door or even an active logger that transmits acknowledgements can wake the network and reset the sleep sequence. For sleep testing, use a listen-only capture, latch the doors closed with the hood switch handled per service information, and wait out the full timer chain before reading current.</div>
+
+<h3>7. Fault patterns</h3>
+<table>
+<tr><th>Symptom</th><th>NM-related cause</th><th>First check</th></tr>
+<tr><td>High parked current, bus never sleeps</td><td>One node never releases (software, stuck input, accessory)</td><td>Source node IDs still sending NM PDUs</td></tr>
+<tr><td>Bus sleeps then wakes repeatedly</td><td>Noisy wake input, intermittent frame, or a timer wake loop</td><td>Active Wakeup Bit and wake-reason bytes at each wake</td></tr>
+<tr><td>Remote command from app does nothing</td><td>Target ECU not in the requested partial-network cluster, or did not wake in time</td><td>Wake-up frame and transceiver mode during the request</td></tr>
+<tr><td>U-codes logged at every key-on</td><td>Node slow to join after Bus-Sleep, timeouts during Repeat Message</td><td>Startup timing, supply voltage at wake</td></tr>
+<tr><td>Module data lost after parking</td><td>Node cut off before NVM writes finished during Prepare Bus-Sleep</td><td>Shutdown sequencing (see the <a onclick="show('nvm-power-loss')">NVM chapter</a>)</td></tr>
+</table>
+
+<div class="quiz" data-a="1"><span class="lbl">Quiz</span>
+<p>In AUTOSAR CanNm, all ECUs on a bus are in Ready Sleep except one, which is still in Normal Operation. What happens?</p>
+  <button class="opt">The bus sleeps after the NM timeout because the majority are ready</button>
+  <button class="opt">The bus stays awake, because the one node keeps sending NM PDUs that restart everyone else's NM timeout</button>
+  <button class="opt">The gateway forces the remaining node into Bus-Sleep</button>
+  <button class="opt">The nodes in Ready Sleep stop all communication immediately</button>
+  <div class="exp">CanNm is a vote-to-stay-awake scheme. Any received NM PDU restarts the NM timeout, so a single node in Normal Operation keeps the whole network awake until it releases.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-15. NM scheme, identifiers, timer values, wake-reason codes and partial-network clusters vary by platform, model year and market. Use the applicable Hyundai service information and network specification for real values.</div>
 `});
 </script>
 <script id="boot-script">
