@@ -354,6 +354,15 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-17 · run 58</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('ecu-reprogramming')">ECU Reprogramming (Flashing): UDS Download Sequence, Bootloaders and Pass-Thru</a> (Part XII, Ch.107): bootloader vs application memory map, the 16-step UDS programming sequence, RequestDownload / TransferData byte-level trace, programming NRC table, a worked flash-time estimate, delivery channels (GDS/KDS, J2534, OTA, EOL), recovery and design notes, and a quiz.</li>
+  <li><b>Recall news (US):</b> NHTSA 26V693 covers 17 vehicles (2026 Venue, Elantra, Elantra Hybrid and Elantra N built in August 2026) where lug nuts may not have been tightened properly during a temporary manual torquing process at the Ulsan plant, risking wheel separation. Dealers inspect and retighten, and replace the hub bearing if needed; owner letters by December 19, 2026. Source: <a href="https://www.autoevolution.com/news/hyundai-venue-and-elantra-recalled-for-potentially-loose-lug-nuts-277539.html" target="_blank">autoevolution</a>; related: <a href="https://theweeklydriver.com/hyundai-recall-highlights-wheel-torque-risks/" target="_blank">The Weekly Driver</a>.</li>
+  <li><b>OTA / SDV news (Korea):</b> Hyundai announced (October 30) the first Pleos Connect OTA update for the Grandeur, improving the Gleo AI voice agent (route-aware stop search, fuel prices by grade, waypoint announcements, on-device text-to-speech for messages, rear-seat voice call restrictions) and adding cluster changes such as a gear indicator window and drive-mode speedometer styling. The update installs wirelessly after an on-start prompt, rolled out sequentially. Source: <a href="https://finance.biggo.com/news/379a8998-aa78-4fc9-9d1c-580f966929bd" target="_blank">BigGo Finance</a>; background: <a href="https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system" target="_blank">Hyundai Motor Group, Pleos Connect</a>.</li>
+  <li><b>Glossary:</b> added bootloader, flash driver, RequestDownload, TransferData, block sequence counter, maxNumberOfBlockLength, J2534 pass-thru, tester fingerprint.</li>
+</ul>
+</div>
+
 <div class="callout hy"><span class="lbl">2026-11-15 · run 57</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('network-management')">CAN Network Management: Sleep/Wake Coordination, NM PDUs and Partial Networking</a> (Part XIII, Ch.106): OSEK vs AUTOSAR CanNm vs partial networking, CanNm state diagram, NM PDU field table, wake sources, a worked stay-awake dark-current example, fault patterns and a quiz.</li>
@@ -2681,6 +2690,14 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["Bootloader","Small resident ECU program that runs first after reset, checks application validity and handles UDS reprogramming."],
+["Flash driver","Erase and write routines downloaded to ECU RAM at the start of reprogramming so the bootloader itself cannot be erased by accident."],
+["RequestDownload","UDS service 0x34 that announces address, size and data format before a software download; the reply gives the maximum block length."],
+["TransferData","UDS service 0x36 that carries one block of a software image, tagged with a rolling block sequence counter."],
+["Block sequence counter","One-byte counter in each TransferData request that starts at 0x01 and wraps from 0xFF to 0x00; a mismatch gives NRC 0x73."],
+["maxNumberOfBlockLength","Largest TransferData request an ECU accepts, including the service ID and counter bytes, returned in the RequestDownload response."],
+["J2534 pass-thru","SAE standard PC-to-vehicle interface that lets OEM reprogramming software flash ECUs through third-party hardware."],
+["Tester fingerprint","Identifier of the tool or workshop written to the ECU during programming for traceability."],
 ["CanNm","AUTOSAR CAN Network Management: a decentralised protocol where each awake node sends periodic NM messages and the bus sleeps only when all stop."],
 ["NM PDU","Network management message carrying the source node ID, a control bit vector and optional user data such as a wake reason."],
 ["Ready Sleep","CanNm state in which a node no longer needs the bus and stops its NM messages but stays awake until all other nodes release."],
@@ -8386,6 +8403,136 @@ chapter({part:"Part XIII · Extended Networking", id:"network-management", num:"
   <div class="exp">CanNm is a vote-to-stay-awake scheme. Any received NM PDU restarts the NM timeout, so a single node in Normal Operation keeps the whole network awake until it releases.</div>
 </div>
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-15. NM scheme, identifiers, timer values, wake-reason codes and partial-network clusters vary by platform, model year and market. Use the applicable Hyundai service information and network specification for real values.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XII · Extended Diagnostics & Wiring", id:"ecu-reprogramming", num:"107", title:"ECU Reprogramming (Flashing) — UDS Download Sequence, Bootloaders &amp; Pass-Thru", mins:9, tag:"Diagnostics / Software", html:`
+<p>Most body, chassis and telematics ECUs on a current Hyundai, Kia or Genesis vehicle can have their software replaced in the field: at a dealer with the scan tool, through an SAE J2534 pass-thru device, or over the air. Whatever the delivery channel, the ECU side of the job is almost always the same <b>UDS (ISO 14229) programming sequence</b> executed by a small resident program called the <b>bootloader</b>. Understanding that sequence is what lets you read a failed-flash log, explain why a module "bricked", and design software that survives being reprogrammed thousands of times on the production line and in service.</p>
+
+<h3>1. Memory layout: bootloader versus application</h3>
+<p>The flash memory of a typical ECU is split into a protected bootloader area and one or more reprogrammable areas. The bootloader is written at the supplier plant and normally never changes in service. On power-up it runs first, checks whether a valid application is present, and either jumps to it or stays in the bootloader waiting for a tester.</p>
+<table>
+<tr><th>Region</th><th>Contents</th><th>Updated in service?</th></tr>
+<tr><td>Bootloader (boot manager + flash driver loader)</td><td>Startup code, UDS stack for programming, security access, validity check</td><td>Rarely or never; some designs allow a carefully staged bootloader update</td></tr>
+<tr><td>Application software</td><td>The functional code (lamp logic, door logic, gateway routing and so on)</td><td>Yes, the usual target of a software update campaign</td></tr>
+<tr><td>Calibration / data set</td><td>Parameters, variant tables, sometimes separate from code</td><td>Yes, sometimes independently of the application</td></tr>
+<tr><td>NVM / EEPROM emulation</td><td>Learned values, variant coding, DTCs, odometer copies</td><td>Normally preserved across a flash; see the <a onclick="show('nvm-power-loss')">NVM chapter</a></td></tr>
+<tr><td>Validity flag / fingerprint area</td><td>Application-valid marker, tester fingerprint, programming counter</td><td>Written by the bootloader as part of the sequence</td></tr>
+</table>
+<div class="callout tip"><span class="lbl">TIP</span>The flash driver (the code that actually erases and writes the flash) is often <b>not</b> stored in the ECU permanently. The tester downloads it to RAM first, so that a corrupted application can never accidentally erase the bootloader. If a log shows two download phases, the first small one is usually the flash driver.</div>
+
+<h3>2. The standard programming sequence</h3>
+<p>ISO 14229 and the ISO 14229-based OEM programming specifications describe a sequence that is broadly similar across manufacturers. The exact routine identifiers, timings and pre-checks are OEM configuration and vary by platform and model year, but the shape is:</p>
+<table>
+<tr><th>Step</th><th>UDS request</th><th>Purpose</th></tr>
+<tr><td>1</td><td>0x10 03 (Extended session), functional</td><td>Prepare the whole network</td></tr>
+<tr><td>2</td><td>0x31 01 (Routine: check preconditions, OEM routine ID)</td><td>ECU confirms vehicle stopped, voltage OK, engine or HV system off</td></tr>
+<tr><td>3</td><td>0x85 02 (ControlDTCSetting off), functional</td><td>Stop other ECUs logging timeout DTCs while the target is silent</td></tr>
+<tr><td>4</td><td>0x28 (CommunicationControl: disable normal Tx)</td><td>Free bus bandwidth, silence application traffic</td></tr>
+<tr><td>5</td><td>0x10 02 (Programming session), physical</td><td>Target ECU resets into its bootloader</td></tr>
+<tr><td>6</td><td>0x27 seed / key (programming level)</td><td>Unlock programming; see the <a onclick="show('cybersecurity')">cybersecurity chapter</a></td></tr>
+<tr><td>7</td><td>0x2E write fingerprint (OEM DID)</td><td>Record which tester / tool performed the update</td></tr>
+<tr><td>8</td><td>0x34 / 0x36 / 0x37 (flash driver to RAM, if used)</td><td>Load the erase-and-write routines</td></tr>
+<tr><td>9</td><td>0x31 01 FF00 (eraseMemory)</td><td>Erase the target logical block; ECU answers NRC 0x78 while busy</td></tr>
+<tr><td>10</td><td>0x34 RequestDownload</td><td>Announce address, size and data format; ECU replies with maxNumberOfBlockLength</td></tr>
+<tr><td>11</td><td>0x36 TransferData (repeated)</td><td>Send the image in blocks with a rolling block sequence counter</td></tr>
+<tr><td>12</td><td>0x37 RequestTransferExit</td><td>Close the download</td></tr>
+<tr><td>13</td><td>0x31 01 (check memory / CRC or signature, OEM ID)</td><td>ECU verifies the block it just received</td></tr>
+<tr><td>14</td><td>0x31 01 FF01 (checkProgrammingDependencies)</td><td>Confirm all blocks are present and mutually compatible, then set the valid flag</td></tr>
+<tr><td>15</td><td>0x11 01 (ECUReset hard reset)</td><td>Start the new application</td></tr>
+<tr><td>16</td><td>0x28 enable, 0x85 on, 0x10 01 (functional)</td><td>Restore the network to normal; then clear DTCs and re-run any learns</td></tr>
+</table>
+
+<div class="diagwrap"><svg viewBox="0 0 640 210" width="100%" role="img" aria-label="Flash download block sequence">
+<rect x="20" y="20" width="110" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="75" y="44" text-anchor="middle" font-size="11" fill="currentColor">Erase FF00</text>
+<rect x="160" y="20" width="120" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="220" y="44" text-anchor="middle" font-size="11" fill="currentColor">0x34 Request</text>
+<rect x="310" y="20" width="150" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="385" y="44" text-anchor="middle" font-size="11" fill="currentColor">0x36 x N blocks</text>
+<rect x="490" y="20" width="130" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="555" y="44" text-anchor="middle" font-size="11" fill="currentColor">0x37 Exit</text>
+<line x1="130" y1="40" x2="160" y2="40" stroke="currentColor"/>
+<line x1="280" y1="40" x2="310" y2="40" stroke="currentColor"/>
+<line x1="460" y1="40" x2="490" y2="40" stroke="currentColor"/>
+<rect x="160" y="120" width="140" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="230" y="144" text-anchor="middle" font-size="11" fill="currentColor">Verify CRC / signature</text>
+<rect x="330" y="120" width="140" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="400" y="144" text-anchor="middle" font-size="11" fill="currentColor">Dependencies FF01</text>
+<rect x="500" y="120" width="120" height="40" rx="6" fill="none" stroke="currentColor"/>
+<text x="560" y="144" text-anchor="middle" font-size="11" fill="currentColor">0x11 Reset</text>
+<line x1="555" y1="60" x2="230" y2="120" stroke="currentColor"/>
+<line x1="300" y1="140" x2="330" y2="140" stroke="currentColor"/>
+<line x1="470" y1="140" x2="500" y2="140" stroke="currentColor"/>
+<text x="385" y="85" text-anchor="middle" font-size="10" fill="currentColor">counter 01, 02 ... FF, 00, 01 ...</text>
+<text x="320" y="195" text-anchor="middle" font-size="10" fill="currentColor">Valid flag is written only after every check passes</text>
+</svg></div>
+
+<h3>3. Inside RequestDownload and TransferData</h3>
+<p><b>0x34 RequestDownload</b> carries a dataFormatIdentifier (high nibble compression method, low nibble encryption method; 0x00 means plain), an addressAndLengthFormatIdentifier telling how many bytes the address and size fields use, then the memory address and size. The positive response 0x74 returns <b>maxNumberOfBlockLength</b>: the largest TransferData request the ECU accepts, <i>including</i> the service ID byte and the block sequence counter.</p>
+<p><b>0x36 TransferData</b> requests carry a one-byte <b>blockSequenceCounter</b> that starts at 0x01 and wraps from 0xFF to 0x00. If the tester repeats a block after a lost response, the ECU recognises the same counter and simply acknowledges it again without writing twice; a counter that jumps produces NRC 0x73.</p>
+<pre><code>Tx 34 00 44 00 08 00 00 00 18 00 00     ; plain data, 4-byte addr, 4-byte size, 1.5 MiB
+Rx 74 20 0F FA                           ; maxNumberOfBlockLength = 0x0FFA = 4090
+Tx 36 01 [4088 data bytes]
+Rx 76 01
+Tx 36 02 [4088 data bytes]
+Rx 7F 36 78                              ; responsePending while flash write completes
+Rx 76 02
+...
+Tx 37
+Rx 77</code></pre>
+
+<h3>4. Negative responses you meet while flashing</h3>
+<table>
+<tr><th>NRC</th><th>Name</th><th>Typical cause during programming</th></tr>
+<tr><td>0x22</td><td>conditionsNotCorrect</td><td>Precondition failed: vehicle moving, engine running, voltage out of range</td></tr>
+<tr><td>0x31</td><td>requestOutOfRange</td><td>Address or size outside the allowed logical block; wrong file for this ECU</td></tr>
+<tr><td>0x33</td><td>securityAccessDenied</td><td>Erase or download attempted before 0x27 unlock</td></tr>
+<tr><td>0x35 / 0x36 / 0x37</td><td>invalidKey / exceededNumberOfAttempts / requiredTimeDelayNotExpired</td><td>Seed-key failure; wait out the delay timer before retrying</td></tr>
+<tr><td>0x70</td><td>uploadDownloadNotAccepted</td><td>Download refused, often because erase was not done</td></tr>
+<tr><td>0x72</td><td>generalProgrammingFailure</td><td>Flash write or erase error, often low voltage</td></tr>
+<tr><td>0x73</td><td>wrongBlockSequenceCounter</td><td>Lost or duplicated frames; tester and ECU out of step</td></tr>
+<tr><td>0x78</td><td>requestCorrectlyReceived-ResponsePending</td><td>Normal during erase and writes; the tester must extend its timeout (P2* server)</td></tr>
+</table>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE</span>Estimating flash time for a 1.5&nbsp;MiB (1,572,864-byte) body-module application over classic CAN at 500&nbsp;kbit/s. With maxNumberOfBlockLength 4090, each 0x36 carries 4088 data bytes, so the image needs 1,572,864 / 4088 = 384.8, that is <b>385 TransferData requests</b>. ISO-TP consecutive frames carry 7 bytes each, so about 225,000 CAN frames are needed. If the ECU flow-control frame asks for STmin = 1&nbsp;ms, throughput is capped near 1000 frames per second, about 7&nbsp;kB/s, so the download alone takes roughly <b>225&nbsp;s (close to 4 minutes)</b> before erase and verify time. With STmin = 0 the bus itself becomes the limit (an 8-byte frame is roughly 110 to 130 bits including stuffing), giving perhaps 25&nbsp;kB/s and about 1 minute. On CAN FD with 64-byte frames and a faster data phase, or over DoIP on Ethernet, the same image moves several times to an order of magnitude faster. This is why flash tool logs always record the flow-control parameters: they explain most "why is this so slow" questions.</div>
+
+<h3>5. Delivery channels</h3>
+<table>
+<tr><th>Channel</th><th>Who uses it</th><th>Notes</th></tr>
+<tr><td>OEM scan tool software update function (GDS for Hyundai and Genesis, KDS for Kia)</td><td>Dealer technicians</td><td>Selects the correct file by VIN and current part number, enforces preconditions</td></tr>
+<tr><td>SAE J2534 pass-thru</td><td>Independent shops, fleet, engineering</td><td>OEM reprogramming application plus a compliant VCI; subscription access through the OEM technical information site, varying by market</td></tr>
+<tr><td>Over-the-air (OTA)</td><td>Owner, via telematics</td><td>The telematics or central unit acts as the local tester and runs the same UDS steps on the internal network; see the <a onclick="show('ota')">OTA chapter</a></td></tr>
+<tr><td>End-of-line (EOL) programming</td><td>Assembly plant</td><td>High-speed parallel flashing, often over DoIP; variant coding follows</td></tr>
+</table>
+
+<div class="callout warn"><span class="lbl">CAUTION</span>Low battery voltage is the single most common cause of a failed flash. Keep a stable battery support unit connected (not a trickle charger), switch off loads such as headlamps, HVAC blower and seat heaters, keep the scan tool and laptop on mains power, and never disconnect the cable or let the ignition time out mid-sequence. Follow the voltage window stated in the applicable service procedure.</div>
+
+<div class="callout danger"><span class="lbl">RECOVERY</span>A well-designed bootloader does not set the application-valid flag until all checks pass, so an interrupted flash normally leaves the ECU in the bootloader, still able to answer UDS on its diagnostic ID even though the function is dead. The recovery is usually to repeat the update from the beginning. If the scan tool cannot see the module at all, check power, ground and bus wiring before assuming a hardware failure.</div>
+
+<h3>6. After the flash</h3>
+<p>New application software may reset learned values or expect re-coding. Typical follow-ups: clear DTCs in all modules (other ECUs often logged U-codes while the target was silent), re-run variant coding or option settings, repeat initialisations such as steering-angle sensor or window-pinch learning, confirm the new software version DIDs (often F189 / F195-style identifiers, OEM-specific), and road-test the function. Record the old and new software versions on the repair order.</p>
+
+<h3>7. Design notes for ECU software engineers</h3>
+<table>
+<tr><th>Requirement</th><th>Why it matters</th></tr>
+<tr><td>Bootloader always reachable after any reset</td><td>Prevents bricking when the application is corrupt</td></tr>
+<tr><td>Valid flag written last, after signature or CRC check</td><td>Interrupted flashes never start half an application</td></tr>
+<tr><td>Cryptographic signature verification (secure boot)</td><td>Rejects tampered or wrong-supplier images; required by UN R155/R156 style processes</td></tr>
+<tr><td>Erase only the logical block being replaced</td><td>Keeps calibration and NVM data intact</td></tr>
+<tr><td>Correct 0x78 handling and P2* timing</td><td>Long erases must not time out the tester</td></tr>
+<tr><td>Programming attempt counter and version DIDs</td><td>Traceability for campaigns and field returns</td></tr>
+</table>
+
+<div class="quiz" data-a="2"><span class="lbl">Quiz</span>
+<p>During a 0x36 TransferData download the tester has just sent block counter 0xFF and received a positive response. What counter must the next TransferData request carry?</p>
+  <button class="opt">0x01, because the counter restarts at its initial value</button>
+  <button class="opt">0x100, carried as two bytes</button>
+  <button class="opt">0x00, because the counter wraps from 0xFF to 0x00</button>
+  <button class="opt">0xFF again, because the counter saturates</button>
+  <div class="exp">The blockSequenceCounter starts at 0x01 after RequestDownload but wraps from 0xFF to 0x00 and continues counting. Sending the wrong value produces NRC 0x73 wrongBlockSequenceCounter.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-17. Routine identifiers, DIDs, security levels, preconditions, voltage windows and tool workflows vary by platform, model year, ECU supplier and market. The service IDs and NRCs follow ISO 14229-1. Always use the applicable Hyundai, Kia or Genesis service information and the current scan tool procedure for real updates.</div>
 `});
 </script>
 <script id="boot-script">
