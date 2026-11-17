@@ -354,6 +354,16 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-17 · run 59</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('secoc-deep-dive')">SecOC Deep Dive: Message Authentication, Freshness Management and Key Handling on CAN and CAN FD</a> (Part XIII, Ch.108): threat coverage table, secured PDU byte layout diagram, MAC and freshness length trade-offs, the Freshness Value Manager counter scheme, verification-failure reactions, worked examples on 24-bit MAC forgery time and bus-load cost, the key provisioning problem on parts replacement, a troubleshooting checklist and a quiz.</li>
+  <li><b>SDV news:</b> A prototype IONIQ 5 was photographed in Korea (reported November 16) with a redesigned dashboard and a single large central screen replacing the dual 12.3-inch displays, apparently running Pleos Connect (Android Automotive OS based). Hyundai targets its first SDV as early as 2027; the new Tucson is reported as the first US model with Pleos, on sale in early 2027. Source: <a href="https://electrek.co/2026/11/16/hyundai-ioniq-5-caught-new-high-tech-interior-big-display/" target="_blank">Electrek</a>.</li>
+  <li><b>SDV investment:</b> Hyundai Motor disclosed (October 29) a 285.2 billion won rights-offering investment in its software subsidiary 42dot, raising its stake to about 59 percent; 42dot aims to finish SDV mass-production preparation by 2027 with sales from early 2028. Source: <a href="https://en.sedaily.com/finance/2026/10/29/hyundai-motor-injects-2852-billion-won-into-42dot-for-sdv" target="_blank">Seoul Economic Daily</a>.</li>
+  <li><b>Recall check:</b> no new Hyundai, Kia or Genesis US campaigns found beyond those logged in runs 56 to 58.</li>
+  <li><b>Glossary:</b> added Authentic I-PDU, Secured I-PDU, Freshness Value Manager, truncated MAC, trip counter, SHE, CMAC.</li>
+</ul>
+</div>
+
 <div class="callout hy"><span class="lbl">2026-11-17 · run 58</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('ecu-reprogramming')">ECU Reprogramming (Flashing): UDS Download Sequence, Bootloaders and Pass-Thru</a> (Part XII, Ch.107): bootloader vs application memory map, the 16-step UDS programming sequence, RequestDownload / TransferData byte-level trace, programming NRC table, a worked flash-time estimate, delivery channels (GDS/KDS, J2534, OTA, EOL), recovery and design notes, and a quiz.</li>
@@ -2690,6 +2700,13 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["Authentic I-PDU","The original signal payload of a SecOC-protected message, before freshness and MAC are appended."],
+["Secured I-PDU","SecOC frame on the bus: authentic payload plus truncated freshness value plus truncated MAC."],
+["Freshness Value Manager","SecOC component that builds and synchronises freshness values from trip, reset and message counters to defeat replay."],
+["Truncated MAC","Leading bits of the full message authentication code actually transmitted, sized to fit the CAN payload."],
+["Trip counter","Freshness component incremented each ignition or wake session and broadcast by a master ECU in a secured sync message."],
+["SHE","Secure Hardware Extension: a standardised on-chip key store and AES engine used for MAC computation and secure boot."],
+["CMAC","Cipher-based message authentication code, usually AES-128, the common algorithm for SecOC authenticators."],
 ["Bootloader","Small resident ECU program that runs first after reset, checks application validity and handles UDS reprogramming."],
 ["Flash driver","Erase and write routines downloaded to ECU RAM at the start of reprogramming so the bootloader itself cannot be erased by accident."],
 ["RequestDownload","UDS service 0x34 that announces address, size and data format before a software download; the reply gives the maximum block length."],
@@ -8533,6 +8550,98 @@ Rx 77</code></pre>
   <div class="exp">The blockSequenceCounter starts at 0x01 after RequestDownload but wraps from 0xFF to 0x00 and continues counting. Sending the wrong value produces NRC 0x73 wrongBlockSequenceCounter.</div>
 </div>
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-17. Routine identifiers, DIDs, security levels, preconditions, voltage windows and tool workflows vary by platform, model year, ECU supplier and market. The service IDs and NRCs follow ISO 14229-1. Always use the applicable Hyundai, Kia or Genesis service information and the current scan tool procedure for real updates.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XIII · Extended Networking", id:"secoc-deep-dive", num:"108", title:"SecOC Deep Dive — Message Authentication, Freshness Management &amp; Key Handling on CAN and CAN FD", mins:14, tag:"Security", html:`
+<p>Chapter 20 introduced <b>SecOC (AUTOSAR Secure Onboard Communication)</b> in one paragraph. This chapter goes underneath: how the secured PDU is laid out byte by byte, how the freshness value stays synchronised across ECUs that sleep, reset and get replaced, what happens when verification fails, and why a body-electrical engineer suddenly cares about cryptographic keys when a door module is swapped. The concepts follow the public AUTOSAR SecOC and Freshness Value Manager specifications; which messages are protected, MAC lengths, and key provisioning on any particular Hyundai, Kia or Genesis platform are OEM-confidential and vary by model year and market.</p>
+
+<h3>1. What SecOC protects, and what it does not</h3>
+<table>
+<tr><th>Threat</th><th>Plain CAN</th><th>With SecOC</th></tr>
+<tr><td>Spoofing (a rogue node sends a valid-looking frame)</td><td>Accepted: receivers trust any frame with the right ID</td><td>Rejected: the attacker cannot compute a valid MAC without the key</td></tr>
+<tr><td>Replay (a captured genuine frame is sent again later)</td><td>Accepted</td><td>Rejected: the freshness value is stale</td></tr>
+<tr><td>Tampering (bits changed in transit or by a compromised gateway)</td><td>Only random errors caught by the CRC</td><td>Rejected: MAC no longer matches</td></tr>
+<tr><td>Eavesdropping (reading signal values)</td><td>Possible</td><td><b>Still possible</b>: SecOC authenticates, it does not encrypt</td></tr>
+<tr><td>Denial of service (bus flooding, error frames)</td><td>Possible</td><td><b>Still possible</b>: needs IDS and gateway filtering</td></tr>
+</table>
+<div class="callout tip"><span class="lbl">KEY IDEA</span>SecOC answers two questions for the receiver: did this come from someone holding the key, and is it new? Confidentiality and availability are separate problems handled by other layers (TLS or MACsec on Ethernet, gateway firewalls, intrusion detection).</div>
+
+<h3>2. The secured I-PDU layout</h3>
+<p>The sending ECU takes the normal signal payload (the <b>Authentic I-PDU</b>), computes a MAC over the data identifier, the payload and the <i>full</i> freshness value, then transmits the payload plus a <b>truncated freshness value</b> and a <b>truncated MAC</b> (the authenticator). Truncation is what makes SecOC fit on classic CAN with its 8-byte limit.</p>
+<div class="diagwrap"><svg viewBox="0 0 640 170" width="100%" role="img" aria-label="Secured PDU layout on classic CAN">
+<rect x="20" y="40" width="320" height="50" fill="#dbeafe" stroke="#1e3a8a"/><text x="180" y="70" text-anchor="middle" font-size="14">Authentic payload (4 bytes)</text>
+<rect x="340" y="40" width="80" height="50" fill="#fef3c7" stroke="#92400e"/><text x="380" y="62" text-anchor="middle" font-size="12">Freshness</text><text x="380" y="78" text-anchor="middle" font-size="12">1 byte</text>
+<rect x="420" y="40" width="200" height="50" fill="#fee2e2" stroke="#991b1b"/><text x="520" y="62" text-anchor="middle" font-size="12">Truncated MAC</text><text x="520" y="78" text-anchor="middle" font-size="12">3 bytes (24 bits)</text>
+<text x="320" y="25" text-anchor="middle" font-size="13">Classic CAN data field: 8 bytes total</text>
+<text x="320" y="120" text-anchor="middle" font-size="12">MAC input = Data ID (16 bit) + payload + FULL freshness value (e.g. 64 bit)</text>
+<text x="320" y="140" text-anchor="middle" font-size="12">Only the low-order freshness bits and the leading MAC bits are transmitted</text>
+</svg></div>
+<table>
+<tr><th>Parameter</th><th>Typical classic CAN choice</th><th>Typical CAN FD choice</th><th>Trade-off</th></tr>
+<tr><td>Transmitted MAC length</td><td>24 to 32 bits</td><td>64 to 128 bits</td><td>Shorter MAC = more forgery risk per attempt</td></tr>
+<tr><td>Transmitted freshness bits</td><td>4 to 8 bits</td><td>8 to 32 bits</td><td>Fewer bits = more reliance on synchronisation</td></tr>
+<tr><td>Algorithm</td><td colspan="2">AES-128 CMAC is the common choice (hardware-accelerated in HSM or SHE)</td><td>Symmetric: every receiver shares the key</td></tr>
+<tr><td>Payload left for signals</td><td>About 4 of 8 bytes</td><td>Comfortably above 50 of 64 bytes</td><td>One reason SecOC adoption accelerated with CAN FD</td></tr>
+</table>
+
+<h3>3. Freshness value management</h3>
+<p>The receiver must reconstruct the full freshness value from the few transmitted bits. The AUTOSAR Freshness Value Manager (FVM) concept splits the value into parts that change at different rates:</p>
+<table>
+<tr><th>Part</th><th>Changes when</th><th>Distributed by</th></tr>
+<tr><td>Trip counter</td><td>Each ignition cycle or wake-up session</td><td>A master ECU (often the gateway or central unit) broadcasts it in a secured sync message</td></tr>
+<tr><td>Reset counter</td><td>Periodically within a trip (for example every few seconds)</td><td>Same sync message</td></tr>
+<tr><td>Message counter (upper / lower)</td><td>Every transmission of that PDU</td><td>Sender increments; only the lower bits go on the bus</td></tr>
+<tr><td>Reset flag</td><td>Reset counter changes</td><td>Few bits on the bus so receivers detect a missed reset</td></tr>
+</table>
+<p>The receiver combines the latest trip and reset counters from the sync message with its last accepted message counter, then picks the candidate whose low bits match what arrived. If the receiver missed the sync message (it woke late, or the master was being flashed), it holds the wrong trip counter and every MAC check fails until the next sync. That is the root of many "secured message invalid" faults after network wake-up timing changes.</p>
+<div class="callout warn"><span class="lbl">CAUTION</span>Never let a sender reuse a freshness value after an unexpected reset. Counters must be stored in non-volatile memory or re-anchored to the trip counter from the master; otherwise a reboot reopens a replay window. See the <a onclick="show('nvm-power-loss')">NVM and power-loss chapter</a>.</div>
+
+<h3>4. Verification failure handling</h3>
+<table>
+<tr><th>Behaviour</th><th>Description</th><th>Typical use</th></tr>
+<tr><td>Drop the PDU</td><td>Signal keeps its last valid value or substitute value, timeout monitoring runs</td><td>Default for most control messages</td></tr>
+<tr><td>Retry with alternate freshness</td><td>Receiver attempts a small window of candidate values before declaring failure</td><td>Absorbs a lost frame or two</td></tr>
+<tr><td>Override / pass-through</td><td>Calibration switch that accepts the payload while logging the failure</td><td>Development, bench, and early production only</td></tr>
+<tr><td>Report to security event memory / IDS</td><td>Counts failures, may raise a DTC or a security event toward the backend</td><td>Field monitoring and forensics</td></tr>
+</table>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE</span>How strong is a 24-bit truncated MAC? A random guess succeeds with probability 1 / 2<sup>24</sup> = 1 / 16,777,216. Suppose an attacker plugged into the OBD port could inject the target frame 100 times per second and every failure were silently dropped. Expected attempts to succeed are about 2<sup>24</sup>, so expected time is 16,777,216 / 100 = 167,772 s, roughly 46.6 hours of continuous flooding, for <i>one</i> accepted frame with a single freshness value. In practice the gateway blocks most IDs from the diagnostic port, the injected frames collide with the genuine sender, and the failure counter trips an intrusion event long before that. This is why 24 to 32 bits is judged acceptable for short-lived control frames, while key-related or high-value messages use longer MACs on CAN FD.</div>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE</span>Bus load cost. A body message carrying 4 bytes of signals at 20 ms on 500 kbit/s classic CAN originally used a 4-byte frame (about 80 bits with stuffing allowance). Securing it with 1 freshness byte and 3 MAC bytes grows it to 8 bytes (about 112 bits). Per second that is 50 frames x 32 extra bits = 1,600 bit/s, or 0.32 percent extra load for one message. Secure thirty such messages and the bus gains nearly 10 percent load, which is why architects secure only the safety- and security-relevant PDUs.</div>
+
+<h3>5. Keys, HSMs and the parts-replacement problem</h3>
+<p>SecOC MACs are computed by the crypto stack (CSM, CryIf and a crypto driver) using keys held in a <b>hardware security module (HSM)</b> or a <b>SHE</b> (Secure Hardware Extension) key slot on the microcontroller. Keys are provisioned at end-of-line and are typically unique per vehicle or per key group, so a new ECU arriving from the parts warehouse cannot authenticate until the correct key is injected.</p>
+<table>
+<tr><th>Event</th><th>Key consequence</th><th>Service implication</th></tr>
+<tr><td>New ECU installed</td><td>Blank or default key slot</td><td>Online key provisioning through the OEM scan tool and backend, similar in spirit to immobilizer registration</td></tr>
+<tr><td>ECU swapped from another vehicle</td><td>Holds the wrong vehicle key</td><td>Secured messages fail; module must be re-provisioned or rejected</td></tr>
+<tr><td>Gateway or key master replaced</td><td>Freshness master and possibly the key distribution role lost</td><td>Several modules may log authentication faults until the vehicle is re-keyed</td></tr>
+<tr><td>Software update changes security config</td><td>Protected PDU list or MAC length changes</td><td>All communicating ECUs must be updated as a set; see <a onclick="show('ecu-reprogramming')">ECU reprogramming</a></td></tr>
+</table>
+
+<h3>6. Troubleshooting checklist</h3>
+<pre><code>Symptom: receiver flags secured PDU invalid, function falls back
+1. Is the sender alive and transmitting the PDU at its normal period?
+2. Did the receiver get the freshness sync message after wake-up?
+   (log the sync ID; compare wake timing of master vs receiver)
+3. Was either ECU recently replaced, flashed or swapped?
+   -> check key provisioning / security registration status
+4. Are both ECUs on matching software levels (PDU config, MAC length)?
+5. Is there a gateway in between that rewrites or re-times the frame?
+6. Read security event memory / DTCs on both ends before clearing</code></pre>
+
+<div class="callout hy"><span class="lbl">HYUNDAI CONTEXT</span>Hyundai Motor Group, like other OEMs selling under UN R155, must show controls against message spoofing on its in-vehicle networks. Publicly available material does not detail which PDUs are secured on specific platforms; treat this chapter as the generic engineering model and use official service information and internal security specifications for real values.</div>
+
+<div class="quiz" data-a="1"><span class="lbl">Quiz</span>
+<p>After a gateway software update, a body module logs authentication failures only for the first few seconds after every wake-up, then works normally. What is the most likely cause?</p>
+  <button class="opt">The body module holds the wrong cryptographic key</button>
+  <button class="opt">The body module wakes before the freshness sync message is sent, so it briefly uses a stale trip or reset counter</button>
+  <button class="opt">The truncated MAC is too short and attackers are guessing it</button>
+  <button class="opt">SecOC encryption is failing to decrypt the payload</button>
+  <div class="exp">A wrong key would fail all the time, not just after wake-up, and SecOC does not encrypt. Failures that clear once the next sync message arrives point to freshness synchronisation timing, which a change in gateway wake or sync scheduling can easily disturb.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-17. Secured message lists, MAC and freshness lengths, key provisioning procedures and failure reactions vary by platform, model year, ECU supplier and market. Always confirm against official Hyundai/Kia/Genesis service information.</div>
 `});
 </script>
 <script id="boot-script">
