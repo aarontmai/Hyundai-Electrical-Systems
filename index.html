@@ -354,6 +354,15 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-19 · run 60</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('audio-anc')">Vehicle Audio Systems: Amplifiers, Digital Audio Links and Road Active Noise Control</a> (Part XV, Ch.109): signal-chain diagram, a comparison of analog, MOST, A2B and Ethernet AVB audio links, the amplifier treated as a sleeping ECU, engine-order vs road-noise ANC, the FxLMS loop, worked examples on an amplifier-wake battery drain and on what a 50 percent noise claim means in dB, a diagnosis playbook and a quiz. RANC background: <a href="https://www.carscoops.com/2020/02/2020-genesis-gv80-boasts-the-worlds-first-active-road-noise-cancellation-system/" target="_blank">Carscoops</a>.</li>
+  <li><b>Pleos Connect app market (Korea):</b> 42dot added seven apps to the Pleos Connect in-car app market (reported September 7), bringing the total on Korean-market models such as The New Grandeur and the all-new Avante to 18, including Kakao Navi, what3words and Melon, downloaded directly to the car without a phone. Third-party developers get vehicle APIs and tools through Pleos Playground; games, vehicle-management and lifestyle categories are planned. Source: <a href="https://www.venturesquare.net/1111191/" target="_blank">Venture Square</a>; background: <a href="https://www.hyundainews.com/releases/4408" target="_blank">Hyundai News</a>.</li>
+  <li><b>Recall check:</b> NHTSA weekly listing for November 9 to 13 shows only Hyundai campaign 26V692 (24 Tucson Hybrid and Elantra, strut fasteners), already logged; no new Hyundai, Kia or Genesis US campaigns found since run 59. Source: <a href="https://www.vehicleservicepros.com/industry-news/service-repair/article/55418716/national-highway-traffic-safety-administration-nhtsa-nhtsa-recalls-nov-913-bmw-honda-ford-hyundai" target="_blank">Vehicle Service Pros</a>.</li>
+  <li><b>Glossary:</b> added A2B, RANC, engine-order cancellation, FxLMS, secondary path, remote-on line.</li>
+</ul>
+</div>
+
 <div class="callout hy"><span class="lbl">2026-11-17 · run 59</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('secoc-deep-dive')">SecOC Deep Dive: Message Authentication, Freshness Management and Key Handling on CAN and CAN FD</a> (Part XIII, Ch.108): threat coverage table, secured PDU byte layout diagram, MAC and freshness length trade-offs, the Freshness Value Manager counter scheme, verification-failure reactions, worked examples on 24-bit MAC forgery time and bus-load cost, the key provisioning problem on parts replacement, a troubleshooting checklist and a quiz.</li>
@@ -2700,6 +2709,12 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["A2B","Automotive Audio Bus: daisy-chained twisted-pair link carrying clock, multichannel audio, control and power to amplifiers and microphones."],
+["RANC","Road-noise Active Noise Control: feed-forward system using suspension accelerometers and cabin microphones to cancel tire and road rumble through the speakers."],
+["Engine-order cancellation","Active noise control that uses engine speed as a tonal reference to cancel firing-order boom."],
+["FxLMS","Filtered-x least-mean-squares: adaptive filter algorithm used in active noise control, with the reference filtered by a secondary-path model."],
+["Secondary path","Acoustic transfer function from an ANC speaker to an error microphone; must match the stored model for cancellation to work."],
+["Remote-on line","Hardwired signal from the head unit that wakes an external amplifier; if stuck high it causes a parasitic drain."],
 ["Authentic I-PDU","The original signal payload of a SecOC-protected message, before freshness and MAC are appended."],
 ["Secured I-PDU","SecOC frame on the bus: authentic payload plus truncated freshness value plus truncated MAC."],
 ["Freshness Value Manager","SecOC component that builds and synchronises freshness values from trip, reset and message counters to defeat replay."],
@@ -8642,6 +8657,93 @@ chapter({part:"Part XIII · Extended Networking", id:"secoc-deep-dive", num:"108
   <div class="exp">A wrong key would fail all the time, not just after wake-up, and SecOC does not encrypt. Failures that clear once the next sync message arrives point to freshness synchronisation timing, which a change in gateway wake or sync scheduling can easily disturb.</div>
 </div>
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-17. Secured message lists, MAC and freshness lengths, key provisioning procedures and failure reactions vary by platform, model year, ECU supplier and market. Always confirm against official Hyundai/Kia/Genesis service information.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XV · Extended Systems", id:"audio-anc", num:"109", title:"Vehicle Audio Systems: Amplifiers, Digital Audio Links and Road Active Noise Control", mins:9, tag:"Audio / NVH", html:`
+<p>The audio system looks like infotainment, but on a modern Hyundai, Kia or Genesis it is also a body-electrical and networking problem. The external amplifier is a sleeping ECU with its own wake line, current draw and diagnostic address; the speaker harness runs through doors and hinges; and on vehicles with active noise control the amplifier becomes a real-time control system that listens to the suspension and fights road noise. This chapter walks through the signal chain, the links that carry audio, how road active noise control works, and how to diagnose the common failures.</p>
+
+<h3>1. The signal chain</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 200" width="100%" role="img" aria-label="Audio signal chain from sources to speakers">
+<rect x="10" y="70" width="120" height="60" rx="8" fill="none" stroke="currentColor"/><text x="70" y="96" text-anchor="middle" font-size="13" fill="currentColor">Sources</text><text x="70" y="114" text-anchor="middle" font-size="10" fill="currentColor">tuner, BT, USB, apps</text>
+<rect x="170" y="70" width="130" height="60" rx="8" fill="none" stroke="currentColor"/><text x="235" y="96" text-anchor="middle" font-size="13" fill="currentColor">Head unit</text><text x="235" y="114" text-anchor="middle" font-size="10" fill="currentColor">mixing, volume, chimes</text>
+<rect x="340" y="70" width="150" height="60" rx="8" fill="none" stroke="currentColor"/><text x="415" y="96" text-anchor="middle" font-size="13" fill="currentColor">Amplifier + DSP</text><text x="415" y="114" text-anchor="middle" font-size="10" fill="currentColor">EQ, delay, crossover, ANC</text>
+<rect x="530" y="20" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="615" y="45" text-anchor="middle" font-size="12" fill="currentColor">Tweeters / mids / woofers</text>
+<rect x="530" y="140" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="615" y="165" text-anchor="middle" font-size="12" fill="currentColor">Accelerometers + mics</text>
+<line x1="130" y1="100" x2="170" y2="100" stroke="currentColor"/><line x1="300" y1="100" x2="340" y2="100" stroke="currentColor"/>
+<line x1="490" y1="90" x2="530" y2="40" stroke="currentColor"/><line x1="530" y1="160" x2="490" y2="112" stroke="currentColor" stroke-dasharray="4 3"/>
+<text x="320" y="92" text-anchor="middle" font-size="9" fill="currentColor">link</text><text x="520" y="145" text-anchor="end" font-size="9" fill="currentColor">ANC sensing</text>
+</svg></div>
+<p>On base systems the head unit contains the power amplifier and drives four to six speakers directly. Premium systems move amplification into a separate module, usually under a seat, in the trunk side trim or behind the rear seat, so the head unit sends a line-level or digital signal and the amplifier does equalisation, time alignment, crossovers and speaker-specific tuning. Branded systems differ by model and market (for example Bose on many Hyundai models, Lexicon and Bang and Olufsen on Genesis models, Harman Kardon and Meridian on Kia models); confirm the fitted system from the build data before ordering parts.</p>
+
+<h3>2. Links that carry audio</h3>
+<table>
+<tr><th>Link</th><th>What it is</th><th>Strengths</th><th>Watch-outs</th></tr>
+<tr><td>Speaker-level analog</td><td>Amplified differential output, two wires per speaker</td><td>Simple, no software</td><td>Heavy copper; shorts to ground or between channels trip amp protection</td></tr>
+<tr><td>Line-level analog (differential)</td><td>Low-level balanced pairs head unit to amp</td><td>Cheap, no clock recovery</td><td>Ground loops cause alternator whine; shield termination matters</td></tr>
+<tr><td>I2S / TDM</td><td>Board-level serial audio between chips inside a module</td><td>Standard codec interface</td><td>Not used between modules; short traces only</td></tr>
+<tr><td>MOST</td><td>Older optical or electrical ring for multimedia</td><td>Synchronous streams plus control</td><td>Ring break kills the whole ring; mostly legacy</td></tr>
+<tr><td>A2B (Automotive Audio Bus)</td><td>Daisy-chained single twisted pair carrying clock, audio, control and phantom power</td><td>Light harness, deterministic low latency, ideal for many microphones</td><td>Node order and cable quality matter; one bad node can break downstream nodes</td></tr>
+<tr><td>Automotive Ethernet with AVB / TSN</td><td>Time-synchronised streams over 100BASE-T1 or faster</td><td>Shares the vehicle backbone, scales to many channels</td><td>Requires gPTP time sync; see <a onclick="show('ethernet')">Automotive Ethernet</a></td></tr>
+</table>
+<p>Which links a given Hyundai platform uses is not published in detail and varies by system grade. The practical rule: if the amplifier has only a few small twisted pairs coming in and no thick bundle from the head unit, expect a digital link and expect the amplifier to have its own diagnostic identity.</p>
+
+<h3>3. The amplifier as an ECU</h3>
+<table>
+<tr><th>Aspect</th><th>Typical behaviour</th><th>Why the body engineer cares</th></tr>
+<tr><td>Wake-up</td><td>Hardwired remote-on line from the head unit, network wake, or both</td><td>A stuck remote-on line keeps a 100 W class amp biased on: a classic <a onclick="show('dark-current')">dark current</a> drain</td></tr>
+<tr><td>Supply</td><td>Dedicated fused battery feed, often a high-rating fuse</td><td>Voltage dips during cranking or ISG restarts cause pops or resets</td></tr>
+<tr><td>Thermal / protection</td><td>Channel muting on over-temperature, short or DC offset</td><td>Intermittent single-speaker dropouts are often protection events, not bad speakers</td></tr>
+<tr><td>Diagnostics</td><td>UDS on CAN or via the head unit; DTCs for speaker open/short, link loss, mic faults</td><td>Read the amp, not just the head unit; see <a onclick="show('uds')">UDS</a></td></tr>
+<tr><td>Configuration</td><td>Tuning file matched to body style, trim and speaker set</td><td>A replacement amp may need variant coding or a software download</td></tr>
+</table>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE</span>Battery drains overnight on a vehicle with a premium amplifier. Parasitic draw settles at 380 mA instead of the usual sub-50 mA after 20 minutes. Pulling the amplifier fuse drops draw to 35 mA, so the amp is awake. Back-probing the remote-on input shows 11.8 V with the head unit asleep. The fault is not in the amplifier at all: a pinched wire in a seat track has shorted the remote-on circuit to a seat-motor feed that is hot whenever the seat module is powered. Lesson: when a module refuses to sleep, measure its wake inputs before condemning it. At 380 mA, a 60 Ah battery loses 9 Ah, about 15 percent of capacity, in a 24 hour park.</div>
+
+<h3>4. Active noise control: engine-order and road-noise</h3>
+<p>Active noise control (ANC) plays anti-noise through the existing speakers so that, at the listener, the unwanted sound and the anti-noise add destructively. Two flavours exist:</p>
+<table>
+<tr><th>Type</th><th>Reference signal</th><th>Target noise</th><th>Difficulty</th></tr>
+<tr><td>Engine-order cancellation (EOC)</td><td>Engine speed from the network (a tonal reference)</td><td>Low-frequency boom at firing orders</td><td>Moderate: noise is tonal and predictable</td></tr>
+<tr><td>Road-noise active noise control (RANC)</td><td>Accelerometers on the suspension and chassis</td><td>Broadband tire and road rumble</td><td>High: random noise, must predict before it reaches the cabin</td></tr>
+</table>
+<p>Hyundai and Harman announced RANC in 2020 as the first production road-noise cancellation system, debuting on the Genesis GV80. Sensors on the chassis and suspension feed a control processor that predicts the noise arriving in the cabin and generates an anti-noise wave within milliseconds, while error microphones near the seats monitor the result; Hyundai claimed a reduction of up to 50 percent of the unwanted noise. Sources: <a href="https://www.carscoops.com/2020/02/2020-genesis-gv80-boasts-the-worlds-first-active-road-noise-cancellation-system/" target="_blank">Carscoops</a>, <a href="https://paultan.org/2020/02/04/harman-and-hyundai-launch-worlds-first-active-road-noise-cancellation-system-debuts-on-genesis-gv80/" target="_blank">Paul Tan</a>.</p>
+
+<div class="callout tip"><span class="lbl">WHY PREDICTION WORKS</span>Structure-borne vibration travels from the tire contact patch through the suspension and body faster than the resulting sound reaches the ear through the cabin air. The accelerometer sees the disturbance first, which gives the adaptive filter a few milliseconds of head start. That is why RANC is a feed-forward system: without the head start, broadband random noise could not be cancelled in time.</div>
+
+<h4>The adaptive loop in one picture</h4>
+<pre><code>accelerometers x(n) --&gt; adaptive filter W --&gt; anti-noise y(n) --&gt; speaker
+                              ^                                    |
+                              |                                    v
+       filtered-x LMS update  +---- error mic e(n) &lt;-- noise d(n) + y(n) via cabin
+       W += mu * e(n) * x_filtered(n)   (x filtered by a model of speaker-to-mic path)</code></pre>
+<p>The filtered-x least-mean-squares (FxLMS) family of algorithms is the textbook approach. The secondary path model (speaker to microphone transfer function) is identified during development and stored with the tuning; if a speaker is replaced with a different part, or a mic is mounted wrongly, the model no longer matches and cancellation can degrade or even add noise.</p>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE</span>How much does 50 percent buy? If "50 percent" refers to sound power, the level change is 10 log10(0.5) = about -3 dB. If it refers to sound pressure amplitude, it is 20 log10(0.5) = about -6 dB. Perceived loudness roughly halves for a -10 dB change, so a 3 to 6 dB reduction of low-frequency rumble is noticeable mainly as reduced fatigue on coarse surfaces rather than silence. Always ask which quantity a marketing figure refers to.</div>
+
+<h3>5. Chimes, warnings and priority</h3>
+<p>Seat-belt reminders, door-open chimes, parking sensor tones and <a onclick="show('avas-vess')">AVAS</a> pedestrian sounds may be generated by the cluster, the head unit, the amp or a dedicated sounder depending on platform. Regulatory tones must still sound when the infotainment system is muted, rebooting or failed, which is why many warnings have a path that does not depend on the head unit. When a customer reports a missing chime, first find out which module owns it.</p>
+
+<h3>6. Diagnosis playbook</h3>
+<table>
+<tr><th>Symptom</th><th>Likely area</th><th>First checks</th></tr>
+<tr><td>No sound at all, head unit fine</td><td>Amp power, wake or link</td><td>Fuse, ground, remote-on, amp DTCs, link status</td></tr>
+<tr><td>One speaker dead</td><td>Speaker, door harness, amp channel</td><td>Resistance at amp connector (about 2 to 4 ohm typical), door boot flex point</td></tr>
+<tr><td>Whine rising with RPM</td><td>Ground loop on analog line-level</td><td>Ground point torque, shield termination</td></tr>
+<tr><td>Hum or boom only on rough roads</td><td>RANC fault or bad secondary path</td><td>Mic and accelerometer DTCs, recent speaker or trim work</td></tr>
+<tr><td>Pops at engine restart</td><td>Supply dip</td><td>Battery state, ISG behaviour, amp supply voltage under crank</td></tr>
+<tr><td>Battery drain</td><td>Amp not sleeping</td><td>Fuse-pull test, wake inputs, network NM state</td></tr>
+</table>
+
+<div class="quiz" data-a="2"><span class="lbl">Quiz</span>
+<p>After a rear door speaker is replaced with an aftermarket unit, the owner reports a new low rumble on coarse asphalt that was not there before. Normal music sounds fine. What is the most likely explanation?</p>
+  <button class="opt">The new speaker is wired with reversed polarity, which only matters for music</button>
+  <button class="opt">The amplifier is in thermal protection</button>
+  <button class="opt">The road-noise ANC secondary path no longer matches the stored model, so anti-noise is mis-phased at the error microphones</button>
+  <button class="opt">The accelerometers need to be recalibrated with a wheel alignment</button>
+  <div class="exp">RANC relies on a stored model of how each speaker sound reaches the error microphones. A speaker with different response or polarity changes that path, so the adaptive filter can no longer cancel accurately and may even reinforce rumble, while ordinary music playback still sounds acceptable. Restoring the original part number is the first step.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-19. Audio architecture, amplifier location, digital link type, branded system supplier and ANC availability vary by platform, model year, trim and market. Always confirm against the official Hyundai, Kia or Genesis service information and circuit diagrams for the exact vehicle.</div>
 `});
 </script>
 <script id="boot-script">
