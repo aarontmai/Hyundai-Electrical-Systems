@@ -354,6 +354,16 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-23 · run 62</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('gnss-positioning')">GNSS, Dead Reckoning and Vehicle Positioning</a> (Part IV, Ch.111): positioning data-flow diagram, GNSS terms table (TTFF, DOP, A-GNSS, SBAS), dead-reckoning inputs and failure symptoms, a worked example on tunnel drift after a tyre change, antenna LNA bias fault table, a wrong-location diagnosis playbook, time and spoofing notes, and a quiz.</li>
+  <li><b>SDV / Pleos news:</b> An IONIQ 5 test vehicle was photographed in Korea with a redesigned dash, new steering wheel and a single large centre display that appears to run Pleos Connect (Android Automotive based) in place of the current dual 12.3-inch screens. This is a spy-photo report; production timing is not confirmed. The same report notes Hyundai plans around 20 million Pleos-equipped Hyundai, Kia and Genesis vehicles by 2030 and the new Tucson as the first US Pleos model in early 2027. Source: <a href="https://electrek.co/2026/11/16/hyundai-ioniq-5-caught-new-high-tech-interior-big-display/" target="_blank">Electrek (Nov 16)</a>.</li>
+  <li><b>Autonomy partnership:</b> Hyundai said it will begin delivering IONIQ 5 vehicles built at Metaplant America in Georgia to Waymo in December 2026, with factory changes requested by Waymo including power-operated doors; Waymo installs its sixth-generation driver system after assembly. Secondary report, dates beyond December are projections. Source: <a href="https://world-today-journal.com/hyundai-to-begin-ioniq-5-deliveries-to-waymo-in-december-for-us-robotaxi-fleet" target="_blank">World Today Journal (Nov 21)</a>.</li>
+  <li><b>Recall check:</b> searches for Hyundai, Kia and Genesis campaigns surfaced only items already logged (airbag ACU software on Kona Electric, lug nut and strut fastener recalls). Source: <a href="https://www.vehicleservicepros.com/industry-news/service-repair/article/55418716/national-highway-traffic-safety-administration-nhtsa-nhtsa-recalls-nov-913-bmw-honda-ford-hyundai" target="_blank">Vehicle Service Pros, NHTSA recalls Nov 9 to 13</a>.</li>
+  <li><b>Glossary:</b> added GNSS, Dead reckoning, TTFF, DOP, A-GNSS, SBAS, LNA, C/N0.</li>
+</ul>
+</div>
+
 <div class="callout hy"><span class="lbl">2026-11-21 · run 61</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('ecall-sos')">Emergency Call Systems: eCall, NG eCall, SOS and Automatic Collision Notification</a> (Part IV, Ch.110): crash-to-PSAP chain diagram, EU eCall standards and MSD field tables, NG eCall vs legacy comparison and the 2G/3G sunset risk, Bluelink SOS and ACN vs eCall, crash-survivable hardware, worked examples on MSD position encoding and backup battery sizing, a diagnosis playbook and a quiz. Regulatory background: <a href="https://eur-lex.europa.eu/eli/reg_del/2024/1180/oj/eng/pdf" target="_blank">Delegated Regulation (EU) 2024/1180</a>, <a href="https://www.gov.uk/government/publications/next-generation-ecall-in-cars-and-light-commercial-vehicles/next-generation-ecall-in-cars-and-light-commercial-vehicles" target="_blank">UK guidance on NG eCall</a>, <a href="https://digital-strategy.ec.europa.eu/en/library/eu-study-informs-ecall-service-gaps-2g3g-networks-shut-down" target="_blank">EU study on eCall gaps after 2G/3G shutdown</a>.</li>
@@ -2718,6 +2728,14 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["GNSS","Global Navigation Satellite System: umbrella term for GPS, GLONASS, Galileo, BeiDou and regional systems used for vehicle position and time."],
+["Dead reckoning","Estimating position between GNSS fixes by integrating wheel-speed distance, gyro heading change and reverse-gear direction."],
+["TTFF","Time To First Fix: delay from receiver power-up to a valid position; shortened by stored ephemeris and A-GNSS."],
+["DOP","Dilution Of Precision: measure of how satellite geometry degrades position accuracy; high in urban canyons."],
+["A-GNSS","Assisted GNSS: orbit and time assistance data delivered over the cellular link to speed up the first fix."],
+["SBAS","Satellite-Based Augmentation System such as WAAS or EGNOS that broadcasts GNSS corrections."],
+["LNA","Low-Noise Amplifier in an active antenna, powered by DC bias on the coax; bias current monitoring detects open or short faults."],
+["C/N0","Carrier-to-noise density ratio in dB-Hz: per-satellite signal strength shown in GNSS diagnostic screens."],
 ["eCall","European in-vehicle emergency call system that dials 112 automatically after a serious crash or manually via the SOS button and sends a Minimum Set of Data."],
 ["NG eCall","Next Generation eCall: emergency call over packet-switched 4G or 5G IMS networks, with the MSD carried in the SIP INVITE instead of an in-band modem."],
 ["MSD","Minimum Set of Data: compact eCall message (EN 15722, up to 140 bytes) with VIN, time, position, heading, propulsion type and trigger type."],
@@ -8878,6 +8896,92 @@ chapter({part:"Part IV · Telematics & Connectivity", id:"ecall-sos", num:"110",
   <div class="exp">Self-test checks hardware, not whether the local network still supports circuit-switched emergency calls. LTE data working shows the modem is fine for packet data, but without IMS emergency support the legacy eCall path has nowhere to go once 2G and 3G are switched off. That is the reason for the move to NG eCall.</div>
 </div>
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-21. Regulatory dates and standard numbers are summarised for orientation only; consult the current EU and UNECE texts. Emergency call hardware, services and availability vary by platform, model year, trim and market. Always confirm against official Hyundai service information and GDS for the specific VIN.</div>
+`});
+</script>
+<script>
+chapter({part:"Part IV · Telematics & Connectivity", id:"gnss-positioning", num:"111", title:"GNSS, Dead Reckoning and Vehicle Positioning", mins:9, tag:"Telematics / Navigation", html:`
+<p>Vehicle position feeds far more than the navigation map. The telematics unit uses it for stolen-vehicle tracking, emergency call location and geofencing; the head unit uses it for navigation and time; ADAS map functions use it to look up speed limits and curvature; and the network often uses GNSS time as a reference. This chapter covers how a production vehicle computes its position, why it keeps working in tunnels and parking garages, and how to diagnose the common "car shows the wrong location" complaint.</p>
+
+<h3>1. Where positioning lives</h3>
+<p>Depending on platform and trim, the GNSS receiver may sit in the head unit (navigation-equipped AVN or ccNC / Pleos Connect systems), in the telematics control unit (TCU), or in both, with a shared roof antenna feeding a splitter. Many architectures compute position once and share it: the producer publishes latitude, longitude, heading, speed and a quality flag over CAN, CAN FD or automotive Ethernet so that other ECUs do not need their own receivers.</p>
+
+<div class="diagwrap"><svg viewBox="0 0 720 200" width="100%" role="img" aria-label="Positioning data flow from antenna and vehicle sensors to the position engine and consumers">
+<rect x="10" y="20" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="45" text-anchor="middle" font-size="12" fill="currentColor">Roof antenna + LNA</text>
+<rect x="10" y="80" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="105" text-anchor="middle" font-size="12" fill="currentColor">Wheel speeds (ESC)</text>
+<rect x="10" y="140" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="165" text-anchor="middle" font-size="12" fill="currentColor">Gyro / IMU, gear</text>
+<rect x="240" y="60" width="190" height="80" rx="8" fill="none" stroke="currentColor"/><text x="335" y="95" text-anchor="middle" font-size="13" fill="currentColor">Position engine</text><text x="335" y="115" text-anchor="middle" font-size="11" fill="currentColor">GNSS + dead reckoning filter</text>
+<rect x="540" y="20" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="43" text-anchor="middle" font-size="12" fill="currentColor">Navigation / map</text>
+<rect x="540" y="82" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="105" text-anchor="middle" font-size="12" fill="currentColor">TCU: SOS, tracking</text>
+<rect x="540" y="144" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="167" text-anchor="middle" font-size="12" fill="currentColor">ADAS map, clock</text>
+<line x1="140" y1="40" x2="240" y2="85" stroke="currentColor"/><line x1="140" y1="100" x2="240" y2="100" stroke="currentColor"/><line x1="140" y1="160" x2="240" y2="115" stroke="currentColor"/>
+<line x1="430" y1="85" x2="540" y2="38" stroke="currentColor"/><line x1="430" y1="100" x2="540" y2="100" stroke="currentColor"/><line x1="430" y1="115" x2="540" y2="162" stroke="currentColor"/>
+</svg></div>
+
+<h3>2. GNSS basics an engineer needs</h3>
+<table>
+<tr><th>Item</th><th>What it means</th><th>Why it matters in a car</th></tr>
+<tr><td>Constellations</td><td>GPS (US), GLONASS (Russia), Galileo (EU), BeiDou (China), QZSS (Japan regional)</td><td>Multi-constellation receivers see more satellites, which helps in urban canyons</td></tr>
+<tr><td>L1 / E1 band</td><td>About 1575.42 MHz, the main civil band</td><td>Most automotive receivers are single-band L1; dual-band L1+L5 receivers reduce multipath error</td></tr>
+<tr><td>TTFF</td><td>Time to first fix after power-up</td><td>Cold start can take tens of seconds; stored ephemeris and assistance data shorten it to a few seconds</td></tr>
+<tr><td>Ephemeris / almanac</td><td>Precise and coarse satellite orbit data</td><td>Kept in receiver memory across sleep; a lost backup supply forces a cold start</td></tr>
+<tr><td>DOP</td><td>Dilution of precision: geometry quality of visible satellites</td><td>High DOP in narrow streets means poor accuracy even with many satellites</td></tr>
+<tr><td>A-GNSS</td><td>Assistance data delivered over the cellular link</td><td>The TCU modem can fetch orbit data so the first fix after a long park is fast</td></tr>
+<tr><td>SBAS</td><td>Satellite-based correction (WAAS, EGNOS, MSAS)</td><td>Improves typical accuracy toward 1 to 2 m where supported</td></tr>
+</table>
+
+<h3>3. Dead reckoning</h3>
+<p>Pure GNSS fails in tunnels, multi-level garages and between tall buildings. Automotive receivers therefore run <b>dead reckoning (DR)</b>: they integrate distance from wheel speed (or a vehicle speed signal), heading change from a yaw-rate gyro, and direction from the reverse gear signal. A filter, typically a Kalman filter, blends DR with GNSS whenever satellites are available and continuously calibrates the DR sensors (wheel tick scale factor, gyro bias) while the sky is clear.</p>
+<table>
+<tr><th>DR input</th><th>Typical source</th><th>Failure symptom</th></tr>
+<tr><td>Distance / speed</td><td>Wheel speed or vehicle speed message from ESC over CAN, or a hardwired speed pulse on older units</td><td>Position runs ahead or behind on the route, especially in tunnels</td></tr>
+<tr><td>Heading change</td><td>Gyro inside the receiver module, or yaw rate from the ESC sensor cluster</td><td>Arrow drifts off the road on curves; worse after the module was remounted at a different angle</td></tr>
+<tr><td>Direction</td><td>Reverse gear signal (shift-by-wire or TCM message, or a reverse lamp input)</td><td>Position moves forward while reversing out of a parking space</td></tr>
+<tr><td>Map matching</td><td>Navigation software snapping the estimate to the road network</td><td>Snaps to a parallel road or service lane</td></tr>
+</table>
+
+<div class="callout tip"><span class="lbl">Tip</span>Many DR receivers need a learning drive after replacement, battery disconnect or tyre change. The gyro and wheel-tick scale factor recalibrate during a few kilometres of open-sky driving with turns. Advise the customer before declaring a fault.</div>
+
+<div class="callout example"><span class="lbl">Worked example · DR drift in a tunnel</span>
+<p>A vehicle enters a 2.0 km tunnel at 80 km/h. The DR wheel-tick scale factor has a 2 percent error because larger aftermarket tyres were fitted and the receiver has not relearned.</p>
+<p>Time in tunnel: 2.0 km / 80 km/h = 90 s. Along-track error: 2 percent of 2000 m = 40 m. A gyro bias of 0.05 deg/s accumulates 0.05 x 90 = 4.5 degrees of heading error by the exit; the lateral error grows roughly as distance x heading error / 2, so about 2000 x 0.0785 / 2, which is roughly 79 m.</p>
+<p>Result: at the tunnel exit the map can show the car up to around 80 to 90 m away from its true position, until GNSS reacquires (usually within seconds in open sky) and the filter corrects. If complaints only occur after a tyre change, a recalibration drive is the first step, not a module replacement.</p>
+</div>
+
+<h3>4. The antenna path</h3>
+<p>The GNSS signal arrives at around minus 130 dBm, far below the thermal noise floor, so the antenna includes a low-noise amplifier (LNA) powered by a DC bias on the coax centre conductor, typically 3.3 to 5 V. The receiver monitors the bias current to detect open and short circuits. Shark-fin antennas often combine GNSS, cellular and satellite radio elements; see the antenna systems chapter.</p>
+<table>
+<tr><th>Antenna fault</th><th>Typical detection</th><th>Field cause</th></tr>
+<tr><td>Open circuit</td><td>Bias current below threshold</td><td>Unseated FAKRA or HSD connector, damaged coax after headliner work</td></tr>
+<tr><td>Short to ground</td><td>Bias current above threshold, supply foldback</td><td>Crushed cable at a pillar or roof rail, water ingress at the shark fin</td></tr>
+<tr><td>Weak signal, no DTC</td><td>Low carrier-to-noise (C/N0) in the diagnostic screen</td><td>Metallised windscreen film, roof rack, dash-cam or charger interference near 1575 MHz</td></tr>
+</table>
+
+<div class="callout warn"><span class="lbl">Watch out</span>Cheap USB chargers and some dash cams radiate wideband noise that can desensitise an L1 receiver without setting any DTC. A simple test is to unplug all aftermarket accessories and compare satellite count and C/N0 in the head unit or GDS engineering screen.</div>
+
+<h3>5. Diagnosis playbook: "wrong location"</h3>
+<table>
+<tr><th>Step</th><th>Check</th><th>Interpretation</th></tr>
+<tr><td>1</td><td>Read DTCs in head unit and TCU (antenna open or short, GNSS module internal)</td><td>An antenna DTC points to the coax path first</td></tr>
+<tr><td>2</td><td>Open the GPS or engineering screen: satellites in view and used, C/N0, fix type</td><td>Healthy open sky: many satellites used with strong C/N0 values, often in the 40s dB-Hz</td></tr>
+<tr><td>3</td><td>Compare the location shown in the app with the head unit</td><td>If only the app is wrong, suspect the TCU source or backend lag, not the head unit</td></tr>
+<tr><td>4</td><td>Check speed and reverse signals in live data while driving</td><td>Missing or frozen speed input breaks DR</td></tr>
+<tr><td>5</td><td>Check software level and campaigns</td><td>Navigation and map updates can change map-matching behaviour</td></tr>
+<tr><td>6</td><td>Perform a calibration drive, then recheck</td><td>Clears drift after battery disconnect, module or tyre replacement</td></tr>
+</table>
+
+<h3>6. Time, security and privacy</h3>
+<p>GNSS also supplies UTC time, which head units and TCUs can use for the clock, log timestamps and certificate validity checks. A receiver that never gets a fix can leave a module with a wrong date, which may cause TLS or certificate errors on connected services. GNSS signals are unauthenticated in civil use, so jamming and spoofing are recognised threats under vehicle cybersecurity work (ISO/SAE 21434 and UN R155): sanity checks against DR, wheel speed and cellular-derived position help detect implausible jumps. Location is personal data, so retention, consent and user controls for tracking features are governed by market privacy law and the connected-services terms.</p>
+
+<div class="quiz" data-a="2"><span class="lbl">Quiz</span>
+<p>After a 12 V battery replacement, a customer reports that navigation shows the car moving forward on the map while reversing out of the driveway, and the position drifts in a car park. Outdoors, GNSS satellite count and C/N0 look normal and there are no DTCs. What is the most likely explanation?</p>
+  <button class="opt">The GNSS antenna LNA has failed open</button>
+  <button class="opt">The constellation almanac is corrupt and needs a module replacement</button>
+  <button class="opt">Dead-reckoning calibration was lost and the reverse or speed input needs to be relearned or checked</button>
+  <button class="opt">The SBAS corrections are disabled in this market</button>
+  <div class="exp">Healthy satellite reception with no DTC rules out the antenna. Wrong direction while reversing and drift without sky view are dead-reckoning symptoms. Confirm the reverse and speed signals in live data, then perform the learning drive before replacing hardware.</div>
+</div>
+
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-23. Receiver location, sensor inputs, signal names and diagnostic screens vary by platform, model year, trim and market. Figures are typical industry values for orientation only. Always confirm against official Hyundai service information and GDS for the specific VIN.</div>
 `});
 </script>
 <script id="boot-script">
