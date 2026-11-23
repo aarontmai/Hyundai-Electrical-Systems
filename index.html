@@ -356,13 +356,14 @@ chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Change
 
 <div class="callout hy"><span class="lbl">2026-11-23 · run 62</span>
 <ul>
-  <li><b>New chapter added:</b> <a onclick="show('gnss-positioning')">GNSS, Dead Reckoning and Vehicle Positioning</a> (Part IV, Ch.111): positioning data-flow diagram, GNSS terms table (TTFF, DOP, A-GNSS, SBAS), dead-reckoning inputs and failure symptoms, a worked example on tunnel drift after a tyre change, antenna LNA bias fault table, a wrong-location diagnosis playbook, time and spoofing notes, and a quiz.</li>
-  <li><b>SDV / Pleos news:</b> An IONIQ 5 test vehicle was photographed in Korea with a redesigned dash, new steering wheel and a single large centre display that appears to run Pleos Connect (Android Automotive based) in place of the current dual 12.3-inch screens. This is a spy-photo report; production timing is not confirmed. The same report notes Hyundai plans around 20 million Pleos-equipped Hyundai, Kia and Genesis vehicles by 2030 and the new Tucson as the first US Pleos model in early 2027. Source: <a href="https://electrek.co/2026/11/16/hyundai-ioniq-5-caught-new-high-tech-interior-big-display/" target="_blank">Electrek (Nov 16)</a>.</li>
-  <li><b>Autonomy partnership:</b> Hyundai said it will begin delivering IONIQ 5 vehicles built at Metaplant America in Georgia to Waymo in December 2026, with factory changes requested by Waymo including power-operated doors; Waymo installs its sixth-generation driver system after assembly. Secondary report, dates beyond December are projections. Source: <a href="https://world-today-journal.com/hyundai-to-begin-ioniq-5-deliveries-to-waymo-in-december-for-us-robotaxi-fleet" target="_blank">World Today Journal (Nov 21)</a>.</li>
-  <li><b>Recall check:</b> searches for Hyundai, Kia and Genesis campaigns surfaced only items already logged (airbag ACU software on Kona Electric, lug nut and strut fastener recalls). Source: <a href="https://www.vehicleservicepros.com/industry-news/service-repair/article/55418716/national-highway-traffic-safety-administration-nhtsa-nhtsa-recalls-nov-913-bmw-honda-ford-hyundai" target="_blank">Vehicle Service Pros, NHTSA recalls Nov 9 to 13</a>.</li>
-  <li><b>Glossary:</b> added GNSS, Dead reckoning, TTFF, DOP, A-GNSS, SBAS, LNA, C/N0.</li>
+  <li><b>New chapter added:</b> <a onclick="show('builtin-dashcam')">Factory-Integrated Dashcams (Built-in Cam)</a> (Part IV, Ch.111): architecture diagram, recording modes and pre-event buffer, parking-mode battery protection, worked examples on a parking-mode battery budget and on loop length and flash wear, file integrity on power loss, privacy handling, a diagnosis playbook and a quiz.</li>
+  <li><b>Anti-theft software reminder:</b> a November 8 report says police in Sheboygan, Wisconsin urged Kia and Hyundai owners to get the free dealer anti-theft software update, which stops the engine starting unless the original key is used once the car is locked with the fob. Source: <a href="https://www.autoevolution.com/news/just-update-your-car-already-police-issue-new-warning-for-kia-and-hyundai-owners-278118.html" target="_blank">autoevolution</a>. Background in the <a onclick="show('immobilizer')">immobilizer chapter</a>.</li>
+  <li><b>SDV roadmap (context, not new this week):</b> reports from 2026 put the first Hyundai Motor Group software-defined vehicle at late 2027 to 2028, with in-house autonomous-driving AI built on the NVIDIA platform and Pleos Connect infotainment. Dates differ between reports. Sources: <a href="https://www.kedglobal.com/future-mobility/newsView/ked202604080008" target="_blank">KED Global</a>, <a href="https://www.hyundaimotorgroup.com/en/news/CONT0000000000206046" target="_blank">Hyundai Motor Group / NVIDIA</a>.</li>
+  <li><b>Recall check:</b> no new Hyundai, Kia or Genesis US campaigns found beyond those already logged (26V728 airbag ACU software for Kona Electric and Veloster N, owner letters from January 1, 2027; 26V664 Genesis seat switch; Ioniq 9 second-row seat detection). Sources: <a href="https://electrek.co/2026/11/05/hyundai-recalling-nearly-30000-kona-evs-airbag-defect/" target="_blank">Electrek</a>, <a href="https://gcn.com/hyundai-recalls-genesis-sedans-seat-fire/22606/" target="_blank">GCN</a>.</li>
+  <li><b>Glossary:</b> added Built-in Cam, parking mode, pre-event buffer, loop recording, write endurance, hold-up circuit.</li>
 </ul>
 </div>
+
 
 <div class="callout hy"><span class="lbl">2026-11-21 · run 61</span>
 <ul>
@@ -2728,14 +2729,12 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
-["GNSS","Global Navigation Satellite System: umbrella term for GPS, GLONASS, Galileo, BeiDou and regional systems used for vehicle position and time."],
-["Dead reckoning","Estimating position between GNSS fixes by integrating wheel-speed distance, gyro heading change and reverse-gear direction."],
-["TTFF","Time To First Fix: delay from receiver power-up to a valid position; shortened by stored ephemeris and A-GNSS."],
-["DOP","Dilution Of Precision: measure of how satellite geometry degrades position accuracy; high in urban canyons."],
-["A-GNSS","Assisted GNSS: orbit and time assistance data delivered over the cellular link to speed up the first fix."],
-["SBAS","Satellite-Based Augmentation System such as WAAS or EGNOS that broadcasts GNSS corrections."],
-["LNA","Low-Noise Amplifier in an active antenna, powered by DC bias on the coax; bias current monitoring detects open or short faults."],
-["C/N0","Carrier-to-noise density ratio in dB-Hz: per-satellite signal strength shown in GNSS diagnostic screens."],
+["Built-in Cam","Factory-integrated dashcam offered by Hyundai, Kia and Genesis in some markets; recorder ECU with front and rear cameras, playback on the head unit."],
+["Parking mode","Dashcam recording while the vehicle is off and locked, triggered by impact or motion or run as time-lapse; limited by battery cut-off rules."],
+["Pre-event buffer","RAM ring buffer that holds the last seconds of video so an event clip includes what happened before the trigger."],
+["Loop recording","Recording in fixed-length segments where the oldest unprotected segment is overwritten when storage is full."],
+["Write endurance","Number of program/erase cycles flash memory can survive; critical for continuous video recording."],
+["Hold-up circuit","Supercapacitor or similar energy store that keeps an ECU alive long enough to close files after supply loss."],
 ["eCall","European in-vehicle emergency call system that dials 112 automatically after a serious crash or manually via the SOS button and sends a Minimum Set of Data."],
 ["NG eCall","Next Generation eCall: emergency call over packet-switched 4G or 5G IMS networks, with the MSD carried in the SIP INVITE instead of an in-band modem."],
 ["MSD","Minimum Set of Data: compact eCall message (EN 15722, up to 140 bytes) with VIN, time, position, heading, propulsion type and trigger type."],
@@ -8899,89 +8898,114 @@ chapter({part:"Part IV · Telematics & Connectivity", id:"ecall-sos", num:"110",
 `});
 </script>
 <script>
-chapter({part:"Part IV · Telematics & Connectivity", id:"gnss-positioning", num:"111", title:"GNSS, Dead Reckoning and Vehicle Positioning", mins:9, tag:"Telematics / Navigation", html:`
-<p>Vehicle position feeds far more than the navigation map. The telematics unit uses it for stolen-vehicle tracking, emergency call location and geofencing; the head unit uses it for navigation and time; ADAS map functions use it to look up speed limits and curvature; and the network often uses GNSS time as a reference. This chapter covers how a production vehicle computes its position, why it keeps working in tunnels and parking garages, and how to diagnose the common "car shows the wrong location" complaint.</p>
+chapter({part:"Part IV · Telematics & Connectivity", id:"builtin-dashcam", num:"111", title:"Factory-Integrated Dashcams (Built-in Cam) — Recording Pipeline, Parking Mode, Storage Wear &amp; Battery Protection", mins:9, tag:"Telematics / Body", html:`
+<p>An aftermarket dashcam is a self-contained gadget on a cigarette-lighter plug. A factory-integrated recorder, marketed by Hyundai, Kia and Genesis as <b>Built-in Cam</b> in several markets, is a proper ECU: it has its own camera links, non-volatile storage, a wake strategy, a link to the head unit for playback and often a Wi-Fi path to a smartphone app. That makes it a body-electrical problem as much as a video one. It must not drain the 12 V battery in parking mode, must not wear out its own memory, and must keep an incident clip even when power drops a fraction of a second after an impact. This chapter treats it from that ECU point of view.</p>
 
-<h3>1. Where positioning lives</h3>
-<p>Depending on platform and trim, the GNSS receiver may sit in the head unit (navigation-equipped AVN or ccNC / Pleos Connect systems), in the telematics control unit (TCU), or in both, with a shared roof antenna feeding a splitter. Many architectures compute position once and share it: the producer publishes latitude, longitude, heading, speed and a quality flag over CAN, CAN FD or automotive Ethernet so that other ECUs do not need their own receivers.</p>
+<div class="callout"><span class="lbl">SCOPE</span>Availability, camera count, storage size, parking-mode features and app support differ by model, model year, trim and market; some regions do not offer the feature at all. Numbers below are illustrative engineering values, not specifications for a particular vehicle. Always follow the service information for the actual VIN.</div>
 
-<div class="diagwrap"><svg viewBox="0 0 720 200" width="100%" role="img" aria-label="Positioning data flow from antenna and vehicle sensors to the position engine and consumers">
-<rect x="10" y="20" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="45" text-anchor="middle" font-size="12" fill="currentColor">Roof antenna + LNA</text>
-<rect x="10" y="80" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="105" text-anchor="middle" font-size="12" fill="currentColor">Wheel speeds (ESC)</text>
-<rect x="10" y="140" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="165" text-anchor="middle" font-size="12" fill="currentColor">Gyro / IMU, gear</text>
-<rect x="240" y="60" width="190" height="80" rx="8" fill="none" stroke="currentColor"/><text x="335" y="95" text-anchor="middle" font-size="13" fill="currentColor">Position engine</text><text x="335" y="115" text-anchor="middle" font-size="11" fill="currentColor">GNSS + dead reckoning filter</text>
-<rect x="540" y="20" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="43" text-anchor="middle" font-size="12" fill="currentColor">Navigation / map</text>
-<rect x="540" y="82" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="105" text-anchor="middle" font-size="12" fill="currentColor">TCU: SOS, tracking</text>
-<rect x="540" y="144" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="167" text-anchor="middle" font-size="12" fill="currentColor">ADAS map, clock</text>
-<line x1="140" y1="40" x2="240" y2="85" stroke="currentColor"/><line x1="140" y1="100" x2="240" y2="100" stroke="currentColor"/><line x1="140" y1="160" x2="240" y2="115" stroke="currentColor"/>
-<line x1="430" y1="85" x2="540" y2="38" stroke="currentColor"/><line x1="430" y1="100" x2="540" y2="100" stroke="currentColor"/><line x1="430" y1="115" x2="540" y2="162" stroke="currentColor"/>
+<h3>1. System architecture</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 220" width="100%" role="img" aria-label="Integrated dashcam architecture: front and rear cameras feed a recorder ECU with storage, linked to head unit, CAN and smartphone">
+<rect x="10" y="20" width="130" height="55" rx="8" fill="none" stroke="currentColor"/><text x="75" y="44" text-anchor="middle" font-size="13" fill="currentColor">Front camera</text><text x="75" y="62" text-anchor="middle" font-size="10" fill="currentColor">behind mirror</text>
+<rect x="10" y="140" width="130" height="55" rx="8" fill="none" stroke="currentColor"/><text x="75" y="164" text-anchor="middle" font-size="13" fill="currentColor">Rear camera</text><text x="75" y="182" text-anchor="middle" font-size="10" fill="currentColor">rear glass / tailgate</text>
+<rect x="230" y="60" width="180" height="100" rx="8" fill="none" stroke="currentColor"/><text x="320" y="86" text-anchor="middle" font-size="13" fill="currentColor">Recorder ECU</text><text x="320" y="104" text-anchor="middle" font-size="10" fill="currentColor">ISP, H.264/H.265 encoder</text><text x="320" y="119" text-anchor="middle" font-size="10" fill="currentColor">G-sensor, RTC, supercap</text><text x="320" y="134" text-anchor="middle" font-size="10" fill="currentColor">eMMC / SD storage</text>
+<rect x="500" y="15" width="200" height="45" rx="8" fill="none" stroke="currentColor"/><text x="600" y="42" text-anchor="middle" font-size="12" fill="currentColor">Head unit (playback, settings)</text>
+<rect x="500" y="88" width="200" height="45" rx="8" fill="none" stroke="currentColor"/><text x="600" y="115" text-anchor="middle" font-size="12" fill="currentColor">CAN: IGN, speed, gear, lock</text>
+<rect x="500" y="160" width="200" height="45" rx="8" fill="none" stroke="currentColor" stroke-dasharray="4 3"/><text x="600" y="187" text-anchor="middle" font-size="12" fill="currentColor">Smartphone app (Wi-Fi)</text>
+<line x1="140" y1="48" x2="230" y2="90" stroke="currentColor"/><line x1="140" y1="167" x2="230" y2="130" stroke="currentColor"/>
+<text x="180" y="60" text-anchor="middle" font-size="9" fill="currentColor">serialized video</text>
+<line x1="410" y1="90" x2="500" y2="40" stroke="currentColor"/><line x1="410" y1="110" x2="500" y2="110" stroke="currentColor"/><line x1="410" y1="135" x2="500" y2="180" stroke="currentColor" stroke-dasharray="4 3"/>
 </svg></div>
-
-<h3>2. GNSS basics an engineer needs</h3>
 <table>
-<tr><th>Item</th><th>What it means</th><th>Why it matters in a car</th></tr>
-<tr><td>Constellations</td><td>GPS (US), GLONASS (Russia), Galileo (EU), BeiDou (China), QZSS (Japan regional)</td><td>Multi-constellation receivers see more satellites, which helps in urban canyons</td></tr>
-<tr><td>L1 / E1 band</td><td>About 1575.42 MHz, the main civil band</td><td>Most automotive receivers are single-band L1; dual-band L1+L5 receivers reduce multipath error</td></tr>
-<tr><td>TTFF</td><td>Time to first fix after power-up</td><td>Cold start can take tens of seconds; stored ephemeris and assistance data shorten it to a few seconds</td></tr>
-<tr><td>Ephemeris / almanac</td><td>Precise and coarse satellite orbit data</td><td>Kept in receiver memory across sleep; a lost backup supply forces a cold start</td></tr>
-<tr><td>DOP</td><td>Dilution of precision: geometry quality of visible satellites</td><td>High DOP in narrow streets means poor accuracy even with many satellites</td></tr>
-<tr><td>A-GNSS</td><td>Assistance data delivered over the cellular link</td><td>The TCU modem can fetch orbit data so the first fix after a long park is fast</td></tr>
-<tr><td>SBAS</td><td>Satellite-based correction (WAAS, EGNOS, MSAS)</td><td>Improves typical accuracy toward 1 to 2 m where supported</td></tr>
+<tr><th>Block</th><th>Role</th><th>Engineering concern</th></tr>
+<tr><td>Cameras</td><td>Image sensor plus lens; usually separate from the ADAS front camera</td><td>Wide dynamic range for tunnels and headlights; heater or placement to avoid fogging; LED flicker from signs and lamps</td></tr>
+<tr><td>Video link</td><td>Serialized digital video over coax or shielded twisted pair, power often supplied over the same coax</td><td>Connector seating, shield continuity, EMC (see <a onclick="show('emc-emi')">EMC chapter</a>)</td></tr>
+<tr><td>Recorder ECU</td><td>Image processing, encoding, file system, event logic</td><td>Thermal limits in a hot cabin; boot time after ignition on</td></tr>
+<tr><td>Storage</td><td>Internal flash or a removable card</td><td>Write endurance, file-system integrity on power loss</td></tr>
+<tr><td>Vehicle signals</td><td>Ignition state, speed, gear, door/lock state, GNSS time and position</td><td>Overlay accuracy, mode switching, wake conditions</td></tr>
+<tr><td>User interface</td><td>Head-unit menu, record button, status LED, smartphone app</td><td>Privacy settings, file export, firmware updates</td></tr>
 </table>
 
-<h3>3. Dead reckoning</h3>
-<p>Pure GNSS fails in tunnels, multi-level garages and between tall buildings. Automotive receivers therefore run <b>dead reckoning (DR)</b>: they integrate distance from wheel speed (or a vehicle speed signal), heading change from a yaw-rate gyro, and direction from the reverse gear signal. A filter, typically a Kalman filter, blends DR with GNSS whenever satellites are available and continuously calibrates the DR sensors (wheel tick scale factor, gyro bias) while the sky is clear.</p>
+<h3>2. Recording modes</h3>
 <table>
-<tr><th>DR input</th><th>Typical source</th><th>Failure symptom</th></tr>
-<tr><td>Distance / speed</td><td>Wheel speed or vehicle speed message from ESC over CAN, or a hardwired speed pulse on older units</td><td>Position runs ahead or behind on the route, especially in tunnels</td></tr>
-<tr><td>Heading change</td><td>Gyro inside the receiver module, or yaw rate from the ESC sensor cluster</td><td>Arrow drifts off the road on curves; worse after the module was remounted at a different angle</td></tr>
-<tr><td>Direction</td><td>Reverse gear signal (shift-by-wire or TCM message, or a reverse lamp input)</td><td>Position moves forward while reversing out of a parking space</td></tr>
-<tr><td>Map matching</td><td>Navigation software snapping the estimate to the road network</td><td>Snaps to a parallel road or service lane</td></tr>
+<tr><th>Mode</th><th>Trigger</th><th>Typical behaviour</th><th>File handling</th></tr>
+<tr><td>Continuous (driving)</td><td>Ignition or ready on</td><td>Records in fixed-length segments, often 1 minute</td><td>Loop area: oldest segment overwritten first</td></tr>
+<tr><td>Impact event</td><td>G-sensor above threshold, or crash signal from the airbag unit</td><td>Keeps seconds before and after the trigger from a RAM pre-buffer</td><td>Moved to a protected event area, not overwritten by the loop</td></tr>
+<tr><td>Manual</td><td>Driver button or head-unit command</td><td>Same as event, with a manual flag</td><td>Protected area</td></tr>
+<tr><td>Parking (motion or impact)</td><td>Vehicle off and locked, feature enabled</td><td>Low-power wait; records on G-sensor impact or image motion</td><td>Separate parking folder</td></tr>
+<tr><td>Time-lapse parking</td><td>Vehicle off, time-lapse selected</td><td>Low frame rate to cut power and storage</td><td>Parking folder</td></tr>
 </table>
 
-<div class="callout tip"><span class="lbl">Tip</span>Many DR receivers need a learning drive after replacement, battery disconnect or tyre change. The gyro and wheel-tick scale factor recalibrate during a few kilometres of open-sky driving with turns. Advise the customer before declaring a fault.</div>
+<div class="callout tip"><span class="lbl">WHY A PRE-BUFFER</span>A clip that starts at the moment of impact is useless, because the interesting part is the few seconds before it. The recorder therefore always keeps the last several seconds of encoded video in RAM. When an event fires, it writes the pre-buffer plus the following seconds to the protected area. A short G-sensor spike from a pothole or slammed door can fire the same path, which is why event sensitivity is usually adjustable.</div>
 
-<div class="callout example"><span class="lbl">Worked example · DR drift in a tunnel</span>
-<p>A vehicle enters a 2.0 km tunnel at 80 km/h. The DR wheel-tick scale factor has a 2 percent error because larger aftermarket tyres were fitted and the receiver has not relearned.</p>
-<p>Time in tunnel: 2.0 km / 80 km/h = 90 s. Along-track error: 2 percent of 2000 m = 40 m. A gyro bias of 0.05 deg/s accumulates 0.05 x 90 = 4.5 degrees of heading error by the exit; the lateral error grows roughly as distance x heading error / 2, so about 2000 x 0.0785 / 2, which is roughly 79 m.</p>
-<p>Result: at the tunnel exit the map can show the car up to around 80 to 90 m away from its true position, until GNSS reacquires (usually within seconds in open sky) and the filter corrects. If complaints only occur after a tyre change, a recalibration drive is the first step, not a module replacement.</p>
+<h3>3. Power and the 12 V battery</h3>
+<p>Parking mode is where a dashcam becomes a dark-current problem (see <a onclick="show('dark-current')">dark current</a> and <a onclick="show('ibs-power-mgmt')">battery sensor and power management</a>). A factory recorder normally has three protections that aftermarket units often lack:</p>
+<table>
+<tr><th>Protection</th><th>How it works</th><th>What a tech sees</th></tr>
+<tr><td>Low-voltage cut-off</td><td>Recorder stops parking mode when battery voltage or state of charge falls below a threshold</td><td>Parking recording ends early after a few cold nights; normal behaviour</td></tr>
+<tr><td>Time limit</td><td>Parking mode ends after a set number of hours, or is disabled after several days parked</td><td>No clips after a long airport stay</td></tr>
+<tr><td>Power-manager request</td><td>Body or power controller can tell the recorder to stop when the battery manager enters a load-shed stage</td><td>Recorder log shows external stop requests</td></tr>
+</table>
+<p>On electrified vehicles the 12 V battery is topped up from the high-voltage pack by the converter only in some states, so a recorder that keeps the 12 V bus busy can interact with the auxiliary-battery charging logic (see <a onclick="show('iccu-vcu')">ICCU and VCU</a>).</p>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE · PARKING-MODE BUDGET</span>
+Assume a recorder that draws 3.0 W in impact-and-motion parking mode and 1.2 W in time-lapse mode, on a 60 Ah 12 V battery. The power manager wants to keep at least 80 percent of capacity for starting and later wake-ups, so the recorder may use 12 Ah.<br>
+Current in parking mode: 3.0 W / 12.5 V = 0.24 A. Run time: 12 Ah / 0.24 A = 50 h.<br>
+Current in time-lapse: 1.2 W / 12.5 V = 0.096 A. Run time: 12 Ah / 0.096 A = 125 h, a little over 5 days.<br>
+Compare the vehicle base dark current, say 25 mA. The recorder in normal parking mode draws nearly ten times that. This is why a customer with a dead battery after a long weekend should have the recorder parking setting checked before anyone replaces the battery, and why the cut-off threshold matters more than the nominal run time: a cold, partly charged battery reaches the cut-off far sooner.
 </div>
 
-<h3>4. The antenna path</h3>
-<p>The GNSS signal arrives at around minus 130 dBm, far below the thermal noise floor, so the antenna includes a low-noise amplifier (LNA) powered by a DC bias on the coax centre conductor, typically 3.3 to 5 V. The receiver monitors the bias current to detect open and short circuits. Shark-fin antennas often combine GNSS, cellular and satellite radio elements; see the antenna systems chapter.</p>
+<h3>4. Storage, write endurance and file integrity</h3>
+<p>Continuous video is the harshest write load in the vehicle. Flash cells have a finite number of program/erase cycles, and the loop area is rewritten all day, every day (see <a onclick="show('nvm-power-loss')">ECU non-volatile memory</a>).</p>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE · LOOP LENGTH AND WEAR</span>
+Front camera at 8 Mbit/s plus rear camera at 4 Mbit/s gives 12 Mbit/s = 1.5 MB/s = about 5.4 GB per hour.<br>
+With 64 GB storage and 20 percent reserved for event and parking folders, the loop area is about 51 GB, which holds roughly 9.5 hours of driving before the oldest segment is overwritten.<br>
+Wear: a driver doing 1.5 hours a day writes about 8 GB a day. Over 10 years that is about 30 TB, or roughly 470 full writes of a 64 GB device. Consumer TLC flash is commonly rated in the hundreds to low thousands of cycles, so wear levelling and a large spare area are essential, and a removable card would need to be a high-endurance type. Doubling the bitrate halves the loop length and doubles the wear.
+</div>
+
+<p>Power loss is the other risk. If the 12 V supply drops at the moment of an impact, the encoder may be mid-segment. Integrated designs typically use a supercapacitor or small hold-up circuit to give enough time to close the current file and flush file-system metadata. A recorder that shows corrupted or zero-length last clips after a crash or battery disconnect may have a weak hold-up circuit.</p>
+
+<h3>5. Signals, overlays and time</h3>
 <table>
-<tr><th>Antenna fault</th><th>Typical detection</th><th>Field cause</th></tr>
-<tr><td>Open circuit</td><td>Bias current below threshold</td><td>Unseated FAKRA or HSD connector, damaged coax after headliner work</td></tr>
-<tr><td>Short to ground</td><td>Bias current above threshold, supply foldback</td><td>Crushed cable at a pillar or roof rail, water ingress at the shark fin</td></tr>
-<tr><td>Weak signal, no DTC</td><td>Low carrier-to-noise (C/N0) in the diagnostic screen</td><td>Metallised windscreen film, roof rack, dash-cam or charger interference near 1575 MHz</td></tr>
+<tr><th>Signal</th><th>Source</th><th>Used for</th></tr>
+<tr><td>Ignition / ready</td><td>CAN power mode</td><td>Start and stop driving mode</td></tr>
+<tr><td>Vehicle speed</td><td>CAN, originally from wheel speed (see <a onclick="show('wheel-speed')">wheel speed</a>)</td><td>Overlay and metadata</td></tr>
+<tr><td>Gear / reverse</td><td>CAN</td><td>Some designs pause or change rear recording in reverse</td></tr>
+<tr><td>Lock / alarm state</td><td>Body controller</td><td>Enter parking mode only when locked; alarm events may tag clips</td></tr>
+<tr><td>Time and position</td><td>GNSS or head-unit time</td><td>Clip timestamp, location metadata</td></tr>
+<tr><td>Crash signal</td><td>Airbag unit message</td><td>Force an event clip</td></tr>
+</table>
+<p>A wrong clock is a common complaint: if the recorder only learns the time from the head unit or GNSS, a replacement unit, a long disconnect or a missing time message can leave clips stamped in the wrong time zone or at a default date.</p>
+
+<h3>6. Privacy and data handling</h3>
+<p>Video of public roads, other vehicles and cabin audio is personal data in many jurisdictions. Integrated recorders therefore usually offer audio recording on/off, a way to delete or format storage, and PIN or app pairing for wireless download. From a service point of view: do not export or review customer footage unless the customer asks, and note that formatting storage during a repair destroys evidence the customer may need. Ask first.</p>
+
+<h3>7. Diagnosis playbook</h3>
+<table>
+<tr><th>Symptom</th><th>Likely area</th><th>First checks</th></tr>
+<tr><td>Status LED red, "camera not connected" on head unit</td><td>Camera link or power</td><td>Camera connector, coax damage after glass or headliner work, link DTCs</td></tr>
+<tr><td>Black or rolling picture from rear only</td><td>Rear link</td><td>Tailgate hinge harness flex, shield continuity</td></tr>
+<tr><td>Recording stops after a few minutes</td><td>Storage or thermal</td><td>Storage health or format prompt, cabin heat, firmware level</td></tr>
+<tr><td>Dead battery after parking</td><td>Parking mode settings</td><td>Parking mode type, cut-off setting, measured sleep current with and without recorder fuse</td></tr>
+<tr><td>Last clip before an incident missing or corrupt</td><td>Power hold-up</td><td>Supply drop on impact, hold-up circuit, firmware</td></tr>
+<tr><td>Too many event clips</td><td>G-sensor sensitivity</td><td>Sensitivity setting, recorder mounting</td></tr>
+<tr><td>Wrong date or time</td><td>Time source</td><td>Head-unit time, GNSS fix, time-sync messages</td></tr>
+<tr><td>App cannot connect</td><td>Wi-Fi or pairing</td><td>Recorder Wi-Fi enabled, phone pairing, distance, firmware</td></tr>
 </table>
 
-<div class="callout warn"><span class="lbl">Watch out</span>Cheap USB chargers and some dash cams radiate wideband noise that can desensitise an L1 receiver without setting any DTC. A simple test is to unplug all aftermarket accessories and compare satellite count and C/N0 in the head unit or GDS engineering screen.</div>
+<div class="callout warn"><span class="lbl">WARNING</span>Do not splice an aftermarket recorder into the factory camera or recorder harness. Serialized video links are impedance-controlled, and a tapped coax can drop both factory recording and other camera functions that share the same harness routing. It may also add an unmanaged parking load that defeats the factory battery protection.</div>
 
-<h3>5. Diagnosis playbook: "wrong location"</h3>
-<table>
-<tr><th>Step</th><th>Check</th><th>Interpretation</th></tr>
-<tr><td>1</td><td>Read DTCs in head unit and TCU (antenna open or short, GNSS module internal)</td><td>An antenna DTC points to the coax path first</td></tr>
-<tr><td>2</td><td>Open the GPS or engineering screen: satellites in view and used, C/N0, fix type</td><td>Healthy open sky: many satellites used with strong C/N0 values, often in the 40s dB-Hz</td></tr>
-<tr><td>3</td><td>Compare the location shown in the app with the head unit</td><td>If only the app is wrong, suspect the TCU source or backend lag, not the head unit</td></tr>
-<tr><td>4</td><td>Check speed and reverse signals in live data while driving</td><td>Missing or frozen speed input breaks DR</td></tr>
-<tr><td>5</td><td>Check software level and campaigns</td><td>Navigation and map updates can change map-matching behaviour</td></tr>
-<tr><td>6</td><td>Perform a calibration drive, then recheck</td><td>Clears drift after battery disconnect, module or tyre replacement</td></tr>
-</table>
-
-<h3>6. Time, security and privacy</h3>
-<p>GNSS also supplies UTC time, which head units and TCUs can use for the clock, log timestamps and certificate validity checks. A receiver that never gets a fix can leave a module with a wrong date, which may cause TLS or certificate errors on connected services. GNSS signals are unauthenticated in civil use, so jamming and spoofing are recognised threats under vehicle cybersecurity work (ISO/SAE 21434 and UN R155): sanity checks against DR, wheel speed and cellular-derived position help detect implausible jumps. Location is personal data, so retention, consent and user controls for tracking features are governed by market privacy law and the connected-services terms.</p>
+<div class="callout hy"><span class="lbl">HYUNDAI NOTE</span>On Hyundai, Kia and Genesis vehicles that offer the factory recorder, settings and playback are normally reached through the infotainment screen, with a smartphone app for wireless download in some markets. Parking recording may depend on the vehicle being locked and on battery state. Exact behaviour, storage size and service procedures differ by platform and market, so use GDS and the service information for the specific vehicle.</div>
 
 <div class="quiz" data-a="2"><span class="lbl">Quiz</span>
-<p>After a 12 V battery replacement, a customer reports that navigation shows the car moving forward on the map while reversing out of the driveway, and the position drifts in a car park. Outdoors, GNSS satellite count and C/N0 look normal and there are no DTCs. What is the most likely explanation?</p>
-  <button class="opt">The GNSS antenna LNA has failed open</button>
-  <button class="opt">The constellation almanac is corrupt and needs a module replacement</button>
-  <button class="opt">Dead-reckoning calibration was lost and the reverse or speed input needs to be relearned or checked</button>
-  <button class="opt">The SBAS corrections are disabled in this market</button>
-  <div class="exp">Healthy satellite reception with no DTC rules out the antenna. Wrong direction while reversing and drift without sky view are dead-reckoning symptoms. Confirm the reverse and speed signals in live data, then perform the learning drive before replacing hardware.</div>
+<p>A customer reports a dead 12 V battery after leaving the car parked for three days. The recorder is set to impact-and-motion parking mode, and the vehicle base sleep current measures normal with the recorder fuse removed. What is the most sensible next step?</p>
+  <button class="opt">Replace the 12 V battery, since base sleep current is normal</button>
+  <button class="opt">Replace the recorder ECU</button>
+  <button class="opt">Check the parking-mode type and low-voltage cut-off setting, measure the recorder parking draw, and consider time-lapse mode or a higher cut-off</button>
+  <button class="opt">Format the recorder storage</button>
+  <div class="exp">Base current is normal, so the recorder is the main load. At roughly 0.2 to 0.3 A, three days of parking recording takes a large share of a 12 V battery, and a cold or partly charged battery reaches trouble well before the nominal run time. Settings and measured draw come before parts. Formatting destroys the customer clips and does nothing for current draw.</div>
 </div>
-
-<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-23. Receiver location, sensor inputs, signal names and diagnostic screens vary by platform, model year, trim and market. Figures are typical industry values for orientation only. Always confirm against official Hyundai service information and GDS for the specific VIN.</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-23. Power, bitrate and storage figures are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model. Feature availability varies by model, model year and market.</div>
 `});
 </script>
 <script id="boot-script">
