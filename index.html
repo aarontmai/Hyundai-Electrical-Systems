@@ -354,6 +354,15 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-24 · run 63</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('remote-start-precondition')">Remote Start and Cabin Pre-conditioning</a> (Part IV, Ch.112): app and key-fob request-chain diagram, typical inhibit table (including the hood switch), ICE versus EV behaviour, immobilizer interaction, network wake timing, a worked example on weak-coverage app failures, a diagnosis playbook and a quiz.</li>
+  <li><b>Service bulletin spotted:</b> search results list Hyundai service bulletins titled "2026 Hyundai Palisade CCU Software Update for OTA Initialization" and a related Hyundai CCU software update service campaign for OTA initialization. Only titles were available (the pages could not be fetched), so scope and procedure are not verified; check Hyundai service information. Sources: <a href="https://dot.report/bulletins/11032531" target="_blank">dot.report bulletin 11032531</a>, <a href="https://dot.report/bulletins/11032530" target="_blank">dot.report bulletin 11032530</a>, <a href="https://owners.hyundaiusa.com/us/en/resources/general-information/ioniqN-ccu-ota-software-update" target="_blank">Hyundai owners: CCU OTA update</a>.</li>
+  <li><b>Recall check:</b> searches for Hyundai, Kia and Genesis campaigns surfaced only items already logged (26V728 airbag ACU software on Kona Electric and Veloster N, 26V588 Ioniq 9 second-row seat detection, Kia/Genesis fuel-leak recall). Sources: <a href="https://topclassactions.com/lawsuit-settlements/lawsuit-news/hyundai-recalls-nearly-38k-electric-vehicles-due-to-airbag-seat-belt-issues/" target="_blank">Top Class Actions (Nov 13)</a>, <a href="https://www.autoevolution.com/news/hyundai-recalls-5360-ioniq-9-evs-over-second-row-seat-detection-issue-275814.html" target="_blank">autoevolution</a>.</li>
+  <li><b>Glossary:</b> added Remote engine start (RES), Remote start inhibit, Consecutive-start limit, Cabin pre-conditioning, Departure-time scheduling, Hood switch.</li>
+</ul>
+</div>
+
 <div class="callout hy"><span class="lbl">2026-11-23 · run 62</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('gnss-positioning')">GNSS, Dead Reckoning and Vehicle Positioning</a> (Part IV, Ch.111): positioning data-flow diagram, GNSS terms table (TTFF, DOP, A-GNSS, SBAS), dead-reckoning inputs and failure symptoms, a worked example on tunnel drift after a tyre change, antenna LNA bias fault table, a wrong-location diagnosis playbook, time and spoofing notes, and a quiz.</li>
@@ -2728,6 +2737,12 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["Remote engine start (RES)","Starting the engine or EV climate session without the driver in the vehicle, via key fob RF command or connected app; the vehicle stays locked and cannot be driven without a valid key."],
+["Remote start inhibit","Any precondition that makes the body controller refuse or end a remote start, such as an open door or hood, shifter not in P, low battery or an active alarm."],
+["Consecutive-start limit","Counter that caps how many remote starts are allowed without an intervening normal drive cycle."],
+["Cabin pre-conditioning","Heating or cooling the cabin, and on EVs often the battery, before departure, ideally on grid power while plugged in."],
+["Departure-time scheduling","EV feature that times climate and battery pre-conditioning so the vehicle is ready at a set departure time."],
+["Hood switch","Bonnet-ajar switch read by the body controller; a remote start safety inhibit and a common hidden cause of remote start refusal."],
 ["GNSS","Global Navigation Satellite System: umbrella term for GPS, GLONASS, Galileo, BeiDou and regional systems used for vehicle position and time."],
 ["Dead reckoning","Estimating position between GNSS fixes by integrating wheel-speed distance, gyro heading change and reverse-gear direction."],
 ["TTFF","Time To First Fix: delay from receiver power-up to a valid position; shortened by stored ephemeris and A-GNSS."],
@@ -8982,6 +8997,101 @@ chapter({part:"Part IV · Telematics & Connectivity", id:"gnss-positioning", num
 </div>
 
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-23. Receiver location, sensor inputs, signal names and diagnostic screens vary by platform, model year, trim and market. Figures are typical industry values for orientation only. Always confirm against official Hyundai service information and GDS for the specific VIN.</div>
+`});
+</script>
+<script>
+chapter({part:"Part IV · Telematics & Connectivity", id:"remote-start-precondition", num:"112", title:"Remote Start and Cabin Pre-conditioning: From App Tap to Warm Cabin", mins:9, tag:"Telematics / Body / Climate", html:`
+<p>Remote start and remote climate are the most-used connected features on many Hyundai, Kia and Genesis vehicles, and they cross almost every domain in this handbook: the cloud and the TCU, the gateway and network wake-up, the body controller and smart-key/immobilizer logic, the engine or EV powertrain, and the climate controller. When a customer says "remote start does not work", the fault can be in any of those links, or the request may simply have been blocked by a perfectly healthy inhibit condition. This chapter walks the chain end to end and gives a structured way to find the broken link.</p>
+
+<div class="callout warn"><span class="lbl">Caveat</span>Module names, inhibit lists, timeout values and app wording vary by platform, model year, market and subscription. Treat the tables below as typical patterns and confirm against the service information for the exact vehicle.</div>
+
+<h3>1. The request chain</h3>
+<p>Two delivery paths exist. <b>Key fob remote start</b> (where fitted, mainly North America) is a short-range RF command received by the smart-key receiver and handled by the body/smart-key controller. <b>App remote start</b> travels from the phone to the Hyundai backend, then over cellular to the TCU, which wakes the vehicle network and forwards the request. Both converge on the same body-side arbitration logic.</p>
+
+<div class="diagwrap"><svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12">
+<rect x="10" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="65" y="46" text-anchor="middle" fill="currentColor">Phone app</text>
+<rect x="150" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="205" y="46" text-anchor="middle" fill="currentColor">Backend</text>
+<rect x="290" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="345" y="40" text-anchor="middle" fill="currentColor">TCU / CCU</text><text x="345" y="56" text-anchor="middle" fill="currentColor" font-size="10">cellular wake</text>
+<rect x="430" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="485" y="46" text-anchor="middle" fill="currentColor">Gateway</text>
+<rect x="570" y="20" width="170" height="44" rx="6" fill="none" stroke="currentColor"/><text x="655" y="40" text-anchor="middle" fill="currentColor">Body / smart-key</text><text x="655" y="56" text-anchor="middle" fill="currentColor" font-size="10">arbitration and inhibits</text>
+<rect x="430" y="140" width="130" height="44" rx="6" fill="none" stroke="currentColor"/><text x="495" y="160" text-anchor="middle" fill="currentColor">Engine / VCU</text><text x="495" y="176" text-anchor="middle" fill="currentColor" font-size="10">start or HV ready</text>
+<rect x="600" y="140" width="140" height="44" rx="6" fill="none" stroke="currentColor"/><text x="670" y="160" text-anchor="middle" fill="currentColor">Climate (FATC)</text><text x="670" y="176" text-anchor="middle" fill="currentColor" font-size="10">set temp, defrost, seats</text>
+<rect x="10" y="140" width="150" height="44" rx="6" fill="none" stroke="currentColor"/><text x="85" y="166" text-anchor="middle" fill="currentColor">Key fob (RF, if fitted)</text>
+<line x1="120" y1="42" x2="150" y2="42" stroke="currentColor"/><line x1="260" y1="42" x2="290" y2="42" stroke="currentColor"/><line x1="400" y1="42" x2="430" y2="42" stroke="currentColor"/><line x1="540" y1="42" x2="570" y2="42" stroke="currentColor"/>
+<line x1="160" y1="162" x2="600" y2="100" stroke="currentColor" stroke-dasharray="4 3"/><line x1="600" y1="100" x2="640" y2="64" stroke="currentColor" stroke-dasharray="4 3"/>
+<line x1="620" y1="64" x2="510" y2="140" stroke="currentColor"/><line x1="680" y1="64" x2="680" y2="140" stroke="currentColor"/>
+<text x="380" y="125" fill="currentColor" font-size="10">status reply returns the same way</text>
+</svg></div>
+
+<p>Every hop has its own timeout. The backend waits for the TCU to wake and answer; the TCU waits for the gateway and body controller; the body controller waits for the powertrain to report running or ready. The app message the customer sees ("vehicle did not respond", "request failed", "conditions not met") usually tells you which hop gave up first.</p>
+
+<h3>2. Typical inhibit conditions</h3>
+<p>Remote start is a deliberately conservative feature. The body or smart-key controller checks a list of preconditions before it allows a start, and it keeps checking while the vehicle runs unattended.</p>
+<table>
+<tr><th>Condition</th><th>Why it blocks</th><th>Typical signal source</th></tr>
+<tr><td>Any door, tailgate or hood open (or ajar switch faulty)</td><td>Vehicle must be secured; hood open protects a technician in the engine bay</td><td>Door and hood switches via body controller</td></tr>
+<tr><td>Vehicle not locked</td><td>Many markets require a locked state before the command is accepted</td><td>Lock status from body controller</td></tr>
+<tr><td>Shift lever not in P</td><td>Prevents an unattended vehicle from moving</td><td>Shifter or shift-by-wire controller</td></tr>
+<tr><td>Smart key inside the cabin, or ignition already on</td><td>Logic conflict with a normal start</td><td>Smart-key interior antennas, power mode</td></tr>
+<tr><td>Hazard lamps on, alarm triggered or alarm in panic state</td><td>Security conflict</td><td>Body controller / alarm logic</td></tr>
+<tr><td>Low 12 V battery or low fuel / low HV state of charge</td><td>Protects starting ability and range</td><td>Battery sensor, fuel level, BMS</td></tr>
+<tr><td>Engine fault, MIL condition or high coolant temperature</td><td>Do not run unattended with a powertrain fault</td><td>Engine or vehicle control unit</td></tr>
+<tr><td>Consecutive-start limit reached</td><td>Limits repeated unattended running</td><td>Counter in body controller; reset by a normal drive cycle</td></tr>
+<tr><td>Brake pedal pressed during remote run</td><td>Driver must use the key to take over; pressing the brake without a valid key shuts down</td><td>Brake switch</td></tr>
+</table>
+
+<div class="callout tip"><span class="lbl">Tip</span>The hood switch is the classic hidden cause. It is rarely checked by the customer, it sits in a wet and dirty location, and a cracked or misaligned switch can report "hood open" with no warning lamp on some vehicles. Look at the hood status in live data before chasing the TCU.</div>
+
+<h3>3. ICE versus EV behaviour</h3>
+<table>
+<tr><th>Aspect</th><th>Combustion vehicle</th><th>EV (for example E-GMP)</th></tr>
+<tr><td>What "start" means</td><td>Crank and run the engine under immobilizer authorisation from the body side</td><td>Close the HV contactors and run climate on HV power; the vehicle is not in drive-ready</td></tr>
+<tr><td>Run time</td><td>Fixed timeout (commonly around 10 minutes, selectable in some apps)</td><td>Climate session timeout, longer windows possible when plugged in</td></tr>
+<tr><td>Energy source</td><td>Fuel; alternator charges 12 V</td><td>HV battery, or grid power when plugged in; LDC/ICCU supports 12 V</td></tr>
+<tr><td>Extra inhibits</td><td>Coolant temperature, engine faults</td><td>Low SOC threshold, charging-door or plug states, BMS faults</td></tr>
+<tr><td>Scheduling</td><td>Usually app-initiated only</td><td>Departure-time pre-conditioning and battery pre-heat can be scheduled</td></tr>
+</table>
+
+<p>On EVs, scheduled departure climate is closely tied to <a onclick="show('bms-thermal')">battery thermal management</a> and <a onclick="show('thermal-heat-pump')">heat-pump operation</a>. Pre-conditioning while plugged in is the efficient case: grid power warms the cabin and pack so the drive starts with full range.</p>
+
+<h3>4. Immobilizer and theft logic</h3>
+<p>A remote engine start must not weaken anti-theft protection. The body controller authorises the start internally without a key present, but the vehicle stays locked and cannot be driven. Getting in, pressing the brake and selecting a gear requires a valid smart key to be detected; otherwise the engine shuts down. See <a onclick="show('immobilizer')">Immobilizer</a> and <a onclick="show('smart-key')">Smart Key</a> for the authentication details. This is also why some theft-deterrent software updates change remote start behaviour, and why aftermarket remote-start kits that bypass the immobilizer are a security and warranty concern.</p>
+
+<h3>5. Network wake and timing budget</h3>
+<p>App remote start fails most often at the wake-up step. The TCU must be reachable on the cellular network, wake from its own low-power mode, and then wake the vehicle network through <a onclick="show('network-management')">network management</a> messages. Weak coverage in an underground car park, a TCU in an extended deep-sleep after many days parked, or a 12 V battery near its cut-off threshold can all break the chain before the body controller ever sees the request.</p>
+
+<div class="callout example"><span class="lbl">Worked example</span>
+<p><b>Complaint:</b> App remote start works at home but fails every weekday morning at the office car park with "vehicle did not respond". Key-fob start works there.</p>
+<p><b>Reasoning:</b> The fob works, so body-side inhibits are satisfied and the powertrain can start. The failure is upstream of the body controller. "Did not respond" points at the TCU not answering the backend.</p>
+<p><b>Check:</b> Read the TCU network registration and signal quality in the GDS live data or the head unit connectivity screen while parked at the office. Signal is very weak (underground level 3).</p>
+<p><b>Budget estimate:</b> If the backend allows roughly 60 s, and the TCU needs 20 to 40 s to re-register after deep sleep in weak coverage plus a few seconds for the network wake and start, the margin is near zero. Retries succeed occasionally, matching the customer story.</p>
+<p><b>Outcome:</b> No hardware fault. Explain the coverage limitation, confirm current TCU software, and check the antenna path (see <a onclick="show('antenna-systems')">Antenna Systems</a>) only if signal is also weak in open areas.</p>
+</div>
+
+<h3>6. Diagnosis playbook</h3>
+<table>
+<tr><th>Step</th><th>Action</th><th>What it separates</th></tr>
+<tr><td>1</td><td>Record the exact app message and time; check the app or backend history if available</td><td>No delivery, delivered but refused, or started then stopped</td></tr>
+<tr><td>2</td><td>Try key-fob remote start (if equipped)</td><td>Cloud/TCU path versus body and powertrain path</td></tr>
+<tr><td>3</td><td>Read live data: doors, hood, tailgate, lock state, P position, brake switch</td><td>Inhibit conditions, including faulty switches</td></tr>
+<tr><td>4</td><td>Read DTCs in TCU, gateway, body controller, smart key, engine or VCU</td><td>Communication or authentication faults</td></tr>
+<tr><td>5</td><td>Check 12 V battery state and the battery sensor history; check dark current if the car is often too weak</td><td>Low-voltage inhibits and failed wakes</td></tr>
+<tr><td>6</td><td>Confirm software levels and open campaigns for TCU/CCU, body controller and climate</td><td>Known issues fixed by updates</td></tr>
+<tr><td>7</td><td>If started but climate did nothing: check climate settings sent with the request and FATC response</td><td>Climate path versus start path</td></tr>
+</table>
+
+<div class="callout danger"><span class="lbl">Safety</span>Never test remote engine start in an enclosed workshop without exhaust extraction, and keep the hood closed during testing, since the hood switch is part of the safety inhibit. Disable the feature in settings if the vehicle will be stored indoors.</div>
+
+<div class="quiz" data-a="1"><span class="lbl">Quiz</span>
+<p>Both app and key-fob remote start fail on a combustion vehicle. Doors are closed and locked, the lever is in P, there are no DTCs, and the car starts normally with the key. Which check should come first?</p>
+  <button class="opt">Replace the TCU, because the app path is failing</button>
+  <button class="opt">Check the hood-open status in live data, since a faulty hood switch blocks both paths</button>
+  <button class="opt">Re-register the vehicle in the app</button>
+  <button class="opt">Reprogram the engine control unit</button>
+  <div class="exp">Both delivery paths fail, so the problem is in the shared body-side arbitration, not the cloud or TCU. A faulty or misaligned hood switch is a common inhibit that does not stop a normal key start.</div>
+</div>
+
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-24. Inhibit lists, timeouts, consecutive-start limits and app wording vary by platform, model year, market and subscription; confirm against service information.</div>
 `});
 </script>
 <script id="boot-script">
