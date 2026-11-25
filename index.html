@@ -354,6 +354,16 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
+<div class="callout hy"><span class="lbl">2026-11-25 · run 64</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('isg-stop-start')">Idle Stop &amp; Go (ISG)</a> (Part XV, Ch.113): signal map diagram, stop-enable and restart-request table, 12 V battery strategy, worked examples on the energy budget during a stop and on the restart voltage dip versus module brown-out, voltage-support approaches, a diagnosis playbook for ISG that never activates, a body-module checklist and a quiz.</li>
+  <li><b>Recall check:</b> no new Hyundai, Kia or Genesis US campaigns found since the last run. Already logged: 26V728 (airbag ACU software, 37,901 Kona Electric and Veloster N; owner letters from January 1, 2027), 26V664 (Genesis power seat switch overheating, 94,622 vehicles; owner letters expected December 7, 2026) and the Ioniq 9 second-row seat detection recall. Sources: <a href="https://www.autoguide.com/auto/manufacturers/hyundai/hyundai-recalls-nearly-38-000-cars-over-airbag-glitch-44642119" target="_blank">AutoGuide</a>, <a href="https://gcn.com/hyundai-recalls-genesis-sedans-seat-fire/22606/" target="_blank">GCN</a>, <a href="https://www.autoevolution.com/news/hyundai-recalls-5360-ioniq-9-evs-over-second-row-seat-detection-issue-275814.html" target="_blank">autoevolution</a>.</li>
+  <li><b>SDV / OTA:</b> no new Pleos or OTA announcements found. Source checked: <a href="https://www.hyundaimotorgroup.com/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system" target="_blank">Hyundai Motor Group newsroom</a>.</li>
+  <li><b>Glossary:</b> added ISG, Stop-enable condition, Restart request, AGM battery, EFB, Voltage stabiliser, Battery registration.</li>
+</ul>
+</div>
+
+
 <div class="callout hy"><span class="lbl">2026-11-24 · run 63</span>
 <ul>
   <li><b>New chapter added:</b> <a onclick="show('fuel-level-pump')">Fuel Level Sensing, Gauge Damping &amp; Fuel Pump Control</a> (Part XV, Ch.112): signal-chain diagram, sender and saddle-tank configurations with jet-pump failure signatures, worked examples on divider-to-level conversion (including ground-offset error) and on distance-to-empty, refuel detection and damping states, pump control strategies and crash cut-off, SAE generic DTC table (P0460 to P0464, P2066 to P2069, P0627 to P0629), a diagnosis playbook and a quiz.</li>
@@ -2738,6 +2748,13 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
+["ISG","Idle Stop and Go; the Hyundai, Kia and Genesis name for engine stop-start, which shuts the engine at standstill and restarts it on brake release."],
+["Stop-enable condition","One of a list of conditions that must all be true before the engine ECU allows an automatic engine stop, such as hood closed and battery SOC high enough."],
+["Restart request","A condition that forces an automatic restart while the engine is stopped by ISG, for example brake release, defrost selected or low battery SOC."],
+["AGM battery","Absorbent Glass Mat lead-acid battery with better cycling durability than a flooded battery; common on stop-start vehicles."],
+["EFB","Enhanced Flooded Battery; a flooded lead-acid design improved for partial state-of-charge cycling, used on entry-level stop-start vehicles."],
+["Voltage stabiliser","DC-DC boost converter that holds sensitive 12 V loads near nominal voltage during an engine restart so they do not reset."],
+["Battery registration","Scan-tool procedure that tells the battery sensor and charging strategy that a new battery of a given type and capacity has been fitted."],
 ["Fuel level sender","In-tank float arm and wiper on a resistor card; its resistance changes with fuel level and is read by a measuring ECU through a pull-up divider."],
 ["Saddle tank","Fuel tank split into two lobes over a driveshaft or exhaust; each lobe has its own level sender and fuel is moved across by a jet pump."],
 ["Jet pump","Venturi transfer pump driven by fuel flow from the main pump; moves fuel from the sub side of a saddle tank to the pump side."],
@@ -9122,6 +9139,111 @@ chapter({part:"Part XV · Extended Systems", id:"fuel-level-pump", num:"112", ti
   <div class="exp">The main side empties and the car stalls while the sub sender still sees fuel it cannot use. No circuit DTCs means both senders read plausible values. A slow filter would lag but would not leave 40 percent stranded, and a worn card gives jumps or flats rather than a fixed offset at stall.</div>
 </div>
 <div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-24. Resistances, thresholds and filter values are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model. DTC codes listed are SAE J2012 generic definitions; manufacturer-specific assignment and the measuring ECU vary by platform.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XV · Extended Systems", id:"isg-stop-start", num:"113", title:"Idle Stop &amp; Go (ISG) — Body-Electrical Enable Conditions, Battery Strategy, Restart Voltage Support &amp; Inhibit Diagnosis", mins:9, tag:"Stop-start", html:`
+<p>Idle Stop &amp; Go (ISG) is the Hyundai, Kia and Genesis name for engine stop-start on combustion and many hybrid-adjacent powertrains. The engine control unit decides when to stop and restart, but most of the reasons an ISG system <i>refuses</i> to stop are body-electrical: battery state of charge, door, hood and seat-belt switches, HVAC demand, steering input and network health. For a body engineer, ISG is a large consumer of signals you own, and a common source of "feature does not work" complaints that turn out to be a body or battery issue. This chapter covers the enable logic, the 12 V strategy, the restart voltage dip and how to diagnose inhibits.</p>
+<div class="callout warn"><span class="lbl">Standing caveat</span>Enable conditions, thresholds, module names and battery types vary by platform, model year, market and powertrain. Values here are illustrative engineering ranges, not specifications for any Hyundai, Kia or Genesis vehicle. Always use the service information and GDS data for the specific vehicle.</div>
+
+<h3>1. System overview</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 230" width="100%" role="img" aria-label="ISG signal map: body inputs, battery sensor, HVAC and chassis feeding the engine ECU, which commands stop and restart and drives the cluster ISG indicator">
+<rect x="10" y="10" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="35" text-anchor="middle" font-size="12" fill="currentColor">BCM / IBU: doors, hood, belt</text>
+<rect x="10" y="62" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="87" text-anchor="middle" font-size="12" fill="currentColor">Battery sensor (IBS / BSS)</text>
+<rect x="10" y="114" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="139" text-anchor="middle" font-size="12" fill="currentColor">HVAC: defrost, cabin temp</text>
+<rect x="10" y="166" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="191" text-anchor="middle" font-size="12" fill="currentColor">Chassis: speed, brake, SAS</text>
+<rect x="290" y="70" width="160" height="80" rx="8" fill="none" stroke="currentColor"/><text x="370" y="104" text-anchor="middle" font-size="13" fill="currentColor">Engine ECU</text><text x="370" y="122" text-anchor="middle" font-size="10" fill="currentColor">ISG arbitration</text>
+<rect x="540" y="20" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="625" y="45" text-anchor="middle" font-size="12" fill="currentColor">Starter / ISG starter</text>
+<rect x="540" y="90" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="625" y="115" text-anchor="middle" font-size="12" fill="currentColor">Voltage support (DC-DC)</text>
+<rect x="540" y="160" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="625" y="185" text-anchor="middle" font-size="12" fill="currentColor">Cluster ISG lamp / OFF</text>
+<line x1="180" y1="30" x2="290" y2="85" stroke="currentColor"/><line x1="180" y1="82" x2="290" y2="100" stroke="currentColor"/><line x1="180" y1="134" x2="290" y2="120" stroke="currentColor"/><line x1="180" y1="186" x2="290" y2="140" stroke="currentColor"/>
+<line x1="450" y1="90" x2="540" y2="40" stroke="currentColor"/><line x1="450" y1="110" x2="540" y2="110" stroke="currentColor"/><line x1="450" y1="130" x2="540" y2="180" stroke="currentColor"/>
+<text x="235" y="220" text-anchor="middle" font-size="9" fill="currentColor">CAN / LIN signals</text>
+</svg></div>
+<p>The engine ECU (or a powertrain domain controller on newer platforms) owns the final stop and restart decision. It combines a list of <b>stop-enable</b> conditions, all of which must be true to stop, with <b>restart-request</b> conditions, any one of which forces a restart while stopped. Body modules contribute raw switch states, and the battery sensor contributes state of charge (SOC), state of health (SOH) and current.</p>
+
+<h3>2. Typical enable and inhibit conditions</h3>
+<table>
+<tr><th>Condition</th><th>Source</th><th>Typical stop-enable rule (illustrative)</th><th>Restart request while stopped?</th></tr>
+<tr><td>Driver door</td><td>BCM / IBU door switch</td><td>Closed</td><td>Opening may restart or prevent restart until engine-start conditions are met</td></tr>
+<tr><td>Hood</td><td>Hood switch to BCM</td><td>Closed (safety, technician under hood)</td><td>Opening usually blocks auto-restart; manual start needed</td></tr>
+<tr><td>Driver seat belt</td><td>Buckle switch</td><td>Buckled</td><td>Unbuckling may block auto-restart</td></tr>
+<tr><td>Battery SOC / SOH</td><td>Battery sensor (LIN)</td><td>SOC above a threshold, for example 70 to 80 percent; SOH valid</td><td>SOC falling below a lower limit forces restart</td></tr>
+<tr><td>Battery sensor learning</td><td>Battery sensor</td><td>Learning complete after reconnect or replacement</td><td>Not applicable; ISG simply stays inhibited</td></tr>
+<tr><td>HVAC demand</td><td>HVAC controller</td><td>No front defrost, cabin temp near target</td><td>Defrost selected or large temperature error restarts</td></tr>
+<tr><td>Vehicle speed history</td><td>ABS / ESC</td><td>Car has exceeded a few km/h since the last stop</td><td>Not applicable</td></tr>
+<tr><td>Brake pedal</td><td>Brake switch / pressure</td><td>Pressed with enough pressure</td><td>Release (automatic) restarts</td></tr>
+<tr><td>Steering</td><td>Steering-angle sensor</td><td>Small angle, no rapid input</td><td>Large steering input may restart</td></tr>
+<tr><td>Engine and gearbox</td><td>Engine / TCU</td><td>Coolant warm, transmission in a valid range, no warm-up</td><td>Vacuum or ATF temperature limits restart</td></tr>
+<tr><td>Network health</td><td>All</td><td>No timeouts on required messages, no related DTCs</td><td>A loss of a required signal usually restarts or inhibits</td></tr>
+<tr><td>Driver switch</td><td>ISG OFF switch</td><td>Not pressed this cycle</td><td>Pressing while stopped restarts</td></tr>
+</table>
+<div class="callout tip"><span class="lbl">Design rule</span>Every input should default to the <i>safe</i> side on loss or invalidity: an unknown door or hood state means "do not stop" and "do not auto-restart without driver action". A body module that sends a default value of "closed" after a timeout can create a real safety defect.</div>
+
+<h3>3. 12 V battery strategy</h3>
+<p>Stop-start vehicles usually use an AGM or enhanced flooded (EFB) battery and a shunt-based battery sensor on the negative terminal (see the <a onclick="show('ibs-power-mgmt')">battery sensor and power management chapter</a>). While the engine is stopped, all electrical loads run from the battery, so the energy budget during a stop decides how long the engine can stay off.</p>
+<table>
+<tr><th>Parameter</th><th>Why it matters for ISG</th><th>Common failure signature</th></tr>
+<tr><td>SOC</td><td>Must stay high enough to guarantee a restart and protect the battery</td><td>Short trips, high parasitic draw: ISG never activates</td></tr>
+<tr><td>SOH / internal resistance</td><td>Higher resistance gives a deeper voltage dip on crank</td><td>Aged battery: ISG disabled though SOC looks fine</td></tr>
+<tr><td>Battery type coding</td><td>Charging profile and thresholds depend on AGM vs EFB vs flooded</td><td>Wrong battery fitted or not registered: ISG stops working after replacement</td></tr>
+<tr><td>Sensor learning</td><td>After a disconnect the sensor must relearn capacity and SOC</td><td>ISG inactive for several drive and sleep cycles after battery work</td></tr>
+</table>
+<div class="callout example"><span class="lbl">Worked example · energy budget during a stop</span>
+<p>Assume the following loads during an engine-off stop on a hot day with the blower on: infotainment and cluster 8 A, blower at medium 12 A, headlamps and tail lamps (LED) 4 A, ECUs and miscellaneous 6 A. Total is 30 A.</p>
+<p>A 60 s stop drains 30 A x 60 s = 1800 As = 0.5 Ah. For a 70 Ah AGM battery that is about 0.7 percent of capacity. That looks small, but if the ISG stop threshold is 75 percent SOC and the battery sits at 76 percent after a short commute, two such stops reach the limit, and the ECU then keeps the engine running to recharge. To the driver it looks like "ISG works for the first couple of lights and then stops", which is normal behaviour, not a fault.</p>
+<p>Now add a 50 mA parasitic draw overnight for 12 h: 0.6 Ah, so the car starts the morning almost 1 percent lower. A real fault, such as a module not sleeping at 300 mA, removes 3.6 Ah, about 5 percent of SOC per night, and can keep ISG inhibited all week. Check dark current (see the <a onclick="show('dark-current')">dark current chapter</a>) before blaming the ISG logic.</p>
+</div>
+
+<h3>4. Restart voltage dip and support</h3>
+<p>A warm restart draws a high current peak through the starter, often several hundred amps for tens of milliseconds, which pulls the 12 V bus down. If voltage-sensitive loads such as infotainment, the cluster or telematics reset during each restart, customers see screens reboot and audio cut at every traffic light. Platforms handle this in several ways:</p>
+<table>
+<tr><th>Approach</th><th>How it works</th><th>Trade-off</th></tr>
+<tr><td>DC-DC voltage stabiliser</td><td>Boost converter feeds sensitive loads during crank and holds them near 12 V</td><td>Extra module, heat and cost; must not back-feed</td></tr>
+<tr><td>Robust module design</td><td>Modules specified to ride through a defined crank pulse without reset</td><td>Costs bulk capacitance and careful brown-out thresholds in every supplier ECU</td></tr>
+<tr><td>Enhanced starter</td><td>Starter designed for many cycles and softer current peaks</td><td>Starter cost; does not remove the dip entirely</td></tr>
+<tr><td>Belt-driven starter generator (48 V mild hybrid)</td><td>Restart through the belt from the 48 V side, 12 V bus barely disturbed</td><td>Covered in the <a onclick="show('mild-hybrid-48v')">48 V mild hybrid chapter</a></td></tr>
+</table>
+<div class="callout example"><span class="lbl">Worked example · will the head unit reset?</span>
+<p>Battery open-circuit voltage 12.6 V, battery plus cable resistance 6 milliohm, peak restart current 450 A. The dip at the battery terminal is about 12.6 - 450 x 0.006 = 12.6 - 2.7 = 9.9 V. A head-unit harness with 15 milliohm of feed resistance at 15 A loses another 0.2 V, giving about 9.7 V at the module.</p>
+<p>If the module brown-out reset is set at 9.0 V, there is only 0.7 V of margin. An aged battery with 10 milliohm internal resistance gives 12.6 - 450 x 0.010 = 8.1 V at the terminal, and the head unit resets. That is why ISG enable logic uses battery internal resistance or SOH, not only SOC, and why a "head unit reboots at every restart" complaint is often a battery or ground issue, not a software one.</p>
+</div>
+<div class="callout danger"><span class="lbl">Safety</span>Never work under the hood of a vehicle in an ISG stop with the system active. The hood switch is a safety input precisely because the engine can restart without warning. Turn the vehicle off or disable ISG before service, and verify hood switch behaviour after any front-end repair.</div>
+
+<h3>5. Driver interface</h3>
+<p>The cluster typically shows a green ISG indicator while the engine is stopped, an amber or flashing indicator when ISG is unavailable due to a fault, and an "ISG OFF" indication when the driver has disabled it. On many vehicles the ISG OFF state resets to ON at every ignition cycle by regulation or design; some markets and models remember the last setting. Avoid promising a customer that a setting can be made permanent without checking the specific vehicle configuration options.</p>
+
+<h3>6. Diagnosing "ISG never works"</h3>
+<table>
+<tr><th>Step</th><th>Check</th><th>Typical tool or data</th></tr>
+<tr><td>1</td><td>Confirm the feature is fitted and not switched off; check for amber ISG indicator</td><td>Cluster, vehicle configuration</td></tr>
+<tr><td>2</td><td>Read DTCs in engine ECU, battery sensor, BCM and HVAC</td><td>GDS full system scan</td></tr>
+<tr><td>3</td><td>Read the ISG inhibit reason data, if the platform provides it</td><td>Engine ECU current data, ISG status items</td></tr>
+<tr><td>4</td><td>Check battery SOC, SOH, type registration and sensor learning status</td><td>Battery sensor data; test with a conductance tester</td></tr>
+<tr><td>5</td><td>Check hood, door and belt switch states in live data with each switch actuated</td><td>BCM / IBU current data</td></tr>
+<tr><td>6</td><td>Check dark current and recent battery disconnects</td><td>Clamp meter; see dark-current chapter</td></tr>
+<tr><td>7</td><td>Road test with a data logger to watch which condition drops at each stop</td><td>GDS data recording</td></tr>
+</table>
+<div class="callout hy"><span class="lbl">Field pattern</span>The most common real cause of ISG not working after a repair is a hood switch left unplugged or misadjusted after front-end bodywork, or a replacement battery that was not the right type or was not registered. Both are body-side issues that appear as a powertrain feature complaint.</div>
+
+<h3>7. Engineering checklist for body module owners</h3>
+<ul>
+<li>Publish door, hood and belt states with a validity bit; do not substitute "closed" on a timeout.</li>
+<li>Debounce switches enough to reject bounce, but keep latency low so an opening hood blocks a restart quickly.</li>
+<li>Specify ride-through of the restart voltage pulse for every module powered while ISG is active, and test it on the bench with a programmable supply.</li>
+<li>Keep sleep current low: ISG availability depends on SOC margin.</li>
+<li>Coordinate with HVAC so blower and compressor loads during a stop are part of the energy budget.</li>
+</ul>
+
+<div class="quiz" data-a="2"><span class="lbl">Quiz</span>
+<p>After a new battery was fitted, a customer reports that ISG has not stopped the engine once in three days. The battery tests good, no DTCs are stored, and the hood, door and belt switches all read correctly. What is the most likely cause?</p>
+  <button class="opt">The ISG starter has failed</button>
+  <button class="opt">The cluster ISG indicator bulb is open</button>
+  <button class="opt">The battery sensor has not finished learning, or the new battery type was not registered</button>
+  <button class="opt">The HVAC system is in recirculation mode</button>
+  <div class="exp">After a disconnect or replacement the battery sensor must relearn capacity and SOC, and many systems need the battery type registered with a scan tool. Until then the engine ECU treats SOC or SOH as not valid and keeps ISG inhibited without setting a DTC. A failed starter would affect normal starting, and recirculation does not inhibit ISG.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-25. Currents, resistances, thresholds and enable conditions are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model.</div>
 `});
 </script>
 <script id="boot-script">
