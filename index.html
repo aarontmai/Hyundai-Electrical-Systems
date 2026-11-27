@@ -354,32 +354,54 @@ chapter({part:"Front matter", id:"toc", num:"00", title:"How to use this handboo
 chapter({part:"Front matter", id:"changelog", num:"00b", title:"Updates & Changelog", mins:4, tag:"Auto-maintained", tool:true, html:`
 <p>This handbook is maintained by a daily agent that researches Hyundai/Kia/Genesis news, recalls, and technical topics and expands the content. Newest entries first. Each entry lists sources.</p>
 
-<div class="callout hy"><span class="lbl">2026-11-26 · run 64</span>
+<div class="callout hy"><span class="lbl">2026-11-27 · run 66</span>
 <ul>
-  <li><b>New chapter added:</b> <a onclick="show('adas-calibration')">ADAS Sensor Calibration and Aiming</a> (Part V, Ch.113): thrust-line geometry diagram, calibration trigger matrix by repair type, static versus dynamic comparison, prerequisite table, the UDS routine sequence, a worked example on lane-keeping drift after windshield replacement, a failure playbook and a quiz.</li>
-  <li><b>Recall and TSB check:</b> searches for Hyundai, Kia and Genesis campaigns surfaced only items already logged (26V728 airbag ACU software on Kona Electric and Veloster N, Ioniq 9 second-row seat detection). New NHTSA TSB documents are listed for 2026 but titles were not shown in results, so none are summarised here. Sources: <a href="https://electrek.co/2026/11/05/hyundai-recalling-nearly-30000-kona-evs-airbag-defect/" target="_blank">Electrek (Nov 5)</a>, <a href="https://www.autoguide.com/auto/manufacturers/hyundai/hyundai-recalls-nearly-38-000-cars-over-airbag-glitch-44642119" target="_blank">AutoGuide</a>, <a href="https://www.autoevolution.com/news/hyundai-recalls-5360-ioniq-9-evs-over-second-row-seat-detection-issue-275814.html" target="_blank">autoevolution</a>.</li>
-  <li><b>Glossary:</b> added Thrust line, Thrust angle, Static calibration, Dynamic calibration, Radome, Radar blockage.</li>
+  <li><b>New chapter added:</b> <a onclick="show('inside-mirror')">Inside Rear-View Mirror — Electrochromic Auto-Dim, HomeLink &amp; Digital Centre Mirror</a> (Part XV, Ch.115): block diagram, function and interface tables, EC dimming logic, worked examples on the glare-to-ambient ratio and on a back-fed reverse input that stops dimming, garage-transmitter troubleshooting, DCM video design targets, a service checklist and a quiz.</li>
+  <li><b>Recall update:</b> the Genesis GV80 suspension recall logged yesterday now has a campaign number. Autoblog reports NHTSA recall 26V766 for select 2026 GV80 models: fasteners on the front-left upper control arm may be under-tightened, which can let the ball joint separate. Watch for abnormal suspension noise or pulling to one side. Dealers will inspect and tighten or replace parts, and owners who already paid will be reimbursed. The filing is dated November 20, 2026. Sources: <a href="https://www.autoblog.com/news/genesis-gv80-recalled-over-ball-joint-that-may-separate" target="_blank">Autoblog</a>, <a href="https://hyundaihq.com/2026/11/2026-genesis-gv80-recalled-over-suspension-issue/" target="_blank">HyundaiHQ</a>. Still open: 26V664 (Genesis power seat motor overheating, 94,622 vehicles; park outside; remedy still being developed; owner letters expected December 7, 2026). Source: <a href="https://static.nhtsa.gov/odi/rcl/2026/RCAK-26V664-9614.pdf" target="_blank">NHTSA 26V664</a>.</li>
+  <li><b>SDV / OTA:</b> a Korean report says Hyundai is rolling out a staged Pleos Connect OTA update for the New Grandeur. It adds a door-lock control to the driving information screen and on-device text-to-speech, and it limits call and message voice commands from the rear seats. The release date could not be confirmed. Source: <a href="https://biz.heraldcorp.com/article/10919990" target="_blank">Herald Corp</a>.</li>
+  <li><b>Glossary:</b> added EC mirror, Glare sensor, Ambient sensor (mirror), HomeLink, Rolling code, DCM, SerDes.</li>
 </ul>
 </div>
 
+<div class="callout hy"><span class="lbl">2026-11-26 · run 65</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('active-air-flap')">Active Air Flaps (AAF) &amp; Grille Shutters</a> (Part XV, Ch.114): LIN architecture diagram, signal content and control-strategy tables, fail-safe behaviour, position learning, worked examples on learned-range plausibility after collision repair and on LIN schedule timing, a failure-mode table, an engineering checklist and a quiz.</li>
+  <li><b>Recall check:</b> a report dated November 26 says Hyundai is recalling some 2026 Genesis GV80 vehicles over a possible suspension upper control arm defect, after a failure on a Korean-market vehicle; Hyundai estimates about 1 % of the covered vehicles have the defect. No NHTSA campaign number was found yet, so treat this as unconfirmed until the filing appears. Source: <a href="https://hyundaihq.com/2026/11/2026-genesis-gv80-recalled-over-suspension-issue/" target="_blank">HyundaiHQ</a>. Already logged: 26V728 (airbag ACU software, Kona Electric and Veloster N), the 2026 Tucson Hybrid and Elantra strut fastener recall and the lug-nut torque recall. Sources: <a href="https://www.vehicleservicepros.com/industry-news/service-repair/article/55418716/national-highway-traffic-safety-administration-nhtsa-nhtsa-recalls-nov-913-bmw-honda-ford-hyundai" target="_blank">Vehicle Service Pros</a>, <a href="https://electrek.co/2026/11/05/hyundai-recalling-nearly-30000-kona-evs-airbag-defect/" target="_blank">Electrek</a>.</li>
+  <li><b>SDV / OTA:</b> no new Pleos or OTA announcements found. Source checked: <a href="https://www.hyundaimotorgroup.com/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system" target="_blank">Hyundai Motor Group newsroom</a>.</li>
+  <li><b>Glossary:</b> added AAF, Active grille shutter, Flap position learn, Fail-safe open, Stall detection, NAD.</li>
+</ul>
+</div>
+
+
+<div class="callout hy"><span class="lbl">2026-11-25 · run 64</span>
+<ul>
+  <li><b>New chapter added:</b> <a onclick="show('isg-stop-start')">Idle Stop &amp; Go (ISG)</a> (Part XV, Ch.113): signal map diagram, stop-enable and restart-request table, 12 V battery strategy, worked examples on the energy budget during a stop and on the restart voltage dip versus module brown-out, voltage-support approaches, a diagnosis playbook for ISG that never activates, a body-module checklist and a quiz.</li>
+  <li><b>Recall check:</b> no new Hyundai, Kia or Genesis US campaigns found since the last run. Already logged: 26V728 (airbag ACU software, 37,901 Kona Electric and Veloster N; owner letters from January 1, 2027), 26V664 (Genesis power seat switch overheating, 94,622 vehicles; owner letters expected December 7, 2026) and the Ioniq 9 second-row seat detection recall. Sources: <a href="https://www.autoguide.com/auto/manufacturers/hyundai/hyundai-recalls-nearly-38-000-cars-over-airbag-glitch-44642119" target="_blank">AutoGuide</a>, <a href="https://gcn.com/hyundai-recalls-genesis-sedans-seat-fire/22606/" target="_blank">GCN</a>, <a href="https://www.autoevolution.com/news/hyundai-recalls-5360-ioniq-9-evs-over-second-row-seat-detection-issue-275814.html" target="_blank">autoevolution</a>.</li>
+  <li><b>SDV / OTA:</b> no new Pleos or OTA announcements found. Source checked: <a href="https://www.hyundaimotorgroup.com/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system" target="_blank">Hyundai Motor Group newsroom</a>.</li>
+  <li><b>Glossary:</b> added ISG, Stop-enable condition, Restart request, AGM battery, EFB, Voltage stabiliser, Battery registration.</li>
+</ul>
+</div>
+
+
 <div class="callout hy"><span class="lbl">2026-11-24 · run 63</span>
 <ul>
-  <li><b>New chapter added:</b> <a onclick="show('remote-start-precondition')">Remote Start and Cabin Pre-conditioning</a> (Part IV, Ch.112): app and key-fob request-chain diagram, typical inhibit table (including the hood switch), ICE versus EV behaviour, immobilizer interaction, network wake timing, a worked example on weak-coverage app failures, a diagnosis playbook and a quiz.</li>
-  <li><b>Service bulletin spotted:</b> search results list Hyundai service bulletins titled "2026 Hyundai Palisade CCU Software Update for OTA Initialization" and a related Hyundai CCU software update service campaign for OTA initialization. Only titles were available (the pages could not be fetched), so scope and procedure are not verified; check Hyundai service information. Sources: <a href="https://dot.report/bulletins/11032531" target="_blank">dot.report bulletin 11032531</a>, <a href="https://dot.report/bulletins/11032530" target="_blank">dot.report bulletin 11032530</a>, <a href="https://owners.hyundaiusa.com/us/en/resources/general-information/ioniqN-ccu-ota-software-update" target="_blank">Hyundai owners: CCU OTA update</a>.</li>
-  <li><b>Recall check:</b> searches for Hyundai, Kia and Genesis campaigns surfaced only items already logged (26V728 airbag ACU software on Kona Electric and Veloster N, 26V588 Ioniq 9 second-row seat detection, Kia/Genesis fuel-leak recall). Sources: <a href="https://topclassactions.com/lawsuit-settlements/lawsuit-news/hyundai-recalls-nearly-38k-electric-vehicles-due-to-airbag-seat-belt-issues/" target="_blank">Top Class Actions (Nov 13)</a>, <a href="https://www.autoevolution.com/news/hyundai-recalls-5360-ioniq-9-evs-over-second-row-seat-detection-issue-275814.html" target="_blank">autoevolution</a>.</li>
-  <li><b>Glossary:</b> added Remote engine start (RES), Remote start inhibit, Consecutive-start limit, Cabin pre-conditioning, Departure-time scheduling, Hood switch.</li>
+  <li><b>New chapter added:</b> <a onclick="show('fuel-level-pump')">Fuel Level Sensing, Gauge Damping &amp; Fuel Pump Control</a> (Part XV, Ch.112): signal-chain diagram, sender and saddle-tank configurations with jet-pump failure signatures, worked examples on divider-to-level conversion (including ground-offset error) and on distance-to-empty, refuel detection and damping states, pump control strategies and crash cut-off, SAE generic DTC table (P0460 to P0464, P2066 to P2069, P0627 to P0629), a diagnosis playbook and a quiz.</li>
+  <li><b>Recall check:</b> no new Hyundai, Kia or Genesis US campaigns found since the last run. Coverage this week continued on 26V728 (airbag ACU software, 37,901 model-year 2019 to 2023 Kona Electric and 2019 to 2022 Veloster N; free dealer software update, owner letters from January 1, 2027) and the Ioniq 9 second-row seat detection recall (5,360 vehicles). Sources: <a href="https://topclassactions.com/lawsuit-settlements/lawsuit-news/hyundai-recalls-nearly-38k-electric-vehicles-due-to-airbag-seat-belt-issues/" target="_blank">Top Class Actions (Nov 13)</a>, <a href="https://www.karmactive.com/hyundai-recalls-37-901-kona-electric-and-veloster-n-vehicles-over-airbag-software-fault/" target="_blank">Karmactive</a>, <a href="https://www.autoevolution.com/news/hyundai-recalls-5360-ioniq-9-evs-over-second-row-seat-detection-issue-275814.html" target="_blank">autoevolution</a>.</li>
+  <li><b>SDV / OTA:</b> no new Pleos or OTA announcements found this week; the April 30, 2026 Pleos Connect announcement remains the latest official item. Source: <a href="https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-redefines-in-vehicle-experience-with-pleos-connect-next-generation-infotainment-system" target="_blank">Hyundai Motor Group newsroom</a>.</li>
+  <li><b>Glossary:</b> added Fuel level sender, Saddle tank, Jet pump, FPCM, Returnless fuel system, Gauge damping, DTE.</li>
 </ul>
 </div>
 
 <div class="callout hy"><span class="lbl">2026-11-23 · run 62</span>
 <ul>
-  <li><b>New chapter added:</b> <a onclick="show('gnss-positioning')">GNSS, Dead Reckoning and Vehicle Positioning</a> (Part IV, Ch.111): positioning data-flow diagram, GNSS terms table (TTFF, DOP, A-GNSS, SBAS), dead-reckoning inputs and failure symptoms, a worked example on tunnel drift after a tyre change, antenna LNA bias fault table, a wrong-location diagnosis playbook, time and spoofing notes, and a quiz.</li>
-  <li><b>SDV / Pleos news:</b> An IONIQ 5 test vehicle was photographed in Korea with a redesigned dash, new steering wheel and a single large centre display that appears to run Pleos Connect (Android Automotive based) in place of the current dual 12.3-inch screens. This is a spy-photo report; production timing is not confirmed. The same report notes Hyundai plans around 20 million Pleos-equipped Hyundai, Kia and Genesis vehicles by 2030 and the new Tucson as the first US Pleos model in early 2027. Source: <a href="https://electrek.co/2026/11/16/hyundai-ioniq-5-caught-new-high-tech-interior-big-display/" target="_blank">Electrek (Nov 16)</a>.</li>
-  <li><b>Autonomy partnership:</b> Hyundai said it will begin delivering IONIQ 5 vehicles built at Metaplant America in Georgia to Waymo in December 2026, with factory changes requested by Waymo including power-operated doors; Waymo installs its sixth-generation driver system after assembly. Secondary report, dates beyond December are projections. Source: <a href="https://world-today-journal.com/hyundai-to-begin-ioniq-5-deliveries-to-waymo-in-december-for-us-robotaxi-fleet" target="_blank">World Today Journal (Nov 21)</a>.</li>
-  <li><b>Recall check:</b> searches for Hyundai, Kia and Genesis campaigns surfaced only items already logged (airbag ACU software on Kona Electric, lug nut and strut fastener recalls). Source: <a href="https://www.vehicleservicepros.com/industry-news/service-repair/article/55418716/national-highway-traffic-safety-administration-nhtsa-nhtsa-recalls-nov-913-bmw-honda-ford-hyundai" target="_blank">Vehicle Service Pros, NHTSA recalls Nov 9 to 13</a>.</li>
-  <li><b>Glossary:</b> added GNSS, Dead reckoning, TTFF, DOP, A-GNSS, SBAS, LNA, C/N0.</li>
+  <li><b>New chapter added:</b> <a onclick="show('builtin-dashcam')">Factory-Integrated Dashcams (Built-in Cam)</a> (Part IV, Ch.111): architecture diagram, recording modes and pre-event buffer, parking-mode battery protection, worked examples on a parking-mode battery budget and on loop length and flash wear, file integrity on power loss, privacy handling, a diagnosis playbook and a quiz.</li>
+  <li><b>Anti-theft software reminder:</b> a November 8 report says police in Sheboygan, Wisconsin urged Kia and Hyundai owners to get the free dealer anti-theft software update, which stops the engine starting unless the original key is used once the car is locked with the fob. Source: <a href="https://www.autoevolution.com/news/just-update-your-car-already-police-issue-new-warning-for-kia-and-hyundai-owners-278118.html" target="_blank">autoevolution</a>. Background in the <a onclick="show('immobilizer')">immobilizer chapter</a>.</li>
+  <li><b>SDV roadmap (context, not new this week):</b> reports from 2026 put the first Hyundai Motor Group software-defined vehicle at late 2027 to 2028, with in-house autonomous-driving AI built on the NVIDIA platform and Pleos Connect infotainment. Dates differ between reports. Sources: <a href="https://www.kedglobal.com/future-mobility/newsView/ked202604080008" target="_blank">KED Global</a>, <a href="https://www.hyundaimotorgroup.com/en/news/CONT0000000000206046" target="_blank">Hyundai Motor Group / NVIDIA</a>.</li>
+  <li><b>Recall check:</b> no new Hyundai, Kia or Genesis US campaigns found beyond those already logged (26V728 airbag ACU software for Kona Electric and Veloster N, owner letters from January 1, 2027; 26V664 Genesis seat switch; Ioniq 9 second-row seat detection). Sources: <a href="https://electrek.co/2026/11/05/hyundai-recalling-nearly-30000-kona-evs-airbag-defect/" target="_blank">Electrek</a>, <a href="https://gcn.com/hyundai-recalls-genesis-sedans-seat-fire/22606/" target="_blank">GCN</a>.</li>
+  <li><b>Glossary:</b> added Built-in Cam, parking mode, pre-event buffer, loop recording, write endurance, hold-up circuit.</li>
 </ul>
 </div>
+
 
 <div class="callout hy"><span class="lbl">2026-11-21 · run 61</span>
 <ul>
@@ -2745,26 +2767,39 @@ candump vcan0        # watch them</code></pre></li>
 `});
 
 var GLOSS = [
-["Thrust line","The direction of travel defined by the rear axle toe; the reference for ADAS sensor aiming and for centring the steering wheel."],
-["Thrust angle","The angle between the thrust line and the body centreline, caused by uneven rear toe; it shifts what an ADAS sensor learns as straight ahead."],
-["Static calibration","ADAS aiming done in a prepared bay with a target board or radar reflector placed at a specified distance, height and offset."],
-["Dynamic calibration","ADAS aiming in which the sensor learns its mounting offset while the vehicle is driven on suitable roads at specified speeds."],
-["Radome","The radar-transparent cover or emblem in front of a radar sensor; repainting or using a non OEM part can attenuate or distort the beam."],
-["Radar blockage","A sensor self-diagnosis that the radar view is obstructed by dirt, ice or an unsuitable cover, which disables dependent features."],
-["Remote engine start (RES)","Starting the engine or EV climate session without the driver in the vehicle, via key fob RF command or connected app; the vehicle stays locked and cannot be driven without a valid key."],
-["Remote start inhibit","Any precondition that makes the body controller refuse or end a remote start, such as an open door or hood, shifter not in P, low battery or an active alarm."],
-["Consecutive-start limit","Counter that caps how many remote starts are allowed without an intervening normal drive cycle."],
-["Cabin pre-conditioning","Heating or cooling the cabin, and on EVs often the battery, before departure, ideally on grid power while plugged in."],
-["Departure-time scheduling","EV feature that times climate and battery pre-conditioning so the vehicle is ready at a set departure time."],
-["Hood switch","Bonnet-ajar switch read by the body controller; a remote start safety inhibit and a common hidden cause of remote start refusal."],
-["GNSS","Global Navigation Satellite System: umbrella term for GPS, GLONASS, Galileo, BeiDou and regional systems used for vehicle position and time."],
-["Dead reckoning","Estimating position between GNSS fixes by integrating wheel-speed distance, gyro heading change and reverse-gear direction."],
-["TTFF","Time To First Fix: delay from receiver power-up to a valid position; shortened by stored ephemeris and A-GNSS."],
-["DOP","Dilution Of Precision: measure of how satellite geometry degrades position accuracy; high in urban canyons."],
-["A-GNSS","Assisted GNSS: orbit and time assistance data delivered over the cellular link to speed up the first fix."],
-["SBAS","Satellite-Based Augmentation System such as WAAS or EGNOS that broadcasts GNSS corrections."],
-["LNA","Low-Noise Amplifier in an active antenna, powered by DC bias on the coax; bias current monitoring detects open or short faults."],
-["C/N0","Carrier-to-noise density ratio in dB-Hz: per-satellite signal strength shown in GNSS diagnostic screens."],
+["EC mirror","Electrochromic mirror; a mirror whose glass darkens when a small DC voltage is applied, used for automatic glare dimming."],
+["Glare sensor","Rear-facing photodiode in an auto-dim mirror that measures light from following headlamps."],
+["Ambient sensor (mirror)","Forward-facing photodiode in an auto-dim mirror that tells it whether it is dark outside."],
+["HomeLink","Brand name of a universal garage-door and gate transmitter built into many vehicle mirrors or headliners."],
+["Rolling code","Remote-control scheme in which every transmission uses a new code, so a recorded signal cannot simply be replayed."],
+["DCM","Digital Centre Mirror; an inside mirror that can show a live rear-camera image on an LCD instead of the optical reflection."],
+["SerDes","Serialiser/deserialiser pair that carries high-speed camera or display video over a single coax or twisted-pair cable."],
+["AAF","Active Air Flap; motorised vanes behind the front grille or bumper that close to cut drag and speed warm-up, and open for cooling airflow."],
+["Active grille shutter","Generic industry name for an active air flap system."],
+["Flap position learn","A routine in which the flap actuator drives to both mechanical end stops to measure and store its travel range."],
+["Fail-safe open","Design rule in which a flap actuator moves to the open position when it loses communication or detects a fault, so cooling is protected."],
+["Stall detection","Method by which a motor actuator detects that it is blocked, using motor current, position counts that stop changing, or both."],
+["NAD","Node Address for Diagnostic; the LIN address of a slave node, which may need to be assigned when several identical actuators share one bus."],
+["ISG","Idle Stop and Go; the Hyundai, Kia and Genesis name for engine stop-start, which shuts the engine at standstill and restarts it on brake release."],
+["Stop-enable condition","One of a list of conditions that must all be true before the engine ECU allows an automatic engine stop, such as hood closed and battery SOC high enough."],
+["Restart request","A condition that forces an automatic restart while the engine is stopped by ISG, for example brake release, defrost selected or low battery SOC."],
+["AGM battery","Absorbent Glass Mat lead-acid battery with better cycling durability than a flooded battery; common on stop-start vehicles."],
+["EFB","Enhanced Flooded Battery; a flooded lead-acid design improved for partial state-of-charge cycling, used on entry-level stop-start vehicles."],
+["Voltage stabiliser","DC-DC boost converter that holds sensitive 12 V loads near nominal voltage during an engine restart so they do not reset."],
+["Battery registration","Scan-tool procedure that tells the battery sensor and charging strategy that a new battery of a given type and capacity has been fitted."],
+["Fuel level sender","In-tank float arm and wiper on a resistor card; its resistance changes with fuel level and is read by a measuring ECU through a pull-up divider."],
+["Saddle tank","Fuel tank split into two lobes over a driveshaft or exhaust; each lobe has its own level sender and fuel is moved across by a jet pump."],
+["Jet pump","Venturi transfer pump driven by fuel flow from the main pump; moves fuel from the sub side of a saddle tank to the pump side."],
+["FPCM","Fuel Pump Control Module; drives the fuel pump with PWM to meet a pressure or flow target from the engine ECU, typical in returnless systems."],
+["Returnless fuel system","Fuel system with no return line to the tank; pressure is held by varying pump speed or by a regulator in the tank module."],
+["Gauge damping","Heavy low-pass filtering of the fuel level signal to hide slosh, combined with a fast-fill path when a refuel is detected at ignition on."],
+["DTE","Distance To Empty; usable fuel remaining divided by an averaged consumption figure, shown on the cluster trip computer."],
+["Built-in Cam","Factory-integrated dashcam offered by Hyundai, Kia and Genesis in some markets; recorder ECU with front and rear cameras, playback on the head unit."],
+["Parking mode","Dashcam recording while the vehicle is off and locked, triggered by impact or motion or run as time-lapse; limited by battery cut-off rules."],
+["Pre-event buffer","RAM ring buffer that holds the last seconds of video so an event clip includes what happened before the trigger."],
+["Loop recording","Recording in fixed-length segments where the oldest unprotected segment is overwritten when storage is full."],
+["Write endurance","Number of program/erase cycles flash memory can survive; critical for continuous video recording."],
+["Hold-up circuit","Supercapacitor or similar energy store that keeps an ECU alive long enough to close files after supply loss."],
 ["eCall","European in-vehicle emergency call system that dials 112 automatically after a serious crash or manually via the SOS button and sends a Minimum Set of Data."],
 ["NG eCall","Next Generation eCall: emergency call over packet-switched 4G or 5G IMS networks, with the MSD carried in the SIP INVITE instead of an in-band modem."],
 ["MSD","Minimum Set of Data: compact eCall message (EN 15722, up to 140 bytes) with VIN, time, position, heading, propulsion type and trigger type."],
@@ -8928,296 +8963,538 @@ chapter({part:"Part IV · Telematics & Connectivity", id:"ecall-sos", num:"110",
 `});
 </script>
 <script>
-chapter({part:"Part IV · Telematics & Connectivity", id:"gnss-positioning", num:"111", title:"GNSS, Dead Reckoning and Vehicle Positioning", mins:9, tag:"Telematics / Navigation", html:`
-<p>Vehicle position feeds far more than the navigation map. The telematics unit uses it for stolen-vehicle tracking, emergency call location and geofencing; the head unit uses it for navigation and time; ADAS map functions use it to look up speed limits and curvature; and the network often uses GNSS time as a reference. This chapter covers how a production vehicle computes its position, why it keeps working in tunnels and parking garages, and how to diagnose the common "car shows the wrong location" complaint.</p>
+chapter({part:"Part IV · Telematics & Connectivity", id:"builtin-dashcam", num:"111", title:"Factory-Integrated Dashcams (Built-in Cam) — Recording Pipeline, Parking Mode, Storage Wear &amp; Battery Protection", mins:9, tag:"Telematics / Body", html:`
+<p>An aftermarket dashcam is a self-contained gadget on a cigarette-lighter plug. A factory-integrated recorder, marketed by Hyundai, Kia and Genesis as <b>Built-in Cam</b> in several markets, is a proper ECU: it has its own camera links, non-volatile storage, a wake strategy, a link to the head unit for playback and often a Wi-Fi path to a smartphone app. That makes it a body-electrical problem as much as a video one. It must not drain the 12 V battery in parking mode, must not wear out its own memory, and must keep an incident clip even when power drops a fraction of a second after an impact. This chapter treats it from that ECU point of view.</p>
 
-<h3>1. Where positioning lives</h3>
-<p>Depending on platform and trim, the GNSS receiver may sit in the head unit (navigation-equipped AVN or ccNC / Pleos Connect systems), in the telematics control unit (TCU), or in both, with a shared roof antenna feeding a splitter. Many architectures compute position once and share it: the producer publishes latitude, longitude, heading, speed and a quality flag over CAN, CAN FD or automotive Ethernet so that other ECUs do not need their own receivers.</p>
+<div class="callout"><span class="lbl">SCOPE</span>Availability, camera count, storage size, parking-mode features and app support differ by model, model year, trim and market; some regions do not offer the feature at all. Numbers below are illustrative engineering values, not specifications for a particular vehicle. Always follow the service information for the actual VIN.</div>
 
-<div class="diagwrap"><svg viewBox="0 0 720 200" width="100%" role="img" aria-label="Positioning data flow from antenna and vehicle sensors to the position engine and consumers">
-<rect x="10" y="20" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="45" text-anchor="middle" font-size="12" fill="currentColor">Roof antenna + LNA</text>
-<rect x="10" y="80" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="105" text-anchor="middle" font-size="12" fill="currentColor">Wheel speeds (ESC)</text>
-<rect x="10" y="140" width="130" height="40" rx="6" fill="none" stroke="currentColor"/><text x="75" y="165" text-anchor="middle" font-size="12" fill="currentColor">Gyro / IMU, gear</text>
-<rect x="240" y="60" width="190" height="80" rx="8" fill="none" stroke="currentColor"/><text x="335" y="95" text-anchor="middle" font-size="13" fill="currentColor">Position engine</text><text x="335" y="115" text-anchor="middle" font-size="11" fill="currentColor">GNSS + dead reckoning filter</text>
-<rect x="540" y="20" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="43" text-anchor="middle" font-size="12" fill="currentColor">Navigation / map</text>
-<rect x="540" y="82" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="105" text-anchor="middle" font-size="12" fill="currentColor">TCU: SOS, tracking</text>
-<rect x="540" y="144" width="170" height="36" rx="6" fill="none" stroke="currentColor"/><text x="625" y="167" text-anchor="middle" font-size="12" fill="currentColor">ADAS map, clock</text>
-<line x1="140" y1="40" x2="240" y2="85" stroke="currentColor"/><line x1="140" y1="100" x2="240" y2="100" stroke="currentColor"/><line x1="140" y1="160" x2="240" y2="115" stroke="currentColor"/>
-<line x1="430" y1="85" x2="540" y2="38" stroke="currentColor"/><line x1="430" y1="100" x2="540" y2="100" stroke="currentColor"/><line x1="430" y1="115" x2="540" y2="162" stroke="currentColor"/>
+<h3>1. System architecture</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 220" width="100%" role="img" aria-label="Integrated dashcam architecture: front and rear cameras feed a recorder ECU with storage, linked to head unit, CAN and smartphone">
+<rect x="10" y="20" width="130" height="55" rx="8" fill="none" stroke="currentColor"/><text x="75" y="44" text-anchor="middle" font-size="13" fill="currentColor">Front camera</text><text x="75" y="62" text-anchor="middle" font-size="10" fill="currentColor">behind mirror</text>
+<rect x="10" y="140" width="130" height="55" rx="8" fill="none" stroke="currentColor"/><text x="75" y="164" text-anchor="middle" font-size="13" fill="currentColor">Rear camera</text><text x="75" y="182" text-anchor="middle" font-size="10" fill="currentColor">rear glass / tailgate</text>
+<rect x="230" y="60" width="180" height="100" rx="8" fill="none" stroke="currentColor"/><text x="320" y="86" text-anchor="middle" font-size="13" fill="currentColor">Recorder ECU</text><text x="320" y="104" text-anchor="middle" font-size="10" fill="currentColor">ISP, H.264/H.265 encoder</text><text x="320" y="119" text-anchor="middle" font-size="10" fill="currentColor">G-sensor, RTC, supercap</text><text x="320" y="134" text-anchor="middle" font-size="10" fill="currentColor">eMMC / SD storage</text>
+<rect x="500" y="15" width="200" height="45" rx="8" fill="none" stroke="currentColor"/><text x="600" y="42" text-anchor="middle" font-size="12" fill="currentColor">Head unit (playback, settings)</text>
+<rect x="500" y="88" width="200" height="45" rx="8" fill="none" stroke="currentColor"/><text x="600" y="115" text-anchor="middle" font-size="12" fill="currentColor">CAN: IGN, speed, gear, lock</text>
+<rect x="500" y="160" width="200" height="45" rx="8" fill="none" stroke="currentColor" stroke-dasharray="4 3"/><text x="600" y="187" text-anchor="middle" font-size="12" fill="currentColor">Smartphone app (Wi-Fi)</text>
+<line x1="140" y1="48" x2="230" y2="90" stroke="currentColor"/><line x1="140" y1="167" x2="230" y2="130" stroke="currentColor"/>
+<text x="180" y="60" text-anchor="middle" font-size="9" fill="currentColor">serialized video</text>
+<line x1="410" y1="90" x2="500" y2="40" stroke="currentColor"/><line x1="410" y1="110" x2="500" y2="110" stroke="currentColor"/><line x1="410" y1="135" x2="500" y2="180" stroke="currentColor" stroke-dasharray="4 3"/>
 </svg></div>
-
-<h3>2. GNSS basics an engineer needs</h3>
 <table>
-<tr><th>Item</th><th>What it means</th><th>Why it matters in a car</th></tr>
-<tr><td>Constellations</td><td>GPS (US), GLONASS (Russia), Galileo (EU), BeiDou (China), QZSS (Japan regional)</td><td>Multi-constellation receivers see more satellites, which helps in urban canyons</td></tr>
-<tr><td>L1 / E1 band</td><td>About 1575.42 MHz, the main civil band</td><td>Most automotive receivers are single-band L1; dual-band L1+L5 receivers reduce multipath error</td></tr>
-<tr><td>TTFF</td><td>Time to first fix after power-up</td><td>Cold start can take tens of seconds; stored ephemeris and assistance data shorten it to a few seconds</td></tr>
-<tr><td>Ephemeris / almanac</td><td>Precise and coarse satellite orbit data</td><td>Kept in receiver memory across sleep; a lost backup supply forces a cold start</td></tr>
-<tr><td>DOP</td><td>Dilution of precision: geometry quality of visible satellites</td><td>High DOP in narrow streets means poor accuracy even with many satellites</td></tr>
-<tr><td>A-GNSS</td><td>Assistance data delivered over the cellular link</td><td>The TCU modem can fetch orbit data so the first fix after a long park is fast</td></tr>
-<tr><td>SBAS</td><td>Satellite-based correction (WAAS, EGNOS, MSAS)</td><td>Improves typical accuracy toward 1 to 2 m where supported</td></tr>
+<tr><th>Block</th><th>Role</th><th>Engineering concern</th></tr>
+<tr><td>Cameras</td><td>Image sensor plus lens; usually separate from the ADAS front camera</td><td>Wide dynamic range for tunnels and headlights; heater or placement to avoid fogging; LED flicker from signs and lamps</td></tr>
+<tr><td>Video link</td><td>Serialized digital video over coax or shielded twisted pair, power often supplied over the same coax</td><td>Connector seating, shield continuity, EMC (see <a onclick="show('emc-emi')">EMC chapter</a>)</td></tr>
+<tr><td>Recorder ECU</td><td>Image processing, encoding, file system, event logic</td><td>Thermal limits in a hot cabin; boot time after ignition on</td></tr>
+<tr><td>Storage</td><td>Internal flash or a removable card</td><td>Write endurance, file-system integrity on power loss</td></tr>
+<tr><td>Vehicle signals</td><td>Ignition state, speed, gear, door/lock state, GNSS time and position</td><td>Overlay accuracy, mode switching, wake conditions</td></tr>
+<tr><td>User interface</td><td>Head-unit menu, record button, status LED, smartphone app</td><td>Privacy settings, file export, firmware updates</td></tr>
 </table>
 
-<h3>3. Dead reckoning</h3>
-<p>Pure GNSS fails in tunnels, multi-level garages and between tall buildings. Automotive receivers therefore run <b>dead reckoning (DR)</b>: they integrate distance from wheel speed (or a vehicle speed signal), heading change from a yaw-rate gyro, and direction from the reverse gear signal. A filter, typically a Kalman filter, blends DR with GNSS whenever satellites are available and continuously calibrates the DR sensors (wheel tick scale factor, gyro bias) while the sky is clear.</p>
+<h3>2. Recording modes</h3>
 <table>
-<tr><th>DR input</th><th>Typical source</th><th>Failure symptom</th></tr>
-<tr><td>Distance / speed</td><td>Wheel speed or vehicle speed message from ESC over CAN, or a hardwired speed pulse on older units</td><td>Position runs ahead or behind on the route, especially in tunnels</td></tr>
-<tr><td>Heading change</td><td>Gyro inside the receiver module, or yaw rate from the ESC sensor cluster</td><td>Arrow drifts off the road on curves; worse after the module was remounted at a different angle</td></tr>
-<tr><td>Direction</td><td>Reverse gear signal (shift-by-wire or TCM message, or a reverse lamp input)</td><td>Position moves forward while reversing out of a parking space</td></tr>
-<tr><td>Map matching</td><td>Navigation software snapping the estimate to the road network</td><td>Snaps to a parallel road or service lane</td></tr>
+<tr><th>Mode</th><th>Trigger</th><th>Typical behaviour</th><th>File handling</th></tr>
+<tr><td>Continuous (driving)</td><td>Ignition or ready on</td><td>Records in fixed-length segments, often 1 minute</td><td>Loop area: oldest segment overwritten first</td></tr>
+<tr><td>Impact event</td><td>G-sensor above threshold, or crash signal from the airbag unit</td><td>Keeps seconds before and after the trigger from a RAM pre-buffer</td><td>Moved to a protected event area, not overwritten by the loop</td></tr>
+<tr><td>Manual</td><td>Driver button or head-unit command</td><td>Same as event, with a manual flag</td><td>Protected area</td></tr>
+<tr><td>Parking (motion or impact)</td><td>Vehicle off and locked, feature enabled</td><td>Low-power wait; records on G-sensor impact or image motion</td><td>Separate parking folder</td></tr>
+<tr><td>Time-lapse parking</td><td>Vehicle off, time-lapse selected</td><td>Low frame rate to cut power and storage</td><td>Parking folder</td></tr>
 </table>
 
-<div class="callout tip"><span class="lbl">Tip</span>Many DR receivers need a learning drive after replacement, battery disconnect or tyre change. The gyro and wheel-tick scale factor recalibrate during a few kilometres of open-sky driving with turns. Advise the customer before declaring a fault.</div>
+<div class="callout tip"><span class="lbl">WHY A PRE-BUFFER</span>A clip that starts at the moment of impact is useless, because the interesting part is the few seconds before it. The recorder therefore always keeps the last several seconds of encoded video in RAM. When an event fires, it writes the pre-buffer plus the following seconds to the protected area. A short G-sensor spike from a pothole or slammed door can fire the same path, which is why event sensitivity is usually adjustable.</div>
 
-<div class="callout example"><span class="lbl">Worked example · DR drift in a tunnel</span>
-<p>A vehicle enters a 2.0 km tunnel at 80 km/h. The DR wheel-tick scale factor has a 2 percent error because larger aftermarket tyres were fitted and the receiver has not relearned.</p>
-<p>Time in tunnel: 2.0 km / 80 km/h = 90 s. Along-track error: 2 percent of 2000 m = 40 m. A gyro bias of 0.05 deg/s accumulates 0.05 x 90 = 4.5 degrees of heading error by the exit; the lateral error grows roughly as distance x heading error / 2, so about 2000 x 0.0785 / 2, which is roughly 79 m.</p>
-<p>Result: at the tunnel exit the map can show the car up to around 80 to 90 m away from its true position, until GNSS reacquires (usually within seconds in open sky) and the filter corrects. If complaints only occur after a tyre change, a recalibration drive is the first step, not a module replacement.</p>
+<h3>3. Power and the 12 V battery</h3>
+<p>Parking mode is where a dashcam becomes a dark-current problem (see <a onclick="show('dark-current')">dark current</a> and <a onclick="show('ibs-power-mgmt')">battery sensor and power management</a>). A factory recorder normally has three protections that aftermarket units often lack:</p>
+<table>
+<tr><th>Protection</th><th>How it works</th><th>What a tech sees</th></tr>
+<tr><td>Low-voltage cut-off</td><td>Recorder stops parking mode when battery voltage or state of charge falls below a threshold</td><td>Parking recording ends early after a few cold nights; normal behaviour</td></tr>
+<tr><td>Time limit</td><td>Parking mode ends after a set number of hours, or is disabled after several days parked</td><td>No clips after a long airport stay</td></tr>
+<tr><td>Power-manager request</td><td>Body or power controller can tell the recorder to stop when the battery manager enters a load-shed stage</td><td>Recorder log shows external stop requests</td></tr>
+</table>
+<p>On electrified vehicles the 12 V battery is topped up from the high-voltage pack by the converter only in some states, so a recorder that keeps the 12 V bus busy can interact with the auxiliary-battery charging logic (see <a onclick="show('iccu-vcu')">ICCU and VCU</a>).</p>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE · PARKING-MODE BUDGET</span>
+Assume a recorder that draws 3.0 W in impact-and-motion parking mode and 1.2 W in time-lapse mode, on a 60 Ah 12 V battery. The power manager wants to keep at least 80 percent of capacity for starting and later wake-ups, so the recorder may use 12 Ah.<br>
+Current in parking mode: 3.0 W / 12.5 V = 0.24 A. Run time: 12 Ah / 0.24 A = 50 h.<br>
+Current in time-lapse: 1.2 W / 12.5 V = 0.096 A. Run time: 12 Ah / 0.096 A = 125 h, a little over 5 days.<br>
+Compare the vehicle base dark current, say 25 mA. The recorder in normal parking mode draws nearly ten times that. This is why a customer with a dead battery after a long weekend should have the recorder parking setting checked before anyone replaces the battery, and why the cut-off threshold matters more than the nominal run time: a cold, partly charged battery reaches the cut-off far sooner.
 </div>
 
-<h3>4. The antenna path</h3>
-<p>The GNSS signal arrives at around minus 130 dBm, far below the thermal noise floor, so the antenna includes a low-noise amplifier (LNA) powered by a DC bias on the coax centre conductor, typically 3.3 to 5 V. The receiver monitors the bias current to detect open and short circuits. Shark-fin antennas often combine GNSS, cellular and satellite radio elements; see the antenna systems chapter.</p>
+<h3>4. Storage, write endurance and file integrity</h3>
+<p>Continuous video is the harshest write load in the vehicle. Flash cells have a finite number of program/erase cycles, and the loop area is rewritten all day, every day (see <a onclick="show('nvm-power-loss')">ECU non-volatile memory</a>).</p>
+
+<div class="callout example"><span class="lbl">WORKED EXAMPLE · LOOP LENGTH AND WEAR</span>
+Front camera at 8 Mbit/s plus rear camera at 4 Mbit/s gives 12 Mbit/s = 1.5 MB/s = about 5.4 GB per hour.<br>
+With 64 GB storage and 20 percent reserved for event and parking folders, the loop area is about 51 GB, which holds roughly 9.5 hours of driving before the oldest segment is overwritten.<br>
+Wear: a driver doing 1.5 hours a day writes about 8 GB a day. Over 10 years that is about 30 TB, or roughly 470 full writes of a 64 GB device. Consumer TLC flash is commonly rated in the hundreds to low thousands of cycles, so wear levelling and a large spare area are essential, and a removable card would need to be a high-endurance type. Doubling the bitrate halves the loop length and doubles the wear.
+</div>
+
+<p>Power loss is the other risk. If the 12 V supply drops at the moment of an impact, the encoder may be mid-segment. Integrated designs typically use a supercapacitor or small hold-up circuit to give enough time to close the current file and flush file-system metadata. A recorder that shows corrupted or zero-length last clips after a crash or battery disconnect may have a weak hold-up circuit.</p>
+
+<h3>5. Signals, overlays and time</h3>
 <table>
-<tr><th>Antenna fault</th><th>Typical detection</th><th>Field cause</th></tr>
-<tr><td>Open circuit</td><td>Bias current below threshold</td><td>Unseated FAKRA or HSD connector, damaged coax after headliner work</td></tr>
-<tr><td>Short to ground</td><td>Bias current above threshold, supply foldback</td><td>Crushed cable at a pillar or roof rail, water ingress at the shark fin</td></tr>
-<tr><td>Weak signal, no DTC</td><td>Low carrier-to-noise (C/N0) in the diagnostic screen</td><td>Metallised windscreen film, roof rack, dash-cam or charger interference near 1575 MHz</td></tr>
+<tr><th>Signal</th><th>Source</th><th>Used for</th></tr>
+<tr><td>Ignition / ready</td><td>CAN power mode</td><td>Start and stop driving mode</td></tr>
+<tr><td>Vehicle speed</td><td>CAN, originally from wheel speed (see <a onclick="show('wheel-speed')">wheel speed</a>)</td><td>Overlay and metadata</td></tr>
+<tr><td>Gear / reverse</td><td>CAN</td><td>Some designs pause or change rear recording in reverse</td></tr>
+<tr><td>Lock / alarm state</td><td>Body controller</td><td>Enter parking mode only when locked; alarm events may tag clips</td></tr>
+<tr><td>Time and position</td><td>GNSS or head-unit time</td><td>Clip timestamp, location metadata</td></tr>
+<tr><td>Crash signal</td><td>Airbag unit message</td><td>Force an event clip</td></tr>
+</table>
+<p>A wrong clock is a common complaint: if the recorder only learns the time from the head unit or GNSS, a replacement unit, a long disconnect or a missing time message can leave clips stamped in the wrong time zone or at a default date.</p>
+
+<h3>6. Privacy and data handling</h3>
+<p>Video of public roads, other vehicles and cabin audio is personal data in many jurisdictions. Integrated recorders therefore usually offer audio recording on/off, a way to delete or format storage, and PIN or app pairing for wireless download. From a service point of view: do not export or review customer footage unless the customer asks, and note that formatting storage during a repair destroys evidence the customer may need. Ask first.</p>
+
+<h3>7. Diagnosis playbook</h3>
+<table>
+<tr><th>Symptom</th><th>Likely area</th><th>First checks</th></tr>
+<tr><td>Status LED red, "camera not connected" on head unit</td><td>Camera link or power</td><td>Camera connector, coax damage after glass or headliner work, link DTCs</td></tr>
+<tr><td>Black or rolling picture from rear only</td><td>Rear link</td><td>Tailgate hinge harness flex, shield continuity</td></tr>
+<tr><td>Recording stops after a few minutes</td><td>Storage or thermal</td><td>Storage health or format prompt, cabin heat, firmware level</td></tr>
+<tr><td>Dead battery after parking</td><td>Parking mode settings</td><td>Parking mode type, cut-off setting, measured sleep current with and without recorder fuse</td></tr>
+<tr><td>Last clip before an incident missing or corrupt</td><td>Power hold-up</td><td>Supply drop on impact, hold-up circuit, firmware</td></tr>
+<tr><td>Too many event clips</td><td>G-sensor sensitivity</td><td>Sensitivity setting, recorder mounting</td></tr>
+<tr><td>Wrong date or time</td><td>Time source</td><td>Head-unit time, GNSS fix, time-sync messages</td></tr>
+<tr><td>App cannot connect</td><td>Wi-Fi or pairing</td><td>Recorder Wi-Fi enabled, phone pairing, distance, firmware</td></tr>
 </table>
 
-<div class="callout warn"><span class="lbl">Watch out</span>Cheap USB chargers and some dash cams radiate wideband noise that can desensitise an L1 receiver without setting any DTC. A simple test is to unplug all aftermarket accessories and compare satellite count and C/N0 in the head unit or GDS engineering screen.</div>
+<div class="callout warn"><span class="lbl">WARNING</span>Do not splice an aftermarket recorder into the factory camera or recorder harness. Serialized video links are impedance-controlled, and a tapped coax can drop both factory recording and other camera functions that share the same harness routing. It may also add an unmanaged parking load that defeats the factory battery protection.</div>
 
-<h3>5. Diagnosis playbook: "wrong location"</h3>
-<table>
-<tr><th>Step</th><th>Check</th><th>Interpretation</th></tr>
-<tr><td>1</td><td>Read DTCs in head unit and TCU (antenna open or short, GNSS module internal)</td><td>An antenna DTC points to the coax path first</td></tr>
-<tr><td>2</td><td>Open the GPS or engineering screen: satellites in view and used, C/N0, fix type</td><td>Healthy open sky: many satellites used with strong C/N0 values, often in the 40s dB-Hz</td></tr>
-<tr><td>3</td><td>Compare the location shown in the app with the head unit</td><td>If only the app is wrong, suspect the TCU source or backend lag, not the head unit</td></tr>
-<tr><td>4</td><td>Check speed and reverse signals in live data while driving</td><td>Missing or frozen speed input breaks DR</td></tr>
-<tr><td>5</td><td>Check software level and campaigns</td><td>Navigation and map updates can change map-matching behaviour</td></tr>
-<tr><td>6</td><td>Perform a calibration drive, then recheck</td><td>Clears drift after battery disconnect, module or tyre replacement</td></tr>
-</table>
-
-<h3>6. Time, security and privacy</h3>
-<p>GNSS also supplies UTC time, which head units and TCUs can use for the clock, log timestamps and certificate validity checks. A receiver that never gets a fix can leave a module with a wrong date, which may cause TLS or certificate errors on connected services. GNSS signals are unauthenticated in civil use, so jamming and spoofing are recognised threats under vehicle cybersecurity work (ISO/SAE 21434 and UN R155): sanity checks against DR, wheel speed and cellular-derived position help detect implausible jumps. Location is personal data, so retention, consent and user controls for tracking features are governed by market privacy law and the connected-services terms.</p>
+<div class="callout hy"><span class="lbl">HYUNDAI NOTE</span>On Hyundai, Kia and Genesis vehicles that offer the factory recorder, settings and playback are normally reached through the infotainment screen, with a smartphone app for wireless download in some markets. Parking recording may depend on the vehicle being locked and on battery state. Exact behaviour, storage size and service procedures differ by platform and market, so use GDS and the service information for the specific vehicle.</div>
 
 <div class="quiz" data-a="2"><span class="lbl">Quiz</span>
-<p>After a 12 V battery replacement, a customer reports that navigation shows the car moving forward on the map while reversing out of the driveway, and the position drifts in a car park. Outdoors, GNSS satellite count and C/N0 look normal and there are no DTCs. What is the most likely explanation?</p>
-  <button class="opt">The GNSS antenna LNA has failed open</button>
-  <button class="opt">The constellation almanac is corrupt and needs a module replacement</button>
-  <button class="opt">Dead-reckoning calibration was lost and the reverse or speed input needs to be relearned or checked</button>
-  <button class="opt">The SBAS corrections are disabled in this market</button>
-  <div class="exp">Healthy satellite reception with no DTC rules out the antenna. Wrong direction while reversing and drift without sky view are dead-reckoning symptoms. Confirm the reverse and speed signals in live data, then perform the learning drive before replacing hardware.</div>
+<p>A customer reports a dead 12 V battery after leaving the car parked for three days. The recorder is set to impact-and-motion parking mode, and the vehicle base sleep current measures normal with the recorder fuse removed. What is the most sensible next step?</p>
+  <button class="opt">Replace the 12 V battery, since base sleep current is normal</button>
+  <button class="opt">Replace the recorder ECU</button>
+  <button class="opt">Check the parking-mode type and low-voltage cut-off setting, measure the recorder parking draw, and consider time-lapse mode or a higher cut-off</button>
+  <button class="opt">Format the recorder storage</button>
+  <div class="exp">Base current is normal, so the recorder is the main load. At roughly 0.2 to 0.3 A, three days of parking recording takes a large share of a 12 V battery, and a cold or partly charged battery reaches trouble well before the nominal run time. Settings and measured draw come before parts. Formatting destroys the customer clips and does nothing for current draw.</div>
 </div>
-
-<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-23. Receiver location, sensor inputs, signal names and diagnostic screens vary by platform, model year, trim and market. Figures are typical industry values for orientation only. Always confirm against official Hyundai service information and GDS for the specific VIN.</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-23. Power, bitrate and storage figures are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model. Feature availability varies by model, model year and market.</div>
 `});
 </script>
 <script>
-chapter({part:"Part IV · Telematics & Connectivity", id:"remote-start-precondition", num:"112", title:"Remote Start and Cabin Pre-conditioning: From App Tap to Warm Cabin", mins:9, tag:"Telematics / Body / Climate", html:`
-<p>Remote start and remote climate are the most-used connected features on many Hyundai, Kia and Genesis vehicles, and they cross almost every domain in this handbook: the cloud and the TCU, the gateway and network wake-up, the body controller and smart-key/immobilizer logic, the engine or EV powertrain, and the climate controller. When a customer says "remote start does not work", the fault can be in any of those links, or the request may simply have been blocked by a perfectly healthy inhibit condition. This chapter walks the chain end to end and gives a structured way to find the broken link.</p>
+chapter({part:"Part XV · Extended Systems", id:"fuel-level-pump", num:"112", title:"Fuel Level Sensing, Gauge Damping &amp; Fuel Pump Control — Senders, Saddle Tanks, DTE Logic and Pump Driver Diagnostics", mins:9, tag:"Body / Powertrain interface", html:`
+<p>The fuel gauge looks like the simplest instrument in the car, yet it sits on a chain of parts owned by several teams: a float-arm sender inside the tank, a measuring ECU (cluster, engine ECU or a dedicated fuel pump control module, depending on the platform), a filtered value sent over CAN, and the cluster logic that turns it into a needle, a low-fuel lamp and a distance-to-empty (DTE) number. The same in-tank module usually carries the fuel pump, whose driver and crash cut-off are body-electrical concerns too. This chapter covers the signal chain end to end, the filtering that makes the gauge stable, and how to diagnose the common faults.</p>
 
-<div class="callout warn"><span class="lbl">Caveat</span>Module names, inhibit lists, timeout values and app wording vary by platform, model year, market and subscription. Treat the tables below as typical patterns and confirm against the service information for the exact vehicle.</div>
+<div class="callout"><span class="lbl">SCOPE</span>Which ECU reads the sender, sender resistance ranges, pump control strategy and DTC assignment vary by model, model year, engine and market. Values below are illustrative engineering numbers, not specifications for any Hyundai, Kia or Genesis vehicle. Always use the vehicle circuit diagram and service information for the car in front of you.</div>
 
-<h3>1. The request chain</h3>
-<p>Two delivery paths exist. <b>Key fob remote start</b> (where fitted, mainly North America) is a short-range RF command received by the smart-key receiver and handled by the body/smart-key controller. <b>App remote start</b> travels from the phone to the Hyundai backend, then over cellular to the TCU, which wakes the vehicle network and forwards the request. Both converge on the same body-side arbitration logic.</p>
-
-<div class="diagwrap"><svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12">
-<rect x="10" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="65" y="46" text-anchor="middle" fill="currentColor">Phone app</text>
-<rect x="150" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="205" y="46" text-anchor="middle" fill="currentColor">Backend</text>
-<rect x="290" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="345" y="40" text-anchor="middle" fill="currentColor">TCU / CCU</text><text x="345" y="56" text-anchor="middle" fill="currentColor" font-size="10">cellular wake</text>
-<rect x="430" y="20" width="110" height="44" rx="6" fill="none" stroke="currentColor"/><text x="485" y="46" text-anchor="middle" fill="currentColor">Gateway</text>
-<rect x="570" y="20" width="170" height="44" rx="6" fill="none" stroke="currentColor"/><text x="655" y="40" text-anchor="middle" fill="currentColor">Body / smart-key</text><text x="655" y="56" text-anchor="middle" fill="currentColor" font-size="10">arbitration and inhibits</text>
-<rect x="430" y="140" width="130" height="44" rx="6" fill="none" stroke="currentColor"/><text x="495" y="160" text-anchor="middle" fill="currentColor">Engine / VCU</text><text x="495" y="176" text-anchor="middle" fill="currentColor" font-size="10">start or HV ready</text>
-<rect x="600" y="140" width="140" height="44" rx="6" fill="none" stroke="currentColor"/><text x="670" y="160" text-anchor="middle" fill="currentColor">Climate (FATC)</text><text x="670" y="176" text-anchor="middle" fill="currentColor" font-size="10">set temp, defrost, seats</text>
-<rect x="10" y="140" width="150" height="44" rx="6" fill="none" stroke="currentColor"/><text x="85" y="166" text-anchor="middle" fill="currentColor">Key fob (RF, if fitted)</text>
-<line x1="120" y1="42" x2="150" y2="42" stroke="currentColor"/><line x1="260" y1="42" x2="290" y2="42" stroke="currentColor"/><line x1="400" y1="42" x2="430" y2="42" stroke="currentColor"/><line x1="540" y1="42" x2="570" y2="42" stroke="currentColor"/>
-<line x1="160" y1="162" x2="600" y2="100" stroke="currentColor" stroke-dasharray="4 3"/><line x1="600" y1="100" x2="640" y2="64" stroke="currentColor" stroke-dasharray="4 3"/>
-<line x1="620" y1="64" x2="510" y2="140" stroke="currentColor"/><line x1="680" y1="64" x2="680" y2="140" stroke="currentColor"/>
-<text x="380" y="125" fill="currentColor" font-size="10">status reply returns the same way</text>
+<h3>1 · The signal chain</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 200" width="100%" role="img" aria-label="Fuel level chain: in-tank sender to measuring ECU, CAN to cluster for gauge, warning lamp and distance to empty">
+<rect x="10" y="60" width="140" height="70" rx="8" fill="none" stroke="currentColor"/><text x="80" y="88" text-anchor="middle" font-size="13" fill="currentColor">In-tank sender</text><text x="80" y="106" text-anchor="middle" font-size="10" fill="currentColor">float arm + resistor card</text>
+<rect x="250" y="60" width="170" height="70" rx="8" fill="none" stroke="currentColor"/><text x="335" y="88" text-anchor="middle" font-size="13" fill="currentColor">Measuring ECU</text><text x="335" y="106" text-anchor="middle" font-size="10" fill="currentColor">divider, ADC, filter</text>
+<rect x="520" y="15" width="190" height="45" rx="8" fill="none" stroke="currentColor"/><text x="615" y="42" text-anchor="middle" font-size="12" fill="currentColor">Cluster gauge needle</text>
+<rect x="520" y="75" width="190" height="45" rx="8" fill="none" stroke="currentColor"/><text x="615" y="102" text-anchor="middle" font-size="12" fill="currentColor">Low-fuel lamp</text>
+<rect x="520" y="135" width="190" height="45" rx="8" fill="none" stroke="currentColor"/><text x="615" y="162" text-anchor="middle" font-size="12" fill="currentColor">DTE / trip computer</text>
+<line x1="150" y1="95" x2="250" y2="95" stroke="currentColor"/><text x="200" y="88" text-anchor="middle" font-size="9" fill="currentColor">2-wire analog</text>
+<line x1="420" y1="80" x2="520" y2="38" stroke="currentColor"/><line x1="420" y1="95" x2="520" y2="97" stroke="currentColor"/><line x1="420" y1="110" x2="520" y2="157" stroke="currentColor"/><text x="470" y="128" text-anchor="middle" font-size="9" fill="currentColor">CAN level %</text>
 </svg></div>
-
-<p>Every hop has its own timeout. The backend waits for the TCU to wake and answer; the TCU waits for the gateway and body controller; the body controller waits for the powertrain to report running or ready. The app message the customer sees ("vehicle did not respond", "request failed", "conditions not met") usually tells you which hop gave up first.</p>
-
-<h3>2. Typical inhibit conditions</h3>
-<p>Remote start is a deliberately conservative feature. The body or smart-key controller checks a list of preconditions before it allows a start, and it keeps checking while the vehicle runs unattended.</p>
 <table>
-<tr><th>Condition</th><th>Why it blocks</th><th>Typical signal source</th></tr>
-<tr><td>Any door, tailgate or hood open (or ajar switch faulty)</td><td>Vehicle must be secured; hood open protects a technician in the engine bay</td><td>Door and hood switches via body controller</td></tr>
-<tr><td>Vehicle not locked</td><td>Many markets require a locked state before the command is accepted</td><td>Lock status from body controller</td></tr>
-<tr><td>Shift lever not in P</td><td>Prevents an unattended vehicle from moving</td><td>Shifter or shift-by-wire controller</td></tr>
-<tr><td>Smart key inside the cabin, or ignition already on</td><td>Logic conflict with a normal start</td><td>Smart-key interior antennas, power mode</td></tr>
-<tr><td>Hazard lamps on, alarm triggered or alarm in panic state</td><td>Security conflict</td><td>Body controller / alarm logic</td></tr>
-<tr><td>Low 12 V battery or low fuel / low HV state of charge</td><td>Protects starting ability and range</td><td>Battery sensor, fuel level, BMS</td></tr>
-<tr><td>Engine fault, MIL condition or high coolant temperature</td><td>Do not run unattended with a powertrain fault</td><td>Engine or vehicle control unit</td></tr>
-<tr><td>Consecutive-start limit reached</td><td>Limits repeated unattended running</td><td>Counter in body controller; reset by a normal drive cycle</td></tr>
-<tr><td>Brake pedal pressed during remote run</td><td>Driver must use the key to take over; pressing the brake without a valid key shuts down</td><td>Brake switch</td></tr>
+<tr><th>Element</th><th>Typical implementation</th><th>Engineering concern</th></tr>
+<tr><td>Sender</td><td>Float on a pivot arm drives a wiper across a thick-film resistor card; resistance changes with level</td><td>Wiper wear and sulfur or ethanol attack on contacts; dead bands at card ends</td></tr>
+<tr><td>Measuring ECU</td><td>Pull-up resistor to a regulated reference, ADC on the divider midpoint, ratiometric scaling</td><td>Ground offset between tank and ECU; open and short detection windows</td></tr>
+<tr><td>Filter</td><td>Slow low-pass for slosh, plus a fast-fill path on refuel detection</td><td>Too slow looks broken after refuelling; too fast makes the needle wander on hills</td></tr>
+<tr><td>Bus value</td><td>Percent level or litres, with a validity bit</td><td>Receivers must handle an invalid flag instead of showing zero</td></tr>
+<tr><td>Cluster</td><td>Needle or bar graph, low-fuel lamp with hysteresis, DTE from consumption history</td><td>Consistency between needle, lamp and DTE; customer perception</td></tr>
 </table>
 
-<div class="callout tip"><span class="lbl">Tip</span>The hood switch is the classic hidden cause. It is rarely checked by the customer, it sits in a wet and dirty location, and a cracked or misaligned switch can report "hood open" with no warning lamp on some vehicles. Look at the hood status in live data before chasing the TCU.</div>
-
-<h3>3. ICE versus EV behaviour</h3>
+<h3>2 · Senders and tank shapes</h3>
+<p>A simple front-wheel-drive car has one tank and one sender. Many all-wheel-drive and rear-drive cars use a <b>saddle tank</b> that straddles the driveshaft or exhaust. Each half needs its own sender, often called main and sub (or A and B). The pump sits in the main side, and a <b>jet pump</b> (a venturi driven by return or bypass flow) moves fuel from the sub side across. The measuring ECU adds the two halves, each with its own calibration curve, because the halves are different shapes.</p>
 <table>
-<tr><th>Aspect</th><th>Combustion vehicle</th><th>EV (for example E-GMP)</th></tr>
-<tr><td>What "start" means</td><td>Crank and run the engine under immobilizer authorisation from the body side</td><td>Close the HV contactors and run climate on HV power; the vehicle is not in drive-ready</td></tr>
-<tr><td>Run time</td><td>Fixed timeout (commonly around 10 minutes, selectable in some apps)</td><td>Climate session timeout, longer windows possible when plugged in</td></tr>
-<tr><td>Energy source</td><td>Fuel; alternator charges 12 V</td><td>HV battery, or grid power when plugged in; LDC/ICCU supports 12 V</td></tr>
-<tr><td>Extra inhibits</td><td>Coolant temperature, engine faults</td><td>Low SOC threshold, charging-door or plug states, BMS faults</td></tr>
-<tr><td>Scheduling</td><td>Usually app-initiated only</td><td>Departure-time pre-conditioning and battery pre-heat can be scheduled</td></tr>
+<tr><th>Configuration</th><th>Senders</th><th>Level calculation</th><th>Typical failure signature</th></tr>
+<tr><td>Single tank</td><td>1</td><td>Lookup table resistance to litres</td><td>Gauge sticks or jumps at one position (worn card spot)</td></tr>
+<tr><td>Saddle tank</td><td>2 (main + sub)</td><td>Litres A + litres B, each from its own table</td><td>Gauge stalls at about half while sub side never drains: jet pump or crossover fault, not a sender fault</td></tr>
+<tr><td>Sealed (pressurized) tank, PHEV</td><td>1 or 2</td><td>As above, plus pressure compensation in some designs</td><td>Fuel door will not open until the tank is vented: an isolation valve or switch issue, not the lock actuator</td></tr>
 </table>
 
-<p>On EVs, scheduled departure climate is closely tied to <a onclick="show('bms-thermal')">battery thermal management</a> and <a onclick="show('thermal-heat-pump')">heat-pump operation</a>. Pre-conditioning while plugged in is the efficient case: grid power warms the cabin and pack so the drive starts with full range.</p>
-
-<h3>4. Immobilizer and theft logic</h3>
-<p>A remote engine start must not weaken anti-theft protection. The body controller authorises the start internally without a key present, but the vehicle stays locked and cannot be driven. Getting in, pressing the brake and selecting a gear requires a valid smart key to be detected; otherwise the engine shuts down. See <a onclick="show('immobilizer')">Immobilizer</a> and <a onclick="show('smart-key')">Smart Key</a> for the authentication details. This is also why some theft-deterrent software updates change remote start behaviour, and why aftermarket remote-start kits that bypass the immobilizer are a security and warranty concern.</p>
-
-<h3>5. Network wake and timing budget</h3>
-<p>App remote start fails most often at the wake-up step. The TCU must be reachable on the cellular network, wake from its own low-power mode, and then wake the vehicle network through <a onclick="show('network-management')">network management</a> messages. Weak coverage in an underground car park, a TCU in an extended deep-sleep after many days parked, or a 12 V battery near its cut-off threshold can all break the chain before the body controller ever sees the request.</p>
-
-<div class="callout example"><span class="lbl">Worked example</span>
-<p><b>Complaint:</b> App remote start works at home but fails every weekday morning at the office car park with "vehicle did not respond". Key-fob start works there.</p>
-<p><b>Reasoning:</b> The fob works, so body-side inhibits are satisfied and the powertrain can start. The failure is upstream of the body controller. "Did not respond" points at the TCU not answering the backend.</p>
-<p><b>Check:</b> Read the TCU network registration and signal quality in the GDS live data or the head unit connectivity screen while parked at the office. Signal is very weak (underground level 3).</p>
-<p><b>Budget estimate:</b> If the backend allows roughly 60 s, and the TCU needs 20 to 40 s to re-register after deep sleep in weak coverage plus a few seconds for the network wake and start, the margin is near zero. Retries succeed occasionally, matching the customer story.</p>
-<p><b>Outcome:</b> No hardware fault. Explain the coverage limitation, confirm current TCU software, and check the antenna path (see <a onclick="show('antenna-systems')">Antenna Systems</a>) only if signal is also weak in open areas.</p>
+<div class="callout example"><span class="lbl">Worked example · divider to level</span>
+<p>Assume an illustrative sender that reads 40 ohms at full and 250 ohms at empty, a 5.0 V reference and a 330 ohm pull-up in the ECU.</p>
+<ul>
+<li>Full: V = 5.0 x 40 / (330 + 40) = 0.54 V.</li>
+<li>Empty: V = 5.0 x 250 / (330 + 250) = 2.16 V.</li>
+<li>A reading of 1.40 V gives R = 330 x 1.40 / (5.0 - 1.40) = 128 ohms. On a linear card that is (128 - 40) / (250 - 40) = 42 percent of the arm travel from full, so roughly 58 percent arm position. The tank shape table then converts arm position to litres, which is not linear near the top and bottom.</li>
+<li>Diagnostic windows: below about 0.2 V suggests a short to ground; above about 4.6 V suggests an open circuit (the pull-up drives the input to the reference). Values between the full and empty limits but outside the plausible card range point to a resistive connector or a ground offset.</li>
+</ul>
+<p>Note the effect of a 0.2 V ground offset at the tank end: at 1.40 V true, the ECU sees about 1.60 V, R reads about 155 ohms and the gauge reads several percent low. Voltage-drop test the sender ground before blaming the sender.</p>
 </div>
 
-<h3>6. Diagnosis playbook</h3>
+<h3>3 · Gauge damping and refuel detection</h3>
+<p>Fuel sloshes on every corner and hill, so raw sender readings swing by 10 percent or more. The measuring ECU uses a heavy low-pass filter, often with a time constant of minutes in normal driving. That creates a problem at the pump: the customer adds 40 litres and expects the gauge to read full at once. Typical logic therefore does the following:</p>
 <table>
-<tr><th>Step</th><th>Action</th><th>What it separates</th></tr>
-<tr><td>1</td><td>Record the exact app message and time; check the app or backend history if available</td><td>No delivery, delivered but refused, or started then stopped</td></tr>
-<tr><td>2</td><td>Try key-fob remote start (if equipped)</td><td>Cloud/TCU path versus body and powertrain path</td></tr>
-<tr><td>3</td><td>Read live data: doors, hood, tailgate, lock state, P position, brake switch</td><td>Inhibit conditions, including faulty switches</td></tr>
-<tr><td>4</td><td>Read DTCs in TCU, gateway, body controller, smart key, engine or VCU</td><td>Communication or authentication faults</td></tr>
-<tr><td>5</td><td>Check 12 V battery state and the battery sensor history; check dark current if the car is often too weak</td><td>Low-voltage inhibits and failed wakes</td></tr>
-<tr><td>6</td><td>Confirm software levels and open campaigns for TCU/CCU, body controller and climate</td><td>Known issues fixed by updates</td></tr>
-<tr><td>7</td><td>If started but climate did nothing: check climate settings sent with the request and FATC response</td><td>Climate path versus start path</td></tr>
+<tr><th>State</th><th>Trigger</th><th>Filter behaviour</th></tr>
+<tr><td>Power-up, no refuel</td><td>Ignition on, level close to the stored value</td><td>Resume from the stored filtered value</td></tr>
+<tr><td>Refuel detected</td><td>Ignition on with level higher than stored by more than a threshold (for example 8 to 15 percent), vehicle stationary</td><td>Fast-fill: jump or slew quickly to the new level</td></tr>
+<tr><td>Driving</td><td>Vehicle speed above a threshold</td><td>Slow damping; some designs freeze updates under high lateral or longitudinal acceleration</td></tr>
+<tr><td>Fault</td><td>Open, short or implausible rate</td><td>Hold last valid value briefly, then send invalid; cluster shows dashes or a parked needle</td></tr>
 </table>
+<div class="callout tip"><span class="lbl">Why it matters</span>Many "gauge did not update after filling" complaints come from refuelling with the ignition on or in accessory mode, or with a stop-start engine in auto-stop. The refuel check never sees an ignition-on edge, so the slow filter takes several minutes of driving to catch up. Confirm the customer procedure before replacing parts.</div>
 
-<div class="callout danger"><span class="lbl">Safety</span>Never test remote engine start in an enclosed workshop without exhaust extraction, and keep the hood closed during testing, since the hood switch is part of the safety inhibit. Disable the feature in settings if the vehicle will be stored indoors.</div>
+<h3>4 · Low-fuel warning and distance to empty</h3>
+<p>The low-fuel lamp uses hysteresis so it does not flicker on hills: on below one level (for example about 10 to 12 percent), off above a higher one, sometimes with a time qualifier. DTE is calculated as usable fuel remaining divided by a consumption figure, which is usually a weighted average of recent driving rather than an instant value. That is why DTE drops quickly after a motorway trip followed by city traffic.</p>
+<div class="callout example"><span class="lbl">Worked example · DTE</span>
+<p>Filtered level 18 litres. The calibration reserves 3 litres as unusable (the pump pickup cannot reach it on a slope), so usable fuel is 15 litres. The averaged consumption is 7.5 litres per 100 km. DTE = 15 / 7.5 x 100 = 200 km. If the averaged consumption moves to 9.0 after city driving, DTE falls to 167 km with no fuel burned. That is an expected result, not a fault.</p>
+</div>
+
+<h3>5 · Fuel pump control</h3>
+<table>
+<tr><th>Strategy</th><th>How it works</th><th>Diagnostic notes</th></tr>
+<tr><td>Relay, fixed speed</td><td>Engine ECU grounds a relay coil; the pump runs at full voltage; a regulator returns excess fuel</td><td>Prime for a few seconds at ignition on; check relay, fuse and pump current</td></tr>
+<tr><td>Pump control module, variable speed</td><td>Engine ECU requests a duty or pressure target; the module PWM-drives the pump for a returnless system</td><td>Module reports faults over CAN or a duty line; pressure sensor plausibility</td></tr>
+<tr><td>Crash cut-off</td><td>Airbag control unit crash signal (wired or CAN) commands pump off; older designs use an inertia switch</td><td>A no-start after a minor bump may be a latched crash state: read airbag and engine DTCs together</td></tr>
+</table>
+<p>Pump driver faults are usually logged by the engine ECU under SAE generic codes, while sender faults may be logged by whichever ECU measures the level.</p>
+<table>
+<tr><th>DTC (SAE generic)</th><th>Meaning</th><th>First checks</th></tr>
+<tr><td>P0460 / P0461</td><td>Fuel level sensor A circuit / range-performance</td><td>Sender resistance sweep, connector at tank, ground offset</td></tr>
+<tr><td>P0462 / P0463</td><td>Fuel level sensor A circuit low / high</td><td>Short to ground (low) or open circuit (high)</td></tr>
+<tr><td>P0464</td><td>Fuel level sensor A intermittent</td><td>Wiggle test, worn card spot</td></tr>
+<tr><td>P2066 to P2069</td><td>Fuel level sensor B (sub side) performance, low, high, intermittent</td><td>Sub sender, and jet pump if level never drops</td></tr>
+<tr><td>P0627 / P0628 / P0629</td><td>Fuel pump A control circuit open / low / high</td><td>Relay or module drive line, fuse, pump connector</td></tr>
+</table>
+<div class="callout warn"><span class="lbl">Safety</span>Pump and sender work means fuel vapour. Follow the service procedure for relieving fuel pressure, disconnect the 12 V battery as instructed, and never probe pump wiring with tools that can spark near an open tank.</div>
+
+<h3>6 · Diagnosis playbook: gauge reads wrong</h3>
+<ol>
+<li>Compare needle, live-data level and live-data sender voltage or resistance. If live data is right but the needle is wrong, look at the cluster.</li>
+<li>If live data is wrong, measure sender resistance at the ECU connector and at the tank connector. A difference means wiring or connector resistance.</li>
+<li>Voltage-drop test the sender ground with the circuit loaded.</li>
+<li>On saddle tanks, check whether the sub side drains. If not, suspect the jet pump or transfer line.</li>
+<li>Only then remove the module and sweep the arm while watching resistance for spikes or flats.</li>
+</ol>
 
 <div class="quiz" data-a="1"><span class="lbl">Quiz</span>
-<p>Both app and key-fob remote start fail on a combustion vehicle. Doors are closed and locked, the lever is in P, there are no DTCs, and the car starts normally with the key. Which check should come first?</p>
-  <button class="opt">Replace the TCU, because the app path is failing</button>
-  <button class="opt">Check the hood-open status in live data, since a faulty hood switch blocks both paths</button>
-  <button class="opt">Re-register the vehicle in the app</button>
-  <button class="opt">Reprogram the engine control unit</button>
-  <div class="exp">Both delivery paths fail, so the problem is in the shared body-side arbitration, not the cloud or TCU. A faulty or misaligned hood switch is a common inhibit that does not stop a normal key start.</div>
+<p>An AWD car with a saddle tank shows a gauge that falls normally to about half, then stays near half for a long time before the car runs out of fuel with roughly 40 percent still displayed. Sensor A and B DTCs are absent. What is the most likely cause?</p>
+  <button class="opt">Worn resistor card on the main sender</button>
+  <button class="opt">The jet pump or crossover is not moving fuel from the sub side, so fuel stranded there keeps the sub sender reading high</button>
+  <button class="opt">Cluster gauge damping set too slow</button>
+  <button class="opt">Fuel pump control module duty cycle too low</button>
+  <div class="exp">The main side empties and the car stalls while the sub sender still sees fuel it cannot use. No circuit DTCs means both senders read plausible values. A slow filter would lag but would not leave 40 percent stranded, and a worn card gives jumps or flats rather than a fixed offset at stall.</div>
 </div>
-
-<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-24. Inhibit lists, timeouts, consecutive-start limits and app wording vary by platform, model year, market and subscription; confirm against service information.</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-24. Resistances, thresholds and filter values are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model. DTC codes listed are SAE J2012 generic definitions; manufacturer-specific assignment and the measuring ECU vary by platform.</div>
 `});
 </script>
 <script>
-chapter({part:"Part V · ADAS & Sensors", id:"adas-calibration", num:"113", title:"ADAS Sensor Calibration and Aiming: Radar, Camera and Corner Sensors After Repair", mins:10, tag:"ADAS / Diagnostics / Service", html:`
-<div class="callout warn"><span class="lbl">Caveat</span>Calibration methods, target dimensions, distances, tolerances and drive conditions vary by sensor supplier, platform, model year and market. Treat this chapter as a pattern guide and always follow the current Hyundai, Kia or Genesis service information and the GDS procedure for the exact vehicle. Never reuse numbers from one model on another.</div>
+chapter({part:"Part XV · Extended Systems", id:"isg-stop-start", num:"113", title:"Idle Stop &amp; Go (ISG) — Body-Electrical Enable Conditions, Battery Strategy, Restart Voltage Support &amp; Inhibit Diagnosis", mins:9, tag:"Stop-start", html:`
+<p>Idle Stop &amp; Go (ISG) is the Hyundai, Kia and Genesis name for engine stop-start on combustion and many hybrid-adjacent powertrains. The engine control unit decides when to stop and restart, but most of the reasons an ISG system <i>refuses</i> to stop are body-electrical: battery state of charge, door, hood and seat-belt switches, HVAC demand, steering input and network health. For a body engineer, ISG is a large consumer of signals you own, and a common source of "feature does not work" complaints that turn out to be a body or battery issue. This chapter covers the enable logic, the 12 V strategy, the restart voltage dip and how to diagnose inhibits.</p>
+<div class="callout warn"><span class="lbl">Standing caveat</span>Enable conditions, thresholds, module names and battery types vary by platform, model year, market and powertrain. Values here are illustrative engineering ranges, not specifications for any Hyundai, Kia or Genesis vehicle. Always use the service information and GDS data for the specific vehicle.</div>
 
-<p>Every forward-collision, lane-keeping and smart-cruise feature depends on a sensor knowing exactly where it is pointing relative to the direction the car actually travels. A front radar that is off by one degree sees a target 100 m ahead about 1.7 m to the side, which is the difference between "car in my lane" and "car in the next lane". Calibration (also called aiming or alignment) is how the sensor learns its mounting offset so the fusion and feature software can compensate. This chapter covers when calibration is required, the two main methods, the prerequisites that cause most failures, and how the procedure maps onto UDS. It builds on <a onclick="show('adas-sensors')">ADAS Sensors</a>, <a onclick="show('fusion')">Sensor Fusion</a> and <a onclick="show('uds-routine-control')">UDS Routine Control</a>.</p>
-
-<h3>1. The geometry: thrust line, not body centreline</h3>
-<p>The reference for ADAS aiming is normally the vehicle <b>thrust line</b>, the direction the rear axle pushes the car. If the rear toe is uneven, the thrust line is rotated away from the body centreline, and the car "crabs" slightly. A camera or radar calibrated to the body centreline would then believe straight ahead is a few tenths of a degree off from where the car really travels, which shows up as lane-keeping that pulls to one side or radar targets that drift. This is why a four-wheel alignment check is usually a precondition, and why static target placement is measured from the thrust line or wheel centres rather than from the bumper.</p>
-
-<div class="diagwrap"><svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12">
-<rect x="40" y="70" width="220" height="90" rx="18" fill="none" stroke="currentColor" stroke-width="2"/>
-<rect x="60" y="58" width="40" height="14" fill="currentColor" opacity="0.5"/>
-<rect x="60" y="158" width="40" height="14" fill="currentColor" opacity="0.5"/>
-<rect x="200" y="58" width="40" height="14" fill="currentColor" opacity="0.5"/>
-<rect x="200" y="158" width="40" height="14" fill="currentColor" opacity="0.5"/>
-<circle cx="262" cy="115" r="6" fill="#d9534f"/>
-<text x="250" y="100" font-size="11">radar</text>
-<circle cx="230" cy="115" r="5" fill="#0275d8"/>
-<text x="205" y="138" font-size="11">camera</text>
-<line x1="20" y1="115" x2="640" y2="115" stroke="currentColor" stroke-dasharray="6 4"/>
-<text x="300" y="108">body centreline</text>
-<line x1="80" y1="115" x2="640" y2="140" stroke="#5cb85c" stroke-width="2"/>
-<text x="420" y="150" fill="#5cb85c">thrust line (from rear axle)</text>
-<rect x="650" y="70" width="16" height="100" fill="none" stroke="currentColor" stroke-width="2"/>
-<text x="610" y="60">target / reflector</text>
-<text x="300" y="200">distance and height set per service information</text>
-<line x1="262" y1="185" x2="650" y2="185" stroke="currentColor" marker-end="url(#a113)"/>
-<defs><marker id="a113" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="currentColor"/></marker></defs>
+<h3>1. System overview</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 230" width="100%" role="img" aria-label="ISG signal map: body inputs, battery sensor, HVAC and chassis feeding the engine ECU, which commands stop and restart and drives the cluster ISG indicator">
+<rect x="10" y="10" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="35" text-anchor="middle" font-size="12" fill="currentColor">BCM / IBU: doors, hood, belt</text>
+<rect x="10" y="62" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="87" text-anchor="middle" font-size="12" fill="currentColor">Battery sensor (IBS / BSS)</text>
+<rect x="10" y="114" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="139" text-anchor="middle" font-size="12" fill="currentColor">HVAC: defrost, cabin temp</text>
+<rect x="10" y="166" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="95" y="191" text-anchor="middle" font-size="12" fill="currentColor">Chassis: speed, brake, SAS</text>
+<rect x="290" y="70" width="160" height="80" rx="8" fill="none" stroke="currentColor"/><text x="370" y="104" text-anchor="middle" font-size="13" fill="currentColor">Engine ECU</text><text x="370" y="122" text-anchor="middle" font-size="10" fill="currentColor">ISG arbitration</text>
+<rect x="540" y="20" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="625" y="45" text-anchor="middle" font-size="12" fill="currentColor">Starter / ISG starter</text>
+<rect x="540" y="90" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="625" y="115" text-anchor="middle" font-size="12" fill="currentColor">Voltage support (DC-DC)</text>
+<rect x="540" y="160" width="170" height="40" rx="8" fill="none" stroke="currentColor"/><text x="625" y="185" text-anchor="middle" font-size="12" fill="currentColor">Cluster ISG lamp / OFF</text>
+<line x1="180" y1="30" x2="290" y2="85" stroke="currentColor"/><line x1="180" y1="82" x2="290" y2="100" stroke="currentColor"/><line x1="180" y1="134" x2="290" y2="120" stroke="currentColor"/><line x1="180" y1="186" x2="290" y2="140" stroke="currentColor"/>
+<line x1="450" y1="90" x2="540" y2="40" stroke="currentColor"/><line x1="450" y1="110" x2="540" y2="110" stroke="currentColor"/><line x1="450" y1="130" x2="540" y2="180" stroke="currentColor"/>
+<text x="235" y="220" text-anchor="middle" font-size="9" fill="currentColor">CAN / LIN signals</text>
 </svg></div>
+<p>The engine ECU (or a powertrain domain controller on newer platforms) owns the final stop and restart decision. It combines a list of <b>stop-enable</b> conditions, all of which must be true to stop, with <b>restart-request</b> conditions, any one of which forces a restart while stopped. Body modules contribute raw switch states, and the battery sensor contributes state of charge (SOC), state of health (SOH) and current.</p>
 
-<h3>2. What triggers a calibration</h3>
+<h3>2. Typical enable and inhibit conditions</h3>
 <table>
-<tr><th>Event</th><th>Front camera</th><th>Front radar</th><th>Corner / rear radar</th><th>Surround cameras</th></tr>
-<tr><td>Windshield replacement or camera bracket removal</td><td>Required</td><td>Usually not</td><td>No</td><td>No</td></tr>
-<tr><td>Front bumper or grille removal, radar bracket repair</td><td>No</td><td>Required</td><td>If front corner sensors moved</td><td>Front camera if moved</td></tr>
-<tr><td>Rear bumper repair or quarter panel work</td><td>No</td><td>No</td><td>Required</td><td>Rear camera if moved</td></tr>
-<tr><td>Four-wheel alignment or suspension height change</td><td>Often required</td><td>Often required</td><td>Check service information</td><td>Check service information</td></tr>
-<tr><td>Sensor or ECU replacement</td><td>Required</td><td>Required</td><td>Required</td><td>Required</td></tr>
-<tr><td>Mirror replacement (side cameras)</td><td>No</td><td>No</td><td>No</td><td>Required for that camera</td></tr>
-<tr><td>Software update of the sensor ECU</td><td colspan="4">Some updates clear or invalidate stored calibration; read the bulletin release notes</td></tr>
+<tr><th>Condition</th><th>Source</th><th>Typical stop-enable rule (illustrative)</th><th>Restart request while stopped?</th></tr>
+<tr><td>Driver door</td><td>BCM / IBU door switch</td><td>Closed</td><td>Opening may restart or prevent restart until engine-start conditions are met</td></tr>
+<tr><td>Hood</td><td>Hood switch to BCM</td><td>Closed (safety, technician under hood)</td><td>Opening usually blocks auto-restart; manual start needed</td></tr>
+<tr><td>Driver seat belt</td><td>Buckle switch</td><td>Buckled</td><td>Unbuckling may block auto-restart</td></tr>
+<tr><td>Battery SOC / SOH</td><td>Battery sensor (LIN)</td><td>SOC above a threshold, for example 70 to 80 percent; SOH valid</td><td>SOC falling below a lower limit forces restart</td></tr>
+<tr><td>Battery sensor learning</td><td>Battery sensor</td><td>Learning complete after reconnect or replacement</td><td>Not applicable; ISG simply stays inhibited</td></tr>
+<tr><td>HVAC demand</td><td>HVAC controller</td><td>No front defrost, cabin temp near target</td><td>Defrost selected or large temperature error restarts</td></tr>
+<tr><td>Vehicle speed history</td><td>ABS / ESC</td><td>Car has exceeded a few km/h since the last stop</td><td>Not applicable</td></tr>
+<tr><td>Brake pedal</td><td>Brake switch / pressure</td><td>Pressed with enough pressure</td><td>Release (automatic) restarts</td></tr>
+<tr><td>Steering</td><td>Steering-angle sensor</td><td>Small angle, no rapid input</td><td>Large steering input may restart</td></tr>
+<tr><td>Engine and gearbox</td><td>Engine / TCU</td><td>Coolant warm, transmission in a valid range, no warm-up</td><td>Vacuum or ATF temperature limits restart</td></tr>
+<tr><td>Network health</td><td>All</td><td>No timeouts on required messages, no related DTCs</td><td>A loss of a required signal usually restarts or inhibits</td></tr>
+<tr><td>Driver switch</td><td>ISG OFF switch</td><td>Not pressed this cycle</td><td>Pressing while stopped restarts</td></tr>
 </table>
-<p>A common pattern on Hyundai Group vehicles is that a sensor with no valid calibration sets a DTC meaning "not calibrated" or "alignment not completed" and disables its features with a cluster message, rather than running with a wrong offset. That is the safe behaviour, and it means a forgotten calibration is usually obvious. The dangerous case is a calibration that completed "successfully" under bad conditions.</p>
+<div class="callout tip"><span class="lbl">Design rule</span>Every input should default to the <i>safe</i> side on loss or invalidity: an unknown door or hood state means "do not stop" and "do not auto-restart without driver action". A body module that sends a default value of "closed" after a timeout can create a real safety defect.</div>
 
-<h3>3. Static versus dynamic calibration</h3>
+<h3>3. 12 V battery strategy</h3>
+<p>Stop-start vehicles usually use an AGM or enhanced flooded (EFB) battery and a shunt-based battery sensor on the negative terminal (see the <a onclick="show('ibs-power-mgmt')">battery sensor and power management chapter</a>). While the engine is stopped, all electrical loads run from the battery, so the energy budget during a stop decides how long the engine can stay off.</p>
 <table>
-<tr><th>Aspect</th><th>Static (target-based)</th><th>Dynamic (drive-based)</th></tr>
-<tr><td>How it works</td><td>Vehicle parked in a prepared bay; sensor views a printed target board or a radar reflector placed at a defined distance, height and lateral offset</td><td>Sensor learns its offset while the car is driven on roads with clear lane markings, roadside objects and steady speed</td></tr>
-<tr><td>Typical tools</td><td>Target frame, laser or wheel-clamp alignment to thrust line, level floor, GDS</td><td>GDS to start the routine, a suitable road and time</td></tr>
-<tr><td>Main risks</td><td>Floor not level, target height or distance wrong, reflective clutter near radar, poor lighting for camera</td><td>Weather, faded lane lines, traffic, not reaching the required speed or duration</td></tr>
-<tr><td>Result</td><td>Pass or fail reported immediately with measured angles</td><td>Completes in the background; status read back later</td></tr>
+<tr><th>Parameter</th><th>Why it matters for ISG</th><th>Common failure signature</th></tr>
+<tr><td>SOC</td><td>Must stay high enough to guarantee a restart and protect the battery</td><td>Short trips, high parasitic draw: ISG never activates</td></tr>
+<tr><td>SOH / internal resistance</td><td>Higher resistance gives a deeper voltage dip on crank</td><td>Aged battery: ISG disabled though SOC looks fine</td></tr>
+<tr><td>Battery type coding</td><td>Charging profile and thresholds depend on AGM vs EFB vs flooded</td><td>Wrong battery fitted or not registered: ISG stops working after replacement</td></tr>
+<tr><td>Sensor learning</td><td>After a disconnect the sensor must relearn capacity and SOC</td><td>ISG inactive for several drive and sleep cycles after battery work</td></tr>
 </table>
-<p>Which method applies depends on the sensor and the model. Some sensors support only one, some support both, and some need a static step followed by a confirming drive. The GDS menu for the exact VIN is the authority.</p>
-
-<h3>4. Prerequisites that cause most failures</h3>
-<table>
-<tr><th>Condition</th><th>Why it matters</th></tr>
-<tr><td>Tyre pressures at specification, matching tyre sizes</td><td>Changes ride height and pitch, which tilts the sensor</td></tr>
-<tr><td>Unladen vehicle, fuel level as specified, no cargo</td><td>Load changes pitch; a heavy boot can tip the nose up</td></tr>
-<tr><td>Level floor within the stated tolerance</td><td>A sloped bay looks like a pitched sensor</td></tr>
-<tr><td>Wheel alignment within specification, thrust angle known</td><td>Defines straight ahead</td></tr>
-<tr><td>Steering wheel centred and steering-angle sensor zeroed</td><td>Some procedures read SAS; see <a onclick="show('mdps-sas')">MDPS and SAS</a></td></tr>
-<tr><td>Stable supply voltage, battery support unit connected</td><td>Routines can abort on low voltage; see <a onclick="show('ibs-power-mgmt')">power management</a></td></tr>
-<tr><td>Clean windshield and radar cover; correct OEM glass and emblem</td><td>Aftermarket glass optics or a painted radar cover can distort the view</td></tr>
-<tr><td>No metal objects or reflective clutter in the radar field</td><td>Tool carts and lifts create false reflections</td></tr>
-</table>
-
-<h3>5. How it looks on the bus</h3>
-<p>From the tester side, calibration is an ordinary UDS sequence: enter an extended diagnostic session (0x10 03), possibly unlock security access (0x27), write any required input data such as target distance or vehicle variant (0x2E), then start the calibration routine with RoutineControl (0x31 01), poll results (0x31 03) until the routine reports complete, and read the stored offsets back with ReadDataByIdentifier (0x22). Exact routine and data identifiers are supplier-specific and not published here. Front camera and radar are typically reached through the central gateway on a chassis or ADAS CAN or CAN FD segment, so gateway routing and session timeouts matter; see <a onclick="show('gateway-internals')">Gateway Internals</a>.</p>
-<pre><code>10 03            -> extended session
-27 xx            -> security access (if required)
-31 01 [RID]      -> start alignment routine
-31 03 [RID]      -> request results (repeat until done)
-   result: status, horizontal angle, vertical angle
-22 [DID]         -> read stored alignment values
-14 FF FF FF      -> clear calibration-related DTCs
-</code></pre>
-
-<div class="callout example"><span class="lbl">Worked example</span>
-<p><b>Complaint:</b> after a windshield replacement, the shop ran a static front camera calibration that passed, but the customer reports Lane Following Assist "ping-pongs" and Lane Keeping Assist nudges right on straight roads.</p>
-<p><b>Check 1, conditions:</b> the bay was level and the target was placed correctly. The technician did not check alignment, because "only the glass was changed".</p>
-<p><b>Check 2, alignment:</b> a four-wheel alignment shows rear toe uneven, giving a thrust angle of about 0.3 degrees, left over from an earlier kerb strike. The target was placed relative to the body centreline, so the camera learned the wrong straight ahead.</p>
-<p><b>Quantify:</b> 0.3 degrees is about 0.005 rad. At 30 m look-ahead that is about 0.16 m of lateral error, enough for the lane model to sit off-centre and for the controller to keep correcting.</p>
-<p><b>Fix:</b> correct the rear toe, recentre the steering wheel, zero the SAS, repeat the static calibration referenced to the thrust line, then perform a road test. Lane centring becomes stable.</p>
-<p><b>Lesson:</b> a "pass" only proves the sensor matched the target. It does not prove the target matched the car.</p>
+<div class="callout example"><span class="lbl">Worked example · energy budget during a stop</span>
+<p>Assume the following loads during an engine-off stop on a hot day with the blower on: infotainment and cluster 8 A, blower at medium 12 A, headlamps and tail lamps (LED) 4 A, ECUs and miscellaneous 6 A. Total is 30 A.</p>
+<p>A 60 s stop drains 30 A x 60 s = 1800 As = 0.5 Ah. For a 70 Ah AGM battery that is about 0.7 percent of capacity. That looks small, but if the ISG stop threshold is 75 percent SOC and the battery sits at 76 percent after a short commute, two such stops reach the limit, and the ECU then keeps the engine running to recharge. To the driver it looks like "ISG works for the first couple of lights and then stops", which is normal behaviour, not a fault.</p>
+<p>Now add a 50 mA parasitic draw overnight for 12 h: 0.6 Ah, so the car starts the morning almost 1 percent lower. A real fault, such as a module not sleeping at 300 mA, removes 3.6 Ah, about 5 percent of SOC per night, and can keep ISG inhibited all week. Check dark current (see the <a onclick="show('dark-current')">dark current chapter</a>) before blaming the ISG logic.</p>
 </div>
 
-<h3>6. Diagnosis playbook for calibration that will not complete</h3>
+<h3>4. Restart voltage dip and support</h3>
+<p>A warm restart draws a high current peak through the starter, often several hundred amps for tens of milliseconds, which pulls the 12 V bus down. If voltage-sensitive loads such as infotainment, the cluster or telematics reset during each restart, customers see screens reboot and audio cut at every traffic light. Platforms handle this in several ways:</p>
 <table>
-<tr><th>Symptom</th><th>Likely cause</th><th>Action</th></tr>
-<tr><td>Routine aborts immediately</td><td>Wrong session, security not unlocked, low voltage, vehicle speed signal not zero</td><td>Check voltage support, ignition state, gateway routing</td></tr>
-<tr><td>"Out of range" result</td><td>Bracket bent or sensor mounted wrong; offset beyond what software can compensate</td><td>Inspect bracket, mounting tabs, glass and camera fit</td></tr>
-<tr><td>Dynamic routine never finishes</td><td>Road conditions, speed band not held, poor lane markings</td><td>Choose a better route; follow stated speed and time</td></tr>
-<tr><td>Passes, but feature behaves poorly</td><td>Thrust angle, load, tyre pressure, wrong target placement</td><td>Recheck prerequisites and redo</td></tr>
-<tr><td>Radar blockage message after calibration</td><td>Aftermarket or repainted cover, emblem with metallic paint, ice or dirt</td><td>Use OEM radome or emblem; check paint thickness rules</td></tr>
+<tr><th>Approach</th><th>How it works</th><th>Trade-off</th></tr>
+<tr><td>DC-DC voltage stabiliser</td><td>Boost converter feeds sensitive loads during crank and holds them near 12 V</td><td>Extra module, heat and cost; must not back-feed</td></tr>
+<tr><td>Robust module design</td><td>Modules specified to ride through a defined crank pulse without reset</td><td>Costs bulk capacitance and careful brown-out thresholds in every supplier ECU</td></tr>
+<tr><td>Enhanced starter</td><td>Starter designed for many cycles and softer current peaks</td><td>Starter cost; does not remove the dip entirely</td></tr>
+<tr><td>Belt-driven starter generator (48 V mild hybrid)</td><td>Restart through the belt from the 48 V side, 12 V bus barely disturbed</td><td>Covered in the <a onclick="show('mild-hybrid-48v')">48 V mild hybrid chapter</a></td></tr>
 </table>
+<div class="callout example"><span class="lbl">Worked example · will the head unit reset?</span>
+<p>Battery open-circuit voltage 12.6 V, battery plus cable resistance 6 milliohm, peak restart current 450 A. The dip at the battery terminal is about 12.6 - 450 x 0.006 = 12.6 - 2.7 = 9.9 V. A head-unit harness with 15 milliohm of feed resistance at 15 A loses another 0.2 V, giving about 9.7 V at the module.</p>
+<p>If the module brown-out reset is set at 9.0 V, there is only 0.7 V of margin. An aged battery with 10 milliohm internal resistance gives 12.6 - 450 x 0.010 = 8.1 V at the terminal, and the head unit resets. That is why ISG enable logic uses battery internal resistance or SOH, not only SOC, and why a "head unit reboots at every restart" complaint is often a battery or ground issue, not a software one.</p>
+</div>
+<div class="callout danger"><span class="lbl">Safety</span>Never work under the hood of a vehicle in an ISG stop with the system active. The hood switch is a safety input precisely because the engine can restart without warning. Turn the vehicle off or disable ISG before service, and verify hood switch behaviour after any front-end repair.</div>
 
-<div class="callout tip"><span class="lbl">Tip</span>Save the before and after alignment printout and the GDS calibration result screen with the repair order. Collision repair insurers and quality audits increasingly ask for proof that ADAS calibration was done under specified conditions.</div>
+<h3>5. Driver interface</h3>
+<p>The cluster typically shows a green ISG indicator while the engine is stopped, an amber or flashing indicator when ISG is unavailable due to a fault, and an "ISG OFF" indication when the driver has disabled it. On many vehicles the ISG OFF state resets to ON at every ignition cycle by regulation or design; some markets and models remember the last setting. Avoid promising a customer that a setting can be made permanent without checking the specific vehicle configuration options.</p>
 
-<div class="callout danger"><span class="lbl">Safety</span>Never release a vehicle with an ADAS feature that relies on an uncalibrated or doubtfully calibrated sensor. Automatic emergency braking acting on a misaligned radar can brake for the wrong target or miss the right one. If calibration cannot be completed, leave the DTC active so the feature stays disabled and explain this to the customer.</div>
+<h3>6. Diagnosing "ISG never works"</h3>
+<table>
+<tr><th>Step</th><th>Check</th><th>Typical tool or data</th></tr>
+<tr><td>1</td><td>Confirm the feature is fitted and not switched off; check for amber ISG indicator</td><td>Cluster, vehicle configuration</td></tr>
+<tr><td>2</td><td>Read DTCs in engine ECU, battery sensor, BCM and HVAC</td><td>GDS full system scan</td></tr>
+<tr><td>3</td><td>Read the ISG inhibit reason data, if the platform provides it</td><td>Engine ECU current data, ISG status items</td></tr>
+<tr><td>4</td><td>Check battery SOC, SOH, type registration and sensor learning status</td><td>Battery sensor data; test with a conductance tester</td></tr>
+<tr><td>5</td><td>Check hood, door and belt switch states in live data with each switch actuated</td><td>BCM / IBU current data</td></tr>
+<tr><td>6</td><td>Check dark current and recent battery disconnects</td><td>Clamp meter; see dark-current chapter</td></tr>
+<tr><td>7</td><td>Road test with a data logger to watch which condition drops at each stop</td><td>GDS data recording</td></tr>
+</table>
+<div class="callout hy"><span class="lbl">Field pattern</span>The most common real cause of ISG not working after a repair is a hood switch left unplugged or misadjusted after front-end bodywork, or a replacement battery that was not the right type or was not registered. Both are body-side issues that appear as a powertrain feature complaint.</div>
+
+<h3>7. Engineering checklist for body module owners</h3>
+<ul>
+<li>Publish door, hood and belt states with a validity bit; do not substitute "closed" on a timeout.</li>
+<li>Debounce switches enough to reject bounce, but keep latency low so an opening hood blocks a restart quickly.</li>
+<li>Specify ride-through of the restart voltage pulse for every module powered while ISG is active, and test it on the bench with a programmable supply.</li>
+<li>Keep sleep current low: ISG availability depends on SOC margin.</li>
+<li>Coordinate with HVAC so blower and compressor loads during a stop are part of the energy budget.</li>
+</ul>
 
 <div class="quiz" data-a="2"><span class="lbl">Quiz</span>
-<p>A front radar calibration passes on a level floor with the target placed exactly from the bumper centre, but the car has a measurable rear thrust angle. What is the most likely result?</p>
-  <button class="opt">No effect, because radar does not care about the rear axle</button>
-  <button class="opt">The radar will refuse to enable features and set a DTC</button>
-  <button class="opt">The radar learns a straight ahead that is offset from the true direction of travel, so targets appear laterally shifted</button>
-  <button class="opt">Only the rear corner radars will be affected</button>
-  <div class="exp">The calibration matched the target, but the target was referenced to the body, not the thrust line. The stored offset is wrong by the thrust angle, so in-lane targets can be judged as adjacent-lane targets at distance.</div>
+<p>After a new battery was fitted, a customer reports that ISG has not stopped the engine once in three days. The battery tests good, no DTCs are stored, and the hood, door and belt switches all read correctly. What is the most likely cause?</p>
+  <button class="opt">The ISG starter has failed</button>
+  <button class="opt">The cluster ISG indicator bulb is open</button>
+  <button class="opt">The battery sensor has not finished learning, or the new battery type was not registered</button>
+  <button class="opt">The HVAC system is in recirculation mode</button>
+  <div class="exp">After a disconnect or replacement the battery sensor must relearn capacity and SOC, and many systems need the battery type registered with a scan tool. Until then the engine ECU treats SOC or SOH as not valid and keeps ISG inhibited without setting a DTC. A failed starter would affect normal starting, and recirculation does not inhibit ISG.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-25. Currents, resistances, thresholds and enable conditions are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XV · Extended Systems", id:"active-air-flap", num:"114", title:"Active Air Flaps (AAF) &amp; Grille Shutters — LIN Actuators, Position Learning, Thermal/Aero Strategy &amp; Stuck-Flap Diagnosis", mins:9, tag:"Body / Thermal", html:`
+<p>An <b>Active Air Flap</b> (AAF, also called an active grille shutter) is a set of motorised vanes behind the front grille or bumper opening. Closing the vanes cuts aerodynamic drag and speeds warm-up; opening them restores cooling airflow to the radiator, condenser and, on EVs, the battery and power-electronics heat exchangers. Hyundai, Kia and Genesis fit AAF on many ICE, hybrid and E-GMP models. The flap looks like a body part, but its control is a thermal-management function. Body-electrical engineers deal with it because the actuator usually sits on a LIN sub-bus, draws battery current, and is a common source of DTCs after front-end collision repair.</p>
+<div class="callout warn"><span class="lbl">Platform caveat</span>Which ECU is the LIN master (engine ECU, VCU, thermal controller or a body/gateway module), the number of flap sets and the exact DTCs differ by platform, model year and market. Treat the numbers below as illustrative engineering values, not specifications. Always use the service information for the vehicle in front of you.</div>
+
+<h3>1. System architecture</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12">
+<rect x="20" y="30" width="170" height="70" rx="8" fill="none" stroke="currentColor"/>
+<text x="105" y="58" text-anchor="middle">Thermal master ECU</text>
+<text x="105" y="78" text-anchor="middle" font-size="11">(ECM / VCU / thermal ctrl)</text>
+<rect x="20" y="140" width="170" height="60" rx="8" fill="none" stroke="currentColor"/>
+<text x="105" y="168" text-anchor="middle">CAN inputs</text>
+<text x="105" y="185" text-anchor="middle" font-size="11">speed, coolant T, A/C P, SOC</text>
+<line x1="105" y1="140" x2="105" y2="100" stroke="currentColor"/>
+<line x1="190" y1="65" x2="300" y2="65" stroke="currentColor" stroke-dasharray="6 3"/>
+<text x="245" y="57" text-anchor="middle" font-size="11">LIN 19.2 kbit/s</text>
+<rect x="300" y="30" width="170" height="70" rx="8" fill="none" stroke="currentColor"/>
+<text x="385" y="58" text-anchor="middle">AAF actuator (slave)</text>
+<text x="385" y="78" text-anchor="middle" font-size="11">BLDC/DC motor + gear + sensor</text>
+<line x1="470" y1="65" x2="560" y2="65" stroke="currentColor"/>
+<rect x="560" y="20" width="140" height="90" rx="8" fill="none" stroke="currentColor"/>
+<text x="630" y="50" text-anchor="middle">Flap linkage</text>
+<line x1="580" y1="65" x2="680" y2="65" stroke="currentColor"/>
+<line x1="580" y1="80" x2="680" y2="80" stroke="currentColor"/>
+<line x1="580" y1="95" x2="680" y2="95" stroke="currentColor"/>
+<text x="385" y="150" text-anchor="middle" font-size="11">B+ (fused), GND, LIN = 3 wires</text>
+<text x="630" y="140" text-anchor="middle" font-size="11">upper / lower vane sets</text>
+</svg></div>
+<p>A typical actuator is a sealed unit that holds a small DC or brushless motor, a reduction gear, and a position sensor (Hall counter or potentiometer). It has a three-wire interface: fused battery feed, ground and LIN. The master sends a target opening in percent. The slave reports actual position, motor and calibration status, and fault flags such as blocked, overcurrent, overtemperature and voltage out of range.</p>
+
+<h3>2. Typical LIN signal content</h3>
+<table>
+<tr><th>Direction</th><th>Signal</th><th>Example encoding</th><th>Notes</th></tr>
+<tr><td>Master to slave</td><td>Target position</td><td>0 to 100 % in 0.5 % steps, or discrete states</td><td>0 % = fully closed on most designs; check polarity</td></tr>
+<tr><td>Master to slave</td><td>Calibration / learn request</td><td>1 bit</td><td>Drives to both end stops to relearn range</td></tr>
+<tr><td>Master to slave</td><td>Speed / torque mode</td><td>2 bits</td><td>Slow quiet mode versus fast mode for cooling demand</td></tr>
+<tr><td>Slave to master</td><td>Actual position</td><td>0 to 100 %</td><td>Compared to target for plausibility</td></tr>
+<tr><td>Slave to master</td><td>Fault flags</td><td>Blocked, over-temp, voltage, electrical</td><td>Latched until next successful move</td></tr>
+<tr><td>Slave to master</td><td>Response_Error</td><td>1 bit (LIN 2.x)</td><td>Reports a corrupted frame seen by the slave</td></tr>
+</table>
+
+<h3>3. Control strategy</h3>
+<table>
+<tr><th>Condition</th><th>Typical flap command</th><th>Reason</th></tr>
+<tr><td>Cold start, engine or battery below target temperature</td><td>Closed</td><td>Faster warm-up, less heater energy</td></tr>
+<tr><td>Steady highway cruise, low cooling load</td><td>Closed or partly open</td><td>Drag reduction; often worth a small range or fuel gain</td></tr>
+<tr><td>High coolant temperature, towing, hill climb</td><td>Open</td><td>Cooling has priority over drag</td></tr>
+<tr><td>High A/C refrigerant pressure</td><td>Open</td><td>Condenser airflow</td></tr>
+<tr><td>DC fast charging (EV)</td><td>Open as needed</td><td>Battery chiller and heat-pump heat rejection</td></tr>
+<tr><td>Ambient near or below 0 °C at shutdown</td><td>Parked in a defined position</td><td>Reduces risk of vanes freezing shut</td></tr>
+<tr><td>Actuator fault or lost LIN communication</td><td>Fail-safe open (by design)</td><td>Many actuators open on their own when the bus goes silent</td></tr>
+</table>
+<div class="callout tip"><span class="lbl">Design note</span>Fail-safe behaviour is a key design decision. A flap that is stuck closed can overheat the powertrain, so masters usually add an extra margin: they raise the fan duty, limit power and set a warning lamp if the reported position stays closed while cooling is demanded.</div>
+
+<h3>4. Position learning and end stops</h3>
+<p>Most actuators find their range by driving into the mechanical end stops at low torque and storing the step count between them. A learn cycle may run on its own after power-on reset, after a voltage drop, or when the master requests it with a scan-tool routine (UDS RoutineControl 0x31 on the master, or a LIN diagnostic frame relayed through it). After bumper or radiator support replacement, the learned range can be wrong if the linkage was refitted out of position. The symptom is a "range too small" or "blocked" fault on the first drive.</p>
+
+<div class="callout example"><span class="lbl">Worked example — range plausibility</span>
+<p>A Hall-count actuator reads 2 counts per degree of output shaft travel, and the vanes need 85 degrees from closed to open. The nominal learned range is about 85 × 2 = 170 counts. The supplier accepts 150 to 190 counts (±12 %).</p>
+<ul>
+<li>After a front-end repair the learn cycle reports 96 counts. That is about 56 % of nominal, which means something stops the vanes at about half travel. Typical causes are a bent vane, a misrouted shroud, or a linkage clip in the wrong hole.</li>
+<li>The actuator sets a range fault and reports blocked. The master falls back to open, but the vanes can only reach half-open. With 50 % airflow at high load, coolant temperature rises and the fan runs at full duty for longer.</li>
+<li>Fix: inspect the linkage, free the obstruction, then run the learn routine with the engine off and ignition on. Confirm about 170 counts and full 0 to 100 % travel in live data.</li>
+</ul></div>
+
+<div class="callout example"><span class="lbl">Worked example — LIN schedule timing</span>
+<p>At 19.2 kbit/s, one bit takes about 52 µs. A frame with an 8-byte response is roughly 34 + 10 × 9 = 124 bit times nominal. With the 40 % LIN tolerance that gives about 174 bit times, or about 9 ms. If the AAF shares a LIN cluster with, for example, an active cooling-fan controller, a 20 ms slot per frame and a 3-frame schedule give a 60 ms update cycle. That is easily fast enough for a flap that takes 1 to 3 seconds to travel end to end.</p></div>
+
+<h3>5. Failure modes and diagnosis</h3>
+<table>
+<tr><th>Symptom</th><th>Likely cause</th><th>Check</th></tr>
+<tr><td>AAF DTC after a parking bump or bumper repair</td><td>Vane or linkage damage, connector not seated</td><td>Visual check, connector pin fit, learn routine</td></tr>
+<tr><td>Intermittent "no communication" fault</td><td>LIN wire chafed near bumper beam, corroded connector</td><td>Wiggle test with live data; LIN idles near battery voltage, dominant near 0 V</td></tr>
+<tr><td>Blocked fault in winter only</td><td>Ice or packed snow on the vanes</td><td>Fault clears once thawed; confirm the parking position strategy</td></tr>
+<tr><td>Fan runs often, high coolant temperature at speed</td><td>Flap stuck closed or partly closed</td><td>Command 0 and 100 % with actuator test, watch the vanes</td></tr>
+<tr><td>Slight range or fuel penalty, no lamp</td><td>Flap stuck open</td><td>Often only visible in live data or by looking</td></tr>
+<tr><td>Fault after battery disconnect</td><td>Lost calibration</td><td>Run the learn routine; check whether the actuator relearns on its own</td></tr>
+</table>
+<div class="callout hy"><span class="lbl">Field pattern</span>In collision repair, AAF faults are mostly mechanical rather than electrical. Check the vanes and linkage first, then the three wires, and suspect the actuator last. Replacement actuators may need the learn routine and sometimes LIN node configuration (NAD assignment) when several identical actuators share a bus.</div>
+
+<h3>6. Engineering checklist</h3>
+<ul>
+<li>Define the fail-safe position and how the master detects a stuck flap from temperature behaviour, not only from the flag the slave reports.</li>
+<li>Specify the stall torque and stall time limits so the actuator does not overheat while pushing against ice.</li>
+<li>Route the harness away from the crash zone where possible, and protect it at the bumper beam.</li>
+<li>Provide an actuator test and a learn routine in the diagnostic spec, and document when automatic relearn runs.</li>
+<li>Include the AAF in EV charging thermal validation, not only in drive-cycle tests.</li>
+</ul>
+
+<div class="quiz" data-a="1"><span class="lbl">Quiz</span>
+<p>After a bumper cover and radiator support were replaced, an AAF actuator learn completes but reports a range about 55 % of nominal and sets a blocked fault. LIN communication is normal. What should you check first?</p>
+  <button class="opt">Replace the actuator because the Hall sensor is faulty</button>
+  <button class="opt">The vanes and linkage for an obstruction or wrong assembly that limits travel</button>
+  <button class="opt">The LIN master schedule table</button>
+  <button class="opt">The coolant temperature sensor</button>
+  <div class="exp">A learned range that is much too small, with good communication, points to a mechanical limit: a bent vane, a misplaced shroud or a linkage fitted in the wrong position. Fix the mechanism, then relearn. The schedule table and coolant sensor do not affect the learned travel.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-26. Signal encodings, counts, ranges and timings are illustrative engineering estimates, not specifications for any Hyundai, Kia or Genesis model.</div>
+`});
+</script>
+<script>
+chapter({part:"Part XV · Extended Systems", id:"inside-mirror", num:"115", title:"Inside Rear-View Mirror — Electrochromic Auto-Dim, HomeLink Garage-Door Transmitter &amp; Digital Centre Mirror", mins:9, tag:"Body / Visibility", html:`
+<p>The inside rear-view mirror looks like the simplest part in the cabin, but on a modern Hyundai, Kia or Genesis it can contain three separate electronic systems: an <b>electrochromic (EC) auto-dimming cell</b>, a <b>universal garage-door transmitter</b> (HomeLink in North America), and on some recent upper-trim models a <b>Digital Centre Mirror (DCM)</b> that shows a rear-camera feed on an LCD. Most of the time it is also the mounting point for the rain/light sensor cover and the forward camera housing. For a body engineer it is a small module with a surprising number of interface questions: power modes, the reverse input, camera video links, RF regulation and windshield-replacement side effects.</p>
+
+<div class="callout warn"><span class="lbl">Standing caveat</span>Mirror content, connector pin-outs, and whether the mirror is hard-wired, on LIN or on CAN vary by platform, model year, trim and market. Use the wiring diagram and shop manual for the exact vehicle. Values below are typical engineering figures, not Hyundai specifications.</div>
+
+<h3>1 · Building blocks</h3>
+<div class="diagwrap"><svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12">
+<rect x="250" y="20" width="220" height="200" rx="10" fill="none" stroke="currentColor"/>
+<text x="360" y="42" text-anchor="middle">Inside mirror assembly</text>
+<rect x="265" y="55" width="190" height="34" rx="6" fill="none" stroke="currentColor"/>
+<text x="360" y="77" text-anchor="middle" font-size="11">EC cell + fwd/rear light sensors</text>
+<rect x="265" y="97" width="190" height="34" rx="6" fill="none" stroke="currentColor"/>
+<text x="360" y="119" text-anchor="middle" font-size="11">RF transmitter (HomeLink) + 3 keys</text>
+<rect x="265" y="139" width="190" height="34" rx="6" fill="none" stroke="currentColor"/>
+<text x="360" y="161" text-anchor="middle" font-size="11">DCM LCD + video deserialiser</text>
+<rect x="265" y="181" width="190" height="30" rx="6" fill="none" stroke="currentColor"/>
+<text x="360" y="201" text-anchor="middle" font-size="11">MCU, power supply, mode lever</text>
+<rect x="20" y="30" width="160" height="40" rx="8" fill="none" stroke="currentColor"/>
+<text x="100" y="55" text-anchor="middle" font-size="11">IGN / ACC feed + ground</text>
+<rect x="20" y="90" width="160" height="40" rx="8" fill="none" stroke="currentColor"/>
+<text x="100" y="115" text-anchor="middle" font-size="11">Reverse signal (wire or CAN)</text>
+<rect x="20" y="150" width="160" height="40" rx="8" fill="none" stroke="currentColor"/>
+<text x="100" y="175" text-anchor="middle" font-size="11">Outside EC mirror drive</text>
+<line x1="180" y1="50" x2="265" y2="195" stroke="currentColor"/>
+<line x1="180" y1="110" x2="265" y2="72" stroke="currentColor"/>
+<line x1="180" y1="170" x2="265" y2="72" stroke="currentColor" stroke-dasharray="5 3"/>
+<rect x="540" y="130" width="160" height="50" rx="8" fill="none" stroke="currentColor"/>
+<text x="620" y="152" text-anchor="middle" font-size="11">Rear DCM camera</text>
+<text x="620" y="168" text-anchor="middle" font-size="11">(roof / rear glass)</text>
+<line x1="540" y1="155" x2="455" y2="156" stroke="currentColor" stroke-dasharray="6 3"/>
+<text x="497" y="148" text-anchor="middle" font-size="10">coax video</text>
+<rect x="540" y="40" width="160" height="50" rx="8" fill="none" stroke="currentColor"/>
+<text x="620" y="62" text-anchor="middle" font-size="11">Garage opener</text>
+<text x="620" y="78" text-anchor="middle" font-size="11">(RF, about 300-433 MHz)</text>
+<line x1="540" y1="65" x2="455" y2="114" stroke="currentColor" stroke-dasharray="2 3"/>
+</svg></div>
+
+<table>
+<tr><th>Function</th><th>Main parts</th><th>Typical interface</th><th>Body-engineer concern</th></tr>
+<tr><td>Electrochromic auto-dim</td><td>EC gel or film between two glass layers, forward and rear photodiodes, driver circuit</td><td>Ignition feed, reverse input, optional output to outside EC mirrors</td><td>Never dims, stays dark, slow clearing, leaking cell</td></tr>
+<tr><td>Garage-door transmitter</td><td>Programmable RF transmitter, three buttons, status LED</td><td>Battery or ignition feed only; RF to the opener</td><td>Rolling-code learning, regional frequencies, erasing codes at resale</td></tr>
+<tr><td>Digital Centre Mirror</td><td>LCD behind a half-silvered glass, rear camera, video serialiser link, mode lever</td><td>Coax video (serialiser/deserialiser link), CAN for brightness, gear and settings</td><td>Blank screen, camera dirt or fog, latency, glare, field of view after repair</td></tr>
+<tr><td>Compass / display (some markets)</td><td>Magneto-resistive sensor in the mirror</td><td>Internal; sometimes shared with the cluster</td><td>Calibration and zone setting</td></tr>
+</table>
+
+<h3>2 · How electrochromic dimming works</h3>
+<p>An EC cell is a thin layer of electrochromic material sealed between two glass plates with transparent conductive coatings. Applying a small DC voltage, typically around 1.0 to 1.4 V, drives a redox reaction that darkens the layer and reduces reflectance from roughly 70-80 % to below 10 %. Removing the voltage, or shorting the cell, lets it clear. The cell is a capacitive, slow load: darkening takes a few seconds and clearing is usually a little faster.</p>
+<p>The control loop compares two photodiodes. The <b>forward (ambient) sensor</b> faces the windshield and tells the mirror whether it is night. The <b>rear (glare) sensor</b> looks through the mirror glass at the rear window. Dimming level follows the glare-to-ambient ratio, with hysteresis and filtering so that passing street lights do not cause flicker. A <b>reverse input</b> forces the cell clear so that the driver can see while backing up; on many vehicles the same circuit also drives the driver-side outside EC mirror.</p>
+
+<table>
+<tr><th>Input condition</th><th>Expected mirror behaviour</th></tr>
+<tr><td>Daylight (forward sensor bright)</td><td>Cell clear, whatever the rear sensor reads</td></tr>
+<tr><td>Night, no following traffic</td><td>Cell clear</td></tr>
+<tr><td>Night, headlamps behind</td><td>Dims in proportion to the glare ratio, within a few seconds</td></tr>
+<tr><td>Reverse selected</td><td>Clears at once, inside and outside mirrors</td></tr>
+<tr><td>Auto-dim switched off (button or menu)</td><td>Cell clear; indicator LED off</td></tr>
+<tr><td>Ignition off</td><td>Cell unpowered, clears passively</td></tr>
+</table>
+
+<div class="callout example"><span class="lbl">Worked example · the glare ratio</span>
+<p>Assume a mirror starts to dim when glare / ambient is above 8 and is fully dark at 40. At dusk the forward sensor reads 30 lux and a following SUV puts 120 lux on the rear sensor: ratio 4, so the mirror stays clear. Thirty minutes later the forward sensor reads 3 lux and the same headlamps still give 120 lux: ratio 40, so the mirror is fully dimmed. The headlamps did not get brighter; the background got darker. This is why customers sometimes report the mirror dims only on unlit roads.</p>
+<p>Now cover the forward sensor with a windshield sticker or a dash cam bracket. The forward sensor reads near zero all the time, the ratio is high whenever any light reaches the rear sensor, and the mirror dims in daytime traffic. Check for sensor obstruction before you replace the mirror.</p>
 </div>
 
-<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-26. It is written as a general pattern guide; sensor suppliers, target specifications and GDS menus differ across Hyundai, Kia and Genesis models and years.</div>
+<div class="callout example"><span class="lbl">Worked example · never dims at night</span>
+<p>Complaint: auto-dim never works. The indicator LED is on. Measured at the mirror connector with the engine running in Park: ignition feed 13.9 V, ground good, reverse input 12.2 V. The reverse input should be near 0 V in Park, so the mirror is correctly obeying a clear command. Trace the reverse circuit: a trailer light module tapped into the reverse lamp feed was back-feeding voltage. After the tap was corrected the input read 0.1 V and the mirror dimmed normally. On vehicles where reverse comes over CAN, read the gear signal in live data instead.</p>
+</div>
+
+<h3>3 · Universal garage-door transmitter</h3>
+<p>The transmitter learns the opener remote by listening to it and then copying its frequency and code format. Fixed-code openers can be copied directly. Rolling-code (code-hopping) openers also need a sync step: the user presses the learn button on the opener motor and then the mirror button within a short time window, so that the opener accepts the mirror as a new remote. Frequencies differ by region, broadly about 300 to 433 MHz, and the transmitter is type-approved for each market, so a mirror from another region may not work.</p>
+<table>
+<tr><th>Symptom</th><th>Likely cause</th><th>Check</th></tr>
+<tr><td>Learns, but the door does not move</td><td>Rolling-code sync step not done</td><td>Repeat the opener learn-button step</td></tr>
+<tr><td>Status LED blinks fast and will not learn</td><td>Opener uses a protocol or frequency the mirror does not support</td><td>Opener compatibility list; a bridge accessory may be needed</td></tr>
+<tr><td>Short range</td><td>Metallised windshield or tint film, weak opener antenna</td><td>Compare with the hand remote at the same spot</td></tr>
+<tr><td>Previous owner codes still stored</td><td>Codes not erased at resale</td><td>Erase all buttons per owner manual</td></tr>
+</table>
+<div class="callout tip"><span class="lbl">Privacy tip</span>At vehicle resale, lease return or trade-in, erase the stored garage codes. They are the key to a house, not just a car feature.</div>
+
+<h3>4 · Digital Centre Mirror (DCM)</h3>
+<p>A DCM replaces the optical view with a live feed from a dedicated rear camera, which removes the blind spot made by tall rear passengers, head restraints or cargo. The driver flips the lever at the bottom of the mirror to switch between optical and camera modes. Video usually travels over a shielded coax link using a serialiser in the camera and a deserialiser in the mirror; settings such as brightness, tilt (image position) and zoom are stored and may be tied to the driver profile.</p>
+<table>
+<tr><th>Item</th><th>Typical design target</th><th>Why it matters</th></tr>
+<tr><td>Glass-to-glass latency</td><td>Well under 100 ms</td><td>Judging the speed of following vehicles</td></tr>
+<tr><td>Frame rate</td><td>About 30 to 60 fps</td><td>Smooth motion, no flicker from LED lamps</td></tr>
+<tr><td>Dynamic range</td><td>HDR camera, LED-flicker mitigation</td><td>Headlamps at night, low sun</td></tr>
+<tr><td>Camera cleaning / heating</td><td>Hydrophobic cover or heater on some models</td><td>Rain, frost and road dirt blank the view</td></tr>
+<tr><td>Fail-safe</td><td>Flip back to optical mode</td><td>Driver always keeps a rear view</td></tr>
+</table>
+<div class="callout danger"><span class="lbl">Field note</span>A blank DCM with a good optical view is a camera, cable or power issue, not a total loss of rear vision, but the driver must be told to use optical mode. Check the coax connectors at the camera and the mirror; a pinched coax at the rear header after a roof-lining or glass repair is a common cause.</div>
+
+<h3>5 · Windshield and service effects</h3>
+<ul>
+<li>The mirror mount is bonded to the windshield. After glass replacement the light sensor cover and the forward camera housing must be refitted correctly, and the forward camera needs ADAS calibration (see <a onclick="show('adas-features')">ADAS Features &amp; Calibration</a>).</li>
+<li>A leaking EC cell shows as a bubble, a stain or uneven tint, and the fluid can damage interior trim. The mirror is serviced as an assembly.</li>
+<li>Aftermarket dash cams often tap the mirror feed. Check that the tap is on an ignition-switched supply, or it will add to dark current (see <a onclick="show('dark-current')">Power Modes, Dark Current &amp; Sleep/Wake</a>).</li>
+</ul>
+
+<h3>6 · Engineering checklist</h3>
+<ul>
+<li>Mirror supply goes off in sleep; stored garage codes are held in non-volatile memory with no standby current.</li>
+<li>Reverse input source (wire or CAN) is defined, debounced and fails safe to clear.</li>
+<li>Outside EC mirror drive is current-limited and short-protected.</li>
+<li>DCM video link meets EMC targets near the antenna systems (see <a onclick="show('emc-emi')">EMC</a>).</li>
+<li>RF transmitter variant matches the destination market.</li>
+</ul>
+
+<div class="quiz" data-a="2"><span class="lbl">Quiz</span>
+<p>An auto-dim mirror never darkens at night. The indicator LED is on and the supply and ground are good. Which measurement best explains the fault?</p>
+  <button class="opt">Ignition feed at 14.1 V with the engine running</button>
+  <button class="opt">Rear glare sensor reading high when lit by a torch</button>
+  <button class="opt">Reverse input at 12 V with the selector in Park</button>
+  <button class="opt">Garage transmitter LED blinking slowly</button>
+  <div class="exp">A live reverse input commands the mirror to clear, so it will never dim. Find what is feeding the reverse circuit, such as a back-feeding accessory tap or a wrong gear signal on CAN.</div>
+</div>
+<div class="callout hy"><span class="lbl">Auto-maintained note</span>This chapter was added by the daily updater on 2026-11-27. Voltages, ratios, frequencies and latency targets are typical engineering figures, not Hyundai specifications; check the service information for the exact vehicle.</div>
 `});
 </script>
 <script id="boot-script">
